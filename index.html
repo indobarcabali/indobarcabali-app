@@ -26,8 +26,12 @@
 
   2. Unggah DUA berkas ke repo itu (Add file → Upload files):
        - berkas ini, dengan nama tepat  index.html
-       - logo 512x512 Anda, dengan nama tepat  icon.png
+       - logo 512x512 BERLATAR SOLID, dengan nama tepat  icon.png
      Nama berkasnya harus persis seperti itu, huruf kecil semua.
+
+     icon.png hanya dipakai untuk ikon layar utama, yang menuntut latar solid.
+     Ikon tab mengambil berkas Drive yang sama dengan aplikasi — latar transparan,
+     karena di tab lambang bulat lebih rapi daripada kotak berwarna.
 
   3. Settings → Pages → Source: "Deploy from a branch", Branch: main, folder: /
      Simpan, tunggu 1-2 menit.
@@ -62,18 +66,53 @@
      layar utama iOS, bukan menyatu dengan wallpaper. -->
 <link rel="apple-touch-icon" href="icon.png">
 
-<!-- Android/Chrome memakai <link rel="icon"> terbesar bila tidak ada manifest. -->
-<link rel="icon" type="image/png" sizes="512x512" href="icon.png">
+<!-- Ikon TAB memakai berkas Drive yang sama dengan yang dipakai aplikasi lewat
+     setFaviconUrl(), supaya tab dari alamat ini dan tab dari /exec selalu
+     seragam — satu berkas, satu tempat mengurusnya.
+     Sengaja BUKAN icon.png: berkas itu berlatar solid karena tuntutan layar
+     utama iOS, dan di tab ia tampil sebagai kotak berwarna alih-alih lambang
+     bulat yang menyatu dengan latar tab. Dua keperluan, dua berkas. -->
+<link rel="icon" type="image/png"
+      href="https://drive.google.com/thumbnail?id=197Ne_Sj_bLQYaKpQFMQywGTz59WIJJo2&amp;sz=w128">
+
+<!-- Android tidak butuh tag tersendiri: tanpa manifest, Chrome ikut memakai
+     apple-touch-icon di atas untuk ikon layar utamanya. Menambahkan <link
+     rel="icon" sizes="512x512"> di sini justru membuat dua tag ikon tab saling
+     bersaing, dan peramban bebas memilih yang mana — hasilnya tidak menentu. -->
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Indobarca Bali">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0A1F62">
+<!-- Warna bilah status dan pita area aman. Disamakan dengan warna sidebar
+     aplikasi (#001138, palet Barca resmi) agar tampak menyatu. Kalau suatu saat
+     palet aplikasi diganti, cukup ubah nilai di sini dan di background body. -->
+<meta name="theme-color" content="#001138">
 <meta name="robots" content="noindex">
 
 <style>
-  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#0A1F62;}
-  iframe{border:0;display:block;width:100%;height:100%;}
+  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#001138;}
+
+  /* Aplikasi ditempatkan di dalam area aman, bukan memenuhi layar mentah.
+     apple-mobile-web-app-capable menghilangkan seluruh bilah Safari, sehingga
+     isi halaman dimulai dari piksel paling atas — tepat di bawah jam dan
+     indikator baterai. Ruang itu dulu ditempati bilah alamat Safari, jadi
+     masalahnya tidak pernah muncul sebelum halaman ini ada.
+
+     Aplikasinya TIDAK bisa memperbaiki sendiri: nilai env(safe-area-inset-*)
+     tidak menembus ke dalam iframe — di sana nilainya selalu nol. Hanya dokumen
+     utama yang bisa membacanya, dan itu halaman ini.
+
+     position:fixed dengan inset dipakai, bukan height:100%, karena tinggi 100%
+     di mode aplikasi iOS dihitung terhadap ukuran yang berbeda dari yang
+     benar-benar terlihat — dan menyisakan garis latar di bawah. */
+  iframe{
+    position:fixed;border:0;display:block;
+    top:env(safe-area-inset-top, 0px);
+    bottom:env(safe-area-inset-bottom, 0px);
+    left:env(safe-area-inset-left, 0px);
+    right:env(safe-area-inset-right, 0px);
+    width:auto;height:auto;
+  }
 
   /* Layar pemuatan, tampil di depan iframe sampai aplikasi selesai dimuat. */
   #memuat{
