@@ -119,8 +119,20 @@
     position:fixed;
     top:env(safe-area-inset-top, 0px);
     right:env(safe-area-inset-right, 0px);
-    bottom:env(safe-area-inset-bottom, 0px);
     left:env(safe-area-inset-left, 0px);
+    /* Sengaja TIDAK disisakan di bawah. Aplikasi dibiarkan turun sampai tepi
+       layar supaya latar bilah navigasinya menyentuh dasar, seperti bilah bawah
+       aplikasi mobile pada umumnya. Yang diberi ruang aman cukup ikon-ikonnya —
+       aplikasi mengerjakan itu sendiri setelah diberi tahu ukurannya. */
+    bottom:0;
+  }
+
+  /* Pengukur ruang aman bawah. Tak terlihat; hanya tingginya yang dibaca.
+     env() tidak bisa dibaca langsung dari JavaScript, dan tidak menembus ke
+     dalam iframe — jadi halaman inilah satu-satunya yang bisa mengukurnya. */
+  #ukur{
+    position:fixed;bottom:0;left:0;width:0;pointer-events:none;
+    height:env(safe-area-inset-bottom, 0px);
   }
   #bingkai iframe{width:100%;height:100%;border:0;display:block;}
 
@@ -161,7 +173,7 @@
          ini diubah. Gunanya menjawab satu pertanyaan yang selalu muncul setelah
          mengunggah: yang tampil ini versi baru atau salinan lama dari cache?
          Tanpa penanda, satu-satunya cara menjawabnya adalah menebak. -->
-    <div class="tulisan" style="margin-top:6px;opacity:.45;letter-spacing:.24em">R3</div>
+    <div class="tulisan" style="margin-top:6px;opacity:.45;letter-spacing:.24em">R4</div>
   </div>
 </div>
 
@@ -169,6 +181,8 @@
   Aplikasi lama dimuat —
   <a href="https://script.google.com/macros/s/AKfycbw03EKLPzGnF7tj4v2gqOz05lnVswFPt8J_wfPhNlyExMH4mGMLKiADZMbFXGsgDvKc/exec">buka langsung di peramban</a>
 </div>
+
+<div id="ukur" aria-hidden="true"></div>
 
 <div id="bingkai">
   <iframe
@@ -192,6 +206,39 @@
   setTimeout(function () {
     if (!selesai) document.getElementById('darurat').style.display = 'block';
   }, 12000);
+
+  /* ---------------------------------------------------------------
+     Memberi tahu aplikasi setinggi apa ruang aman di bawah layar.
+
+     Aplikasi tidak bisa mengukurnya sendiri: env(safe-area-inset-*) selalu
+     bernilai nol di dalam iframe, dan angkanya berbeda antar model iPhone —
+     menebak dengan angka mati akan salah di perangkat tanpa home indicator.
+
+     Aplikasi yang memulai percakapan, bukan halaman ini. Sebabnya praktis:
+     aplikasi berada di iframe bersarang milik Google, jadi halaman ini tidak
+     punya cara menunjuk jendelanya secara langsung. Begitu aplikasi menyapa,
+     jendelanya terbaca dari event.source dan bisa dibalas.
+     --------------------------------------------------------------- */
+  var peminta = null;
+
+  function ruangAmanBawah() {
+    var n = parseFloat(getComputedStyle(document.getElementById('ukur')).height);
+    return isNaN(n) ? 0 : Math.round(n);
+  }
+
+  function kabari() {
+    if (peminta) peminta.postMessage({ ibb: 'inset', bawah: ruangAmanBawah() }, '*');
+  }
+
+  window.addEventListener('message', function (e) {
+    if (!e.data || e.data.ibb !== 'minta-inset' || !e.source) return;
+    peminta = e.source;
+    kabari();
+  });
+
+  // Nilainya berubah saat perangkat diputar.
+  window.addEventListener('resize', kabari);
+  window.addEventListener('orientationchange', function () { setTimeout(kabari, 300); });
 </script>
 
 </body>
