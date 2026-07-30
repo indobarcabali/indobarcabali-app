@@ -95,20 +95,7 @@
 <meta name="robots" content="noindex">
 
 <style>
-  /* Latar halaman disamakan dengan latar aplikasi (--bg), bukan navy. Pita area
-     aman di bawah lalu terbaca sebagai lanjutan halaman, bukan bilah asing yang
-     menggantung tanpa fungsi. Nilai ini tetap #F4F5F8 berapa pun palet yang
-     dipilih di Pengaturan — warna permukaan aplikasi memang tidak ikut tema. */
-  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#F4F5F8;}
-
-  /* Pita ATAS tetap gelap: di sanalah iOS menuliskan jam dan baterai, dan
-     dengan status-bar-style black-translucent tulisannya berwarna putih.
-     Latar terang di situ membuatnya tidak terbaca. */
-  #pita-atas{
-    position:fixed;top:0;left:0;right:0;z-index:1;
-    height:env(safe-area-inset-top, 0px);
-    background:#001138;
-  }
+  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#001138;}
 
   /* Aplikasi ditempatkan di dalam area aman, bukan memenuhi layar mentah.
      apple-mobile-web-app-capable menghilangkan seluruh bilah Safari, sehingga
@@ -173,8 +160,6 @@
   Aplikasi lama dimuat —
   <a href="https://script.google.com/macros/s/AKfycbw03EKLPzGnF7tj4v2gqOz05lnVswFPt8J_wfPhNlyExMH4mGMLKiADZMbFXGsgDvKc/exec">buka langsung di peramban</a>
 </div>
-
-<div id="pita-atas"></div>
 
 <div id="bingkai">
   <iframe
