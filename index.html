@@ -172,7 +172,7 @@
          ini diubah. Gunanya menjawab satu pertanyaan yang selalu muncul setelah
          mengunggah: yang tampil ini versi baru atau salinan lama dari cache?
          Tanpa penanda, satu-satunya cara menjawabnya adalah menebak. -->
-    <div class="tulisan" style="margin-top:6px;opacity:.45;letter-spacing:.24em">R5</div>
+    <div class="tulisan" style="margin-top:6px;opacity:.45;letter-spacing:.24em">R6</div>
   </div>
 </div>
 
@@ -194,16 +194,39 @@
 
 <script>
   var memuat = document.getElementById('memuat');
-  var selesai = false;
+  var sudahDitutup = false;
 
-  document.getElementById('aplikasi').addEventListener('load', function () {
-    selesai = true;
-    setTimeout(function () { memuat.classList.add('selesai'); }, 400);
+  /* Layar pemuatan ditutup saat APLIKASI mengabarkan dirinya siap, bukan saat
+     iframe selesai dimuat.
+
+     Peristiwa 'load' pada iframe menandai selesainya halaman perantara milik
+     Google, bukan selesainya aplikasi kita — aplikasi masih perlu memuat
+     sesinya dan menggambar layar pertama sesudah itu. Menutup layar pemuatan di
+     saat itu menyingkap halaman putih Google sepersekian detik, lalu disusul
+     layar pemuatan milik aplikasi sendiri dengan navy yang sedikit berbeda.
+     Tumpukan itulah yang terbaca sebagai kedipan. */
+  function tutupPemuatan() {
+    if (sudahDitutup) return;
+    sudahDitutup = true;
+    memuat.classList.add('selesai');
+  }
+
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.ibb === 'siap') tutupPemuatan();
   });
 
-  // Jaring pengaman: iframe yang diblokir tidak pernah memicu peristiwa 'load'.
+  /* Jaring pengaman: versi aplikasi lama tidak mengirim kabar 'siap'. Delapan
+     detik cukup longgar untuk menunggu kabar itu menang, dan cukup pendek untuk
+     tidak terasa menggantung bila kabarnya memang tidak akan datang. */
+  var adaIframe = false;
+  document.getElementById('aplikasi').addEventListener('load', function () {
+    adaIframe = true;
+    setTimeout(tutupPemuatan, 8000);
+  });
+
+  // Iframe yang diblokir tidak pernah memicu 'load' sama sekali.
   setTimeout(function () {
-    if (!selesai) document.getElementById('darurat').style.display = 'block';
+    if (!adaIframe) document.getElementById('darurat').style.display = 'block';
   }, 12000);
 
   /* ---------------------------------------------------------------
