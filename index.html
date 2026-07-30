@@ -95,6 +95,10 @@
 <meta name="robots" content="noindex">
 
 <style>
+  /* Warna ini bukan sekadar latar di belakang iframe: di mode aplikasi iOS,
+     pita di belakang home indicator dan bilah status DICAT oleh sistem memakai
+     warna latar body. Jadi inilah satu-satunya tuas yang menentukan warna pita
+     itu — elemen apa pun yang digambar di atasnya tidak berpengaruh. */
   html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#001138;}
 
   /* Aplikasi ditempatkan di dalam area aman, bukan memenuhi layar mentah.
@@ -153,6 +157,11 @@
       <path d="M12 2v5M20.5 9l-4.8 1.5M17.2 19.5l-2.9-4M6.8 19.5l2.9-4M3.5 9l4.8 1.5"/>
     </svg>
     <div class="tulisan">MEMUAT…</div>
+    <!-- Penanda versi halaman pembungkus. Naikkan angkanya setiap kali berkas
+         ini diubah. Gunanya menjawab satu pertanyaan yang selalu muncul setelah
+         mengunggah: yang tampil ini versi baru atau salinan lama dari cache?
+         Tanpa penanda, satu-satunya cara menjawabnya adalah menebak. -->
+    <div class="tulisan" style="margin-top:6px;opacity:.45;letter-spacing:.24em">R3</div>
   </div>
 </div>
 
