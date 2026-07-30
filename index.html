@@ -102,17 +102,18 @@
      tidak menembus ke dalam iframe — di sana nilainya selalu nol. Hanya dokumen
      utama yang bisa membacanya, dan itu halaman ini.
 
-     position:fixed dengan inset dipakai, bukan height:100%, karena tinggi 100%
-     di mode aplikasi iOS dihitung terhadap ukuran yang berbeda dari yang
-     benar-benar terlihat — dan menyisakan garis latar di bawah. */
-  iframe{
-    position:fixed;border:0;display:block;
+     Inset dipasang pada WADAH, bukan langsung pada iframe. <iframe> adalah
+     elemen tergantikan: pada elemen semacam itu width/height:auto tidak melebar
+     mengikuti inset, melainkan jatuh ke ukuran bawaannya 300x150 piksel. Wadah
+     biasa melebar seperti yang diharapkan, lalu iframe mengisinya penuh. */
+  #bingkai{
+    position:fixed;
     top:env(safe-area-inset-top, 0px);
+    right:env(safe-area-inset-right, 0px);
     bottom:env(safe-area-inset-bottom, 0px);
     left:env(safe-area-inset-left, 0px);
-    right:env(safe-area-inset-right, 0px);
-    width:auto;height:auto;
   }
+  #bingkai iframe{width:100%;height:100%;border:0;display:block;}
 
   /* Layar pemuatan, tampil di depan iframe sampai aplikasi selesai dimuat. */
   #memuat{
@@ -155,12 +156,14 @@
   <a href="https://script.google.com/macros/s/AKfycbw03EKLPzGnF7tj4v2gqOz05lnVswFPt8J_wfPhNlyExMH4mGMLKiADZMbFXGsgDvKc/exec">buka langsung di peramban</a>
 </div>
 
-<iframe
-  id="aplikasi"
-  title="INDOBARCA BALI — Community App"
-  src="https://script.google.com/macros/s/AKfycbw03EKLPzGnF7tj4v2gqOz05lnVswFPt8J_wfPhNlyExMH4mGMLKiADZMbFXGsgDvKc/exec"
-  allow="clipboard-write *; fullscreen *"
-  referrerpolicy="no-referrer-when-downgrade"></iframe>
+<div id="bingkai">
+  <iframe
+    id="aplikasi"
+    title="INDOBARCA BALI — Community App"
+    src="https://script.google.com/macros/s/AKfycbw03EKLPzGnF7tj4v2gqOz05lnVswFPt8J_wfPhNlyExMH4mGMLKiADZMbFXGsgDvKc/exec"
+    allow="clipboard-write *; fullscreen *"
+    referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
 
 <script>
   var memuat = document.getElementById('memuat');
