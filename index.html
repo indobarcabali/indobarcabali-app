@@ -138,7 +138,7 @@
 
   /* Layar pemuatan, tampil di depan iframe sampai aplikasi selesai dimuat. */
   #memuat{
-    position:fixed;inset:0;z-index:2;display:grid;place-items:center;background:#071744;
+    position:fixed;inset:0;z-index:2;display:grid;place-items:center;background:#001138;
     color:#fff;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
     transition:opacity .4s ease;
   }
@@ -172,7 +172,7 @@
          ini diubah. Gunanya menjawab satu pertanyaan yang selalu muncul setelah
          mengunggah: yang tampil ini versi baru atau salinan lama dari cache?
          Tanpa penanda, satu-satunya cara menjawabnya adalah menebak. -->
-    <div class="tulisan" style="margin-top:6px;opacity:.45;letter-spacing:.24em">R6</div>
+    <div class="tulisan" style="margin-top:6px;opacity:.45;letter-spacing:.24em">R7</div>
   </div>
 </div>
 
@@ -212,8 +212,33 @@
   }
 
   window.addEventListener('message', function (e) {
-    if (e.data && e.data.ibb === 'siap') tutupPemuatan();
+    if (!e.data || e.data.ibb !== 'siap') return;
+    tutupPemuatan();
+    /* Aplikasi mengabarkan navy yang sedang dipakainya. Halaman ini statis dan
+       tidak punya cara lain untuk tahu palet mana yang berlaku — sementara
+       paletnya bisa diganti pemilik aplikasi kapan saja lewat Pengaturan.
+
+       Disimpan, lalu dipakai pada pembukaan BERIKUTNYA. Pembukaan pertama di
+       sebuah perangkat memakai warna bawaan di bawah; sesudah itu keduanya
+       selalu sewarna, tanpa perlu halaman ini diterbitkan ulang. */
+    if (/^#[0-9A-Fa-f]{6}$/.test(String(e.data.navy || ''))) {
+      try { localStorage.setItem('ibb_navy', e.data.navy); } catch (err) { /* mode privat */ }
+    }
   });
+
+  /* Dipasang sedini mungkin — sebelum apa pun sempat tergambar dengan warna
+     bawaan lalu berganti di depan mata. */
+  (function warnaTersimpan() {
+    var w = null;
+    try { w = localStorage.getItem('ibb_navy'); } catch (err) { w = null; }
+    if (!/^#[0-9A-Fa-f]{6}$/.test(String(w || ''))) return;
+    document.documentElement.style.background = w;
+    document.body.style.background = w;
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', w);
+    var d = document.getElementById('darurat');
+    if (d) d.style.background = w;
+  })();
 
   /* Jaring pengaman: versi aplikasi lama tidak mengirim kabar 'siap'. Delapan
      detik cukup longgar untuk menunggu kabar itu menang, dan cukup pendek untuk
