@@ -1,40 +1,47 @@
 <title>Privacy Policy — Indobarca Bali</title>
 <style>
+  /* Sengaja satu tema saja (selalu terang) — dokumen kebijakan harus selalu
+     terbaca sama, apa pun pengaturan gelap/terang perangkat pembacanya. */
   :root{
     --navy:#0A1F62; --navy-900:#071744; --navy-700:#12307F;
     --red:#E8253C; --red-700:#C4102A;
     --yellow:#F7C331;
-    --bg:#F4F5F8; --card:#FFFFFF;
+    --bg:#FFFFFF; --card:#FFFFFF;
     --ink:#161B33; --muted:#6B7488; --border:#E4E7F0;
-  }
-  :root[data-theme="dark"]{
-    --bg:#0B1230; --card:#121A3D;
-    --ink:#EDF0FA; --muted:#9AA3C4; --border:#26305C;
-    --navy:#7C93E8; --navy-900:#0B1230;
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --bg:#0B1230; --card:#121A3D;
-      --ink:#EDF0FA; --muted:#9AA3C4; --border:#26305C;
-      --navy:#7C93E8; --navy-900:#0B1230;
-    }
   }
 
   *{box-sizing:border-box;}
+  html{color-scheme:light;}
   body{
     margin:0; background:var(--bg); color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:720px;margin:0 auto;padding:56px 24px 80px;}
+  .wrap{max-width:720px;margin:0 auto;padding:56px 24px 80px;position:relative;}
+
+  .langsw{
+    position:absolute; top:56px; right:24px;
+    display:inline-flex; gap:2px; padding:3px; border-radius:99px;
+    background:var(--card); border:1px solid var(--border);
+  }
+  .langsw button{
+    border:none; background:none; font:inherit; cursor:pointer;
+    font-size:12.5px; font-weight:700; letter-spacing:.03em;
+    padding:6px 14px; border-radius:99px; color:var(--muted);
+  }
+  .langsw button.active{background:var(--navy); color:#fff;}
+
+  /* Dua salinan dokumen hidup berdampingan; hanya satu ditampilkan. */
+  .doc[data-doc="id"]{display:none;}
+  body.lang-id .doc[data-doc="en"]{display:none;}
+  body.lang-id .doc[data-doc="id"]{display:block;}
 
   .brand{display:flex;align-items:center;gap:14px;margin-bottom:40px;}
   .crest{
     width:46px;height:46px;border-radius:50%;flex:none;
-    background:linear-gradient(135deg,var(--red),var(--navy-700));
-    display:grid;place-items:center;color:#fff;font-weight:700;font-size:16px;
-    box-shadow:0 4px 14px rgba(10,31,98,.25);
+    display:block;
   }
+  .crest img{width:100%;height:100%;object-fit:contain;display:block;}
   .brand-name{font-size:15px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--navy);}
   .brand-sub{font-size:12.5px;color:var(--muted);margin-top:1px;}
 
@@ -100,103 +107,214 @@
 </style>
 
 <div class="wrap">
+  <div class="langsw" role="group" aria-label="Language">
+    <button type="button" data-setlang="en" class="active">EN</button>
+    <button type="button" data-setlang="id">ID</button>
+  </div>
+
   <div class="brand">
-    <div class="crest">IB</div>
+    <div class="crest"><img src="https://drive.google.com/thumbnail?id=197Ne_Sj_bLQYaKpQFMQywGTz59WIJJo2&amp;sz=w256" alt="Indobarca Bali"></div>
     <div>
       <div class="brand-name">Indobarca Bali</div>
       <div class="brand-sub">Community App</div>
     </div>
   </div>
 
-  <h1>Privacy Policy</h1>
-  <p class="lede">What data we keep about you, what it's used for, who can see it, and how we protect it.</p>
-  <span class="tanggal">Effective — August 7, 2026</span>
+  <!-- ======================= ENGLISH ======================= -->
+  <div class="doc" data-doc="en">
+    <h1>Privacy Policy</h1>
+    <p class="lede">What data we keep about you, what it's used for, who can see it, and how we protect it.</p>
+    <span class="tanggal">Effective — August 7, 2026</span>
 
-  <section>
-    <div class="sec-head"><span class="sec-num">01</span><h2>Data We Collect</h2></div>
-    <p>When you register and use the App, we store:</p>
-    <ul>
-      <li><strong>Account data</strong> — full name, nickname, email, WhatsApp number</li>
-      <li><strong>Login PIN</strong> — never stored in its original form (see the Security section)</li>
-      <li><strong>Membership data</strong> — member status, membership card validity, join date</li>
-      <li><strong>Activity data</strong> — attendance/RSVP for community events you take part in</li>
-      <li><strong>Avatar</strong> — not a real photo. The system generates an avatar from a random combination of codes (shape, color) stored as a short piece of text, not an image file</li>
-    </ul>
-    <div class="note">
-      <p>We do <strong>not</strong> ask for or store: home address, national ID (KTP/NIK), payment card details, or an actual profile photo.</p>
-    </div>
-    <p style="margin-top:14px">For members assigned to manage community funds (Treasurer), the App also records the community's financial transactions — this is organizational data, not your personal data.</p>
-  </section>
-
-  <section>
-    <div class="sec-head"><span class="sec-num">02</span><h2>What This Data Is Used For</h2></div>
-    <ul>
-      <li>Verifying your identity when you sign in to the App</li>
-      <li>Showing you in the member list so fellow Culers recognize each other</li>
-      <li>Recording attendance at community events</li>
-      <li>Letting committee members reach you on WhatsApp when needed — via a <code>wa.me</code> link that opens your own WhatsApp app; your number is <strong>not</strong> sent to any third party for this</li>
-      <li>Emailing you <strong>only</strong> when you request a PIN reset — the code is sent to your own registered email</li>
-    </ul>
-  </section>
-
-  <section>
-    <div class="sec-head"><span class="sec-num">03</span><h2>Who Can See Your Data</h2></div>
-    <p>Access is controlled by role, not shared freely with everyone:</p>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>Role</th><th>Can see</th></tr></thead>
-        <tbody>
-          <tr><td>Fellow Members</td><td>Names, nicknames, and membership status of other members</td></tr>
-          <tr><td>Committee (Pengurus)</td><td>The above, plus managing events, inventory, and membership</td></tr>
-          <tr><td>Treasurer</td><td>Community financial transactions (kept separate from members' personal data)</td></tr>
-          <tr><td>Super Admin</td><td>Full access, including changing other committee members' roles</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="margin-top:16px">Regular members have <strong>no</strong> access to the Inventory or Finance modules at all.</p>
-    <p>The raw data (spreadsheet) is <strong>never shared</strong> with anyone outside this system — not even with committee members. All access goes through the App, following the role rules above.</p>
-  </section>
-
-  <section>
-    <div class="sec-head"><span class="sec-num">04</span><h2>How Your Data Is Protected</h2></div>
-    <ul>
-      <li>Your PIN is <strong>never</strong> stored in its original form — only a one-way hash (SHA-256, with an additional secret key) that cannot be reversed back into your PIN</li>
-      <li>Login sessions automatically expire after 14 days, and are stored in hashed form, not as the original token</li>
-      <li>Repeated failed login attempts are temporarily blocked</li>
-      <li>The Finance page requires a separate additional PIN, and automatically locks again after 20 minutes of inactivity</li>
-      <li>The App is accessed over an encrypted connection (HTTPS)</li>
-    </ul>
-  </section>
-
-  <section>
-    <div class="sec-head"><span class="sec-num">05</span><h2>How Long Data Is Kept</h2></div>
-    <p>Your account data is kept for as long as you remain a member of the App. Old login activity and session records are cleaned up automatically on a regular basis. You can request that your data be deleted at any time — see Your Rights below.</p>
-  </section>
-
-  <section>
-    <div class="sec-head"><span class="sec-num">06</span><h2>Shared With Third Parties?</h2></div>
-    <p class="tidak">✕ No.</p>
-    <p>We do not sell, rent, or share your data with any third party, including for advertising purposes. This App contains no ad trackers or third-party analytics.</p>
-    <p>Backups are stored via internal email to a single address managed by the committee, solely for recovery in case of technical issues — never for sharing.</p>
-  </section>
-
-  <section>
-    <div class="sec-head"><span class="sec-num">07</span><h2>Your Rights</h2></div>
-    <div class="card">
-      <ul style="margin-bottom:0">
-        <li><strong>Access</strong> — see what data we hold about you</li>
-        <li><strong>Correct</strong> — update your own data anytime via the Profile page in the App</li>
-        <li><strong>Delete</strong> — request deletion of your account and data by contacting the committee</li>
+    <section>
+      <div class="sec-head"><span class="sec-num">01</span><h2>Data We Collect</h2></div>
+      <p>When you register and use the App, we store:</p>
+      <ul>
+        <li><strong>Account data</strong> — full name, nickname, email, WhatsApp number</li>
+        <li><strong>Login PIN</strong> — never stored in its original form (see the Security section)</li>
+        <li><strong>Membership data</strong> — member status, membership card validity, join date</li>
+        <li><strong>Activity data</strong> — attendance/RSVP for community events you take part in</li>
+        <li><strong>Avatar</strong> — not a real photo. The system generates an avatar from a random combination of codes (shape, color) stored as a short piece of text, not an image file</li>
       </ul>
-    </div>
-  </section>
+      <div class="note">
+        <p>We do <strong>not</strong> ask for or store: home address, national ID (KTP/NIK), payment card details, or an actual profile photo.</p>
+      </div>
+      <p style="margin-top:14px">For members assigned to manage community funds (Treasurer), the App also records the community's financial transactions — this is organizational data, not your personal data.</p>
+    </section>
 
-  <section>
-    <div class="sec-head"><span class="sec-num">08</span><h2>Contact</h2></div>
-    <p>Questions about your data or this policy? Contact the Indobarca Bali committee at <strong><a href="mailto:indobarca.bali10@gmail.com">indobarca.bali10@gmail.com</a></strong>.</p>
-  </section>
+    <section>
+      <div class="sec-head"><span class="sec-num">02</span><h2>What This Data Is Used For</h2></div>
+      <ul>
+        <li>Verifying your identity when you sign in to the App</li>
+        <li>Showing you in the member list so fellow Culers recognize each other</li>
+        <li>Recording attendance at community events</li>
+        <li>Letting committee members reach you on WhatsApp when needed — via a <code>wa.me</code> link that opens your own WhatsApp app; your number is <strong>not</strong> sent to any third party for this</li>
+        <li>Emailing you <strong>only</strong> when you request a PIN reset — the code is sent to your own registered email</li>
+      </ul>
+    </section>
 
-  <footer>
-    This Privacy Policy applies specifically to the Indobarca Bali Community App and its members.
-  </footer>
+    <section>
+      <div class="sec-head"><span class="sec-num">03</span><h2>Who Can See Your Data</h2></div>
+      <p>Access is controlled by role, not shared freely with everyone:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Role</th><th>Can see</th></tr></thead>
+          <tbody>
+            <tr><td>Fellow Members</td><td>Names, nicknames, and membership status of other members</td></tr>
+            <tr><td>Committee (Pengurus)</td><td>The above, plus managing events, inventory, and membership</td></tr>
+            <tr><td>Treasurer</td><td>Community financial transactions (kept separate from members' personal data)</td></tr>
+            <tr><td>Super Admin</td><td>Full access, including changing other committee members' roles</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:16px">Regular members have <strong>no</strong> access to the Inventory or Finance modules at all.</p>
+      <p>The raw data (spreadsheet) is <strong>never shared</strong> with anyone outside this system — not even with committee members. All access goes through the App, following the role rules above.</p>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">04</span><h2>How Your Data Is Protected</h2></div>
+      <ul>
+        <li>Your PIN is <strong>never</strong> stored in a form we — or anyone else — can read. It's protected using strong one-way encryption designed so it can't be reversed back into your PIN</li>
+        <li>Login sessions automatically expire after 14 days, keeping you signed in only as long as needed</li>
+        <li>Repeated failed login attempts are temporarily blocked</li>
+        <li>The Finance page requires a separate additional PIN, and automatically locks again after 20 minutes of inactivity</li>
+        <li>The App is accessed over an encrypted connection (HTTPS)</li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">05</span><h2>How Long Data Is Kept</h2></div>
+      <p>Your account data is kept for as long as you remain a member of the App. Old login activity and session records are cleaned up automatically on a regular basis. You can request that your data be deleted at any time — see Your Rights below.</p>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">06</span><h2>Shared With Third Parties?</h2></div>
+      <p class="tidak">✕ No.</p>
+      <p>We do not sell, rent, or share your data with any third party, including for advertising purposes. This App contains no ad trackers or third-party analytics.</p>
+      <p>Backups are sent via internal email managed by the committee, solely for recovery in case of technical issues — never for sharing.</p>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">07</span><h2>Your Rights</h2></div>
+      <div class="card">
+        <ul style="margin-bottom:0">
+          <li><strong>Access</strong> — see what data we hold about you</li>
+          <li><strong>Correct</strong> — update your own data anytime via the Profile page in the App</li>
+          <li><strong>Delete</strong> — request deletion of your account and data by contacting the committee</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">08</span><h2>Contact</h2></div>
+      <p>Questions about your data or this policy? Contact the Indobarca Bali committee at <strong><a href="mailto:indobarca.bali10@gmail.com">indobarca.bali10@gmail.com</a></strong>.</p>
+    </section>
+
+    <footer>This Privacy Policy applies specifically to the Indobarca Bali Community App and its members.</footer>
+  </div>
+
+  <!-- ======================= BAHASA INDONESIA ======================= -->
+  <div class="doc" data-doc="id">
+    <h1>Kebijakan Privasi</h1>
+    <p class="lede">Data apa yang kami simpan tentang Anda, untuk apa dipakai, siapa yang bisa melihatnya, dan bagaimana kami melindunginya.</p>
+    <span class="tanggal">Berlaku sejak — 7 Agustus 2026</span>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">01</span><h2>Data yang Kami Kumpulkan</h2></div>
+      <p>Saat Anda mendaftar dan menggunakan Aplikasi, kami menyimpan:</p>
+      <ul>
+        <li><strong>Data akun</strong> — nama lengkap, nama panggilan, email, nomor WhatsApp</li>
+        <li><strong>PIN login</strong> — tidak pernah disimpan dalam bentuk aslinya (lihat bagian Keamanan)</li>
+        <li><strong>Data keanggotaan</strong> — status member, masa berlaku kartu anggota, tanggal bergabung</li>
+        <li><strong>Data aktivitas</strong> — kehadiran/RSVP kegiatan komunitas yang Anda ikuti</li>
+        <li><strong>Avatar</strong> — bukan foto asli. Sistem membuat avatar dari kombinasi kode acak (bentuk, warna) yang disimpan sebagai teks pendek, bukan berkas gambar</li>
+      </ul>
+      <div class="note">
+        <p>Kami <strong>tidak</strong> meminta atau menyimpan: alamat rumah, KTP/NIK, data kartu pembayaran, atau foto profil asli.</p>
+      </div>
+      <p style="margin-top:14px">Untuk anggota yang ditugaskan mengelola kas komunitas (Bendahara), Aplikasi juga mencatat transaksi keuangan komunitas — ini data organisasi, bukan data pribadi Anda.</p>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">02</span><h2>Untuk Apa Data Ini Dipakai</h2></div>
+      <ul>
+        <li>Memverifikasi identitas Anda saat masuk ke Aplikasi</li>
+        <li>Menampilkan Anda di daftar anggota agar sesama Culer saling mengenal</li>
+        <li>Mencatat kehadiran kegiatan komunitas</li>
+        <li>Menghubungkan pengurus dengan Anda lewat WhatsApp bila diperlukan — lewat tautan <code>wa.me</code> yang membuka aplikasi WhatsApp Anda sendiri; nomor Anda <strong>tidak</strong> dikirim ke pihak ketiga mana pun untuk ini</li>
+        <li>Mengirim email ke Anda <strong>hanya</strong> saat Anda meminta reset PIN — kode dikirim ke email terdaftar Anda sendiri</li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">03</span><h2>Siapa yang Bisa Melihat Data Anda</h2></div>
+      <p>Akses diatur berdasarkan peran (role), bukan dibagikan bebas ke semua orang:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Peran</th><th>Bisa lihat</th></tr></thead>
+          <tbody>
+            <tr><td>Sesama Anggota</td><td>Nama, nama panggilan, dan status keanggotaan sesama anggota</td></tr>
+            <tr><td>Pengurus</td><td>Data di atas, ditambah kelola kegiatan, inventaris, dan keanggotaan</td></tr>
+            <tr><td>Bendahara</td><td>Transaksi keuangan komunitas (terpisah dari data pribadi anggota)</td></tr>
+            <tr><td>Super Admin</td><td>Akses penuh, termasuk mengubah peran pengurus lain</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:16px">Anggota biasa <strong>tidak</strong> memiliki akses ke modul Inventaris maupun Keuangan sama sekali.</p>
+      <p>Data mentah (spreadsheet) <strong>tidak pernah dibagikan</strong> kepada siapa pun di luar sistem ini — termasuk kepada pengurus sekalipun. Semua akses harus lewat Aplikasi, mengikuti aturan peran di atas.</p>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">04</span><h2>Bagaimana Data Anda Dilindungi</h2></div>
+      <ul>
+        <li>PIN Anda <strong>tidak pernah</strong> disimpan dalam bentuk yang bisa dibaca — oleh kami maupun siapa pun. PIN dilindungi dengan enkripsi satu-arah yang dirancang agar tidak bisa dikembalikan ke PIN aslinya</li>
+        <li>Sesi login otomatis berakhir setelah 14 hari, sehingga Anda tetap masuk hanya selama diperlukan</li>
+        <li>Percobaan login yang gagal berulang kali akan diblokir sementara</li>
+        <li>Halaman Keuangan memerlukan PIN tambahan terpisah, dan otomatis terkunci lagi setelah 20 menit tidak dipakai</li>
+        <li>Aplikasi diakses lewat koneksi terenkripsi (HTTPS)</li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">05</span><h2>Berapa Lama Data Disimpan</h2></div>
+      <p>Data akun Anda disimpan selama Anda masih menjadi anggota Aplikasi. Catatan aktivitas login dan sesi lama dibersihkan otomatis secara berkala. Anda bisa meminta data Anda dihapus kapan saja — lihat bagian Hak Anda di bawah.</p>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">06</span><h2>Dibagikan ke Pihak Ketiga?</h2></div>
+      <p class="tidak">✕ Tidak.</p>
+      <p>Kami tidak menjual, menyewakan, atau membagikan data Anda ke pihak ketiga mana pun, termasuk untuk keperluan iklan. Aplikasi ini tidak memuat pelacak iklan maupun analitik pihak ketiga.</p>
+      <p>Cadangan data dikirim lewat email internal yang dikelola pengurus, khusus untuk pemulihan bila terjadi masalah teknis — bukan untuk dibagikan.</p>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">07</span><h2>Hak Anda</h2></div>
+      <div class="card">
+        <ul style="margin-bottom:0">
+          <li><strong>Melihat</strong> — data apa saja yang kami simpan tentang Anda</li>
+          <li><strong>Mengoreksi</strong> — perbarui data Anda sendiri kapan saja lewat halaman Profil di Aplikasi</li>
+          <li><strong>Menghapus</strong> — meminta penghapusan akun dan data Anda dengan menghubungi pengurus</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">08</span><h2>Kontak</h2></div>
+      <p>Ada pertanyaan soal data Anda atau kebijakan ini? Hubungi pengurus Indobarca Bali di <strong><a href="mailto:indobarca.bali10@gmail.com">indobarca.bali10@gmail.com</a></strong>.</p>
+    </section>
+
+    <footer>Kebijakan Privasi ini khusus berlaku untuk Indobarca Bali Community App dan anggotanya.</footer>
+  </div>
 </div>
+
+<script>
+  document.querySelectorAll('[data-setlang]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var lang = b.getAttribute('data-setlang');
+      document.body.classList.toggle('lang-id', lang === 'id');
+      document.querySelectorAll('[data-setlang]').forEach(function (x) {
+        x.classList.toggle('active', x === b);
+      });
+    });
+  });
+</script>
