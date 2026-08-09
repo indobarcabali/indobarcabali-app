@@ -2,8 +2,21 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- viewport-fit=cover wajib berpasangan dengan status-bar black-translucent
+     di bawah: tanpanya iOS menyisakan pita kosong di tepi layar berponi. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Indobarca Bali — Komunitas Resmi Suporter FC Barcelona di Bali</title>
+
+<!-- Judul di atas panjang karena itulah yang dibaca Google. Tapi iOS memakai
+     judul yang sama sebagai nama di layar utama, dan 64 karakter akan
+     terpotong jadi tak terbaca — apple-mobile-web-app-title memisahkan
+     keduanya. Tanpa apple-touch-icon, iOS memakai cuplikan layar halaman
+     sebagai ikon, bukan lambang klub. -->
+<meta name="apple-mobile-web-app-title" content="Indobarca Bali">
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#071744">
 <meta name="description" content="Komunitas resmi penggemar FC Barcelona di Bali. Fun Futsal tiap Selasa, minisoccer bulanan, nobar El Clásico, dan liga internal sendiri: Internal Futsal League (IFL).">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Indobarca Bali">
@@ -94,7 +107,10 @@
   }
 
   /* ================= TOPNAV — duduk transparan DI ATAS foto hero ======= */
-  .topnav{position:relative; z-index:3; padding:22px 0 0;}
+  /* Saat dibuka dari layar utama iOS, status bar tembus pandang menumpang
+     DI ATAS halaman. Tanpa env(safe-area-inset-top), jam dan sinyal akan
+     menimpa logo. Di peramban biasa nilainya 0, jadi tidak ada bedanya. */
+  .topnav{position:relative; z-index:3; padding:calc(22px + env(safe-area-inset-top,0px)) 0 0;}
   .topnav .row{display:flex; align-items:center; justify-content:space-between; gap:20px;}
   .brand{display:flex; align-items:center; gap:12px;}
   .brand-logo{width:42px; height:42px; border-radius:50%; flex:none; overflow:hidden; border:2px solid rgba(255,255,255,.35);}
@@ -121,7 +137,8 @@
     background:rgba(244,245,248,.7);
     -webkit-backdrop-filter:blur(14px) saturate(160%);
     backdrop-filter:blur(14px) saturate(160%);
-    border-bottom:1px solid rgba(7,23,68,.08); padding:10px 0;
+    border-bottom:1px solid rgba(7,23,68,.08);
+    padding:calc(10px + env(safe-area-inset-top,0px)) 0 10px;
     transform:translateY(-100%); transition:transform .28s ease;
   }
   .minibar.on{transform:none;}
