@@ -139,26 +139,29 @@
      tombol Login lenyap begitu pengunjung turun sedikit. ================= */
   .minibar{
     position:fixed; top:0; left:0; right:0; z-index:50;
-    /* Alpha berhenti di .7: bilah ini juga melintasi bidang gelap (foto
-       Tentang, panel Liga, footer), dan di bawah itu nama navy-nya mulai
-       sulit dibaca. */
-    background:rgba(244,245,248,.7);
+    /* Navy, bukan terang, karena dua sebab. Pertama, identitas merek jadi
+       tetap: di hero logo dan nama tampil putih di atas foto gelap, dan
+       bilah ini melanjutkannya alih-alih membalik jadi navy-di-atas-terang
+       begitu digulir. Kedua, ia menyambung dengan warna aplikasi di /app.
+       Alpha .72 masih terbaca jelas di atas bagian paling terang halaman:
+       putih di atas hasil campurannya sekitar 6,8:1. */
+    background:rgba(7,23,68,.72);
     -webkit-backdrop-filter:blur(14px) saturate(160%);
     backdrop-filter:blur(14px) saturate(160%);
-    border-bottom:1px solid rgba(7,23,68,.08);
+    border-bottom:1px solid rgba(255,255,255,.12);
     padding:calc(10px + env(safe-area-inset-top,0px)) 0 10px;
     transform:translateY(-100%); transition:transform .28s ease;
   }
   .minibar.on{transform:none;}
   .minibar .row{display:flex; align-items:center; justify-content:space-between; gap:16px;}
-  .minibar .brand-logo{width:34px; height:34px; border-color:var(--line);}
-  .minibar .brand-name{color:var(--navy-900); font-size:16px;}
+  .minibar .brand-logo{width:34px; height:34px; border-color:rgba(255,255,255,.35);}
+  .minibar .brand-name{color:#fff; font-size:16px;}
   .minibar .brand-tag{display:none;}
   @media (prefers-reduced-motion:reduce){ .minibar{transition:none;} }
   /* Tanpa dukungan backdrop-filter, yang tersisa cuma lapisan tembus pandang
      tanpa blur — teks navy langsung bertumpuk di atas foto. */
   @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-    .minibar{background:rgba(244,245,248,.97);}
+    .minibar{background:rgba(7,23,68,.97);}
   }
 
   /* ================= HERO — penuh sisi kiri-kanan ================= */
