@@ -1,0 +1,292 @@
+<!doctype html>
+<!--
+  ============================================================
+  INDOBARCA BALI — halaman pembungkus untuk GitHub Pages
+  ============================================================
+
+  Kenapa halaman ini ada:
+
+  iOS mengambil ikon layar utama dari tag <link rel="apple-touch-icon"> pada
+  halaman yang di-bookmark. Kalau anggota mem-bookmark URL /exec, halaman itu
+  adalah halaman pembungkus milik Google — dan Apps Script tidak menyediakan
+  cara menambahkan tag tersebut ke sana. Tanpa tag itu, iOS membuat ikon dari
+  huruf pertama judul: "I".
+
+  Halaman ini adalah halaman yang KITA kendalikan. Di sini tag itu bisa dipasang.
+  Sekalian: bilah peringatan abu-abu dari Google hilang, dan aplikasi terbuka
+  tanpa bilah Safari sehingga terasa seperti aplikasi sungguhan.
+
+  ------------------------------------------------------------
+  CARA MENERBITKAN (sekali saja, ~5 menit, tanpa perintah apa pun)
+  ------------------------------------------------------------
+  1. Buat repositori GitHub BARU dan bersifat PUBLIC, misalnya "indobarca-app".
+     Harus public: GitHub Pages gratis hanya berlaku untuk repo public.
+     JANGAN mengubah repo aplikasi jadi public — di sana ada PIN darurat.
+     Isi halaman ini tidak memuat rahasia apa pun, hanya iframe dan tag ikon.
+
+  2. Unggah DUA berkas ke repo itu (Add file → Upload files):
+       - berkas ini, dengan nama tepat  index.html
+       - logo 512x512 BERLATAR SOLID, dengan nama tepat  icon.png
+     Nama berkasnya harus persis seperti itu, huruf kecil semua.
+
+     icon.png hanya dipakai untuk ikon layar utama, yang menuntut latar solid.
+     Ikon tab mengambil berkas Drive yang sama dengan aplikasi — latar transparan,
+     karena di tab lambang bulat lebih rapi daripada kotak berwarna.
+
+  3. Settings → Pages → Source: "Deploy from a branch", Branch: main, folder: /
+     Simpan, tunggu 1-2 menit.
+
+  4. Alamat yang berlaku sekarang — INILAH yang dibagikan ke anggota:
+       https://indobarcabali10-cell.github.io/indobarcabali-app/
+
+  5. Setiap kali berkas ini diperbarui, GitHub menyetel cache 10 menit
+     (cache-control: max-age=600). Selama jeda itu peramban tetap menampilkan
+     salinan lama sekeras apa pun tombol muat ulang ditekan. Untuk memeriksa
+     versi baru seketika: buka di tab Private, atau tambahkan ?v=2 di ujung
+     alamat. Tampilan yang "tidak berubah" hampir selalu ini, bukan kegagalan.
+
+  ------------------------------------------------------------
+  UJI DULU SEBELUM DIBAGIKAN KE ANGGOTA
+  ------------------------------------------------------------
+  Token login anggota tersimpan di penyimpanan lokal peramban, pada domain milik
+  Google. Begitu aplikasi dibungkus halaman dari domain lain, penyimpanan itu
+  menjadi "pihak ketiga" — dan iOS Safari memblokir atau memisahkannya secara
+  bawaan. Akibat terburuknya: anggota tidak bisa login, atau ter-logout setiap
+  kali menutup aplikasi.
+
+  Jadi: buka alamat di atas di iPhone Anda sendiri, login, tutup penuh, buka
+  lagi. Kalau masih masuk tanpa diminta PIN, aman untuk dibagikan.
+  Kalau tidak, jangan dibagikan — URL /exec tetap berfungsi seperti biasa dan
+  bisa terus dipakai. Ikon huruf "I" adalah harga yang jauh lebih murah
+  dibanding login yang rusak.
+-->
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>INDOBARCA BALI — Community App</title>
+
+<!-- Ikon layar utama iOS. Satu berkas 512x512 cukup; iOS menskalakannya sendiri.
+     Latarnya WAJIB solid, bukan transparan: area transparan menjadi hitam di
+     layar utama iOS, bukan menyatu dengan wallpaper. -->
+<link rel="apple-touch-icon" href="/icon.png">
+
+<!-- Ikon TAB memakai berkas Drive yang sama dengan yang dipakai aplikasi lewat
+     setFaviconUrl(), supaya tab dari alamat ini dan tab dari /exec selalu
+     seragam — satu berkas, satu tempat mengurusnya.
+     Sengaja BUKAN icon.png: berkas itu berlatar solid karena tuntutan layar
+     utama iOS, dan di tab ia tampil sebagai kotak berwarna alih-alih lambang
+     bulat yang menyatu dengan latar tab. Dua keperluan, dua berkas. -->
+<link rel="icon" type="image/png"
+      href="https://drive.google.com/thumbnail?id=197Ne_Sj_bLQYaKpQFMQywGTz59WIJJo2&amp;sz=w128">
+
+<!-- Android tidak butuh tag tersendiri: tanpa manifest, Chrome ikut memakai
+     apple-touch-icon di atas untuk ikon layar utamanya. Menambahkan <link
+     rel="icon" sizes="512x512"> di sini justru membuat dua tag ikon tab saling
+     bersaing, dan peramban bebas memilih yang mana — hasilnya tidak menentu. -->
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Indobarca Bali">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Warna bilah status dan pita area aman. Disamakan dengan warna sidebar
+     aplikasi (#001138, palet Barca resmi) agar tampak menyatu. Kalau suatu saat
+     palet aplikasi diganti, cukup ubah nilai di sini dan di background body. -->
+<meta name="theme-color" content="#001138">
+<meta name="robots" content="noindex">
+
+<style>
+  /* Warna ini bukan sekadar latar di belakang iframe: di mode aplikasi iOS,
+     pita di belakang home indicator dan bilah status DICAT oleh sistem memakai
+     warna latar body. Jadi inilah satu-satunya tuas yang menentukan warna pita
+     itu — elemen apa pun yang digambar di atasnya tidak berpengaruh. */
+  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#001138;}
+
+  /* Aplikasi ditempatkan di dalam area aman, bukan memenuhi layar mentah.
+     apple-mobile-web-app-capable menghilangkan seluruh bilah Safari, sehingga
+     isi halaman dimulai dari piksel paling atas — tepat di bawah jam dan
+     indikator baterai. Ruang itu dulu ditempati bilah alamat Safari, jadi
+     masalahnya tidak pernah muncul sebelum halaman ini ada.
+
+     Aplikasinya TIDAK bisa memperbaiki sendiri: nilai env(safe-area-inset-*)
+     tidak menembus ke dalam iframe — di sana nilainya selalu nol. Hanya dokumen
+     utama yang bisa membacanya, dan itu halaman ini.
+
+     Inset dipasang pada WADAH, bukan langsung pada iframe. <iframe> adalah
+     elemen tergantikan: pada elemen semacam itu width/height:auto tidak melebar
+     mengikuti inset, melainkan jatuh ke ukuran bawaannya 300x150 piksel. Wadah
+     biasa melebar seperti yang diharapkan, lalu iframe mengisinya penuh. */
+  #bingkai{
+    position:fixed;
+    top:env(safe-area-inset-top, 0px);
+    right:env(safe-area-inset-right, 0px);
+    left:env(safe-area-inset-left, 0px);
+    /* Sengaja TIDAK disisakan di bawah. Aplikasi dibiarkan turun sampai tepi
+       layar supaya latar bilah navigasinya menyentuh dasar, seperti bilah bawah
+       aplikasi mobile pada umumnya. Yang diberi ruang aman cukup ikon-ikonnya —
+       aplikasi mengerjakan itu sendiri setelah diberi tahu ukurannya. */
+    bottom:0;
+  }
+
+  /* Pengukur ruang aman bawah. Tak terlihat; hanya tingginya yang dibaca.
+     env() tidak bisa dibaca langsung dari JavaScript, dan tidak menembus ke
+     dalam iframe — jadi halaman inilah satu-satunya yang bisa mengukurnya. */
+  #ukur{
+    position:fixed;bottom:0;left:0;width:0;pointer-events:none;
+    height:env(safe-area-inset-bottom, 0px);
+  }
+  #bingkai iframe{width:100%;height:100%;border:0;display:block;}
+
+  /* Layar pemuatan, tampil di depan iframe sampai aplikasi selesai dimuat. */
+  #memuat{
+    position:fixed;inset:0;z-index:2;display:grid;place-items:center;background:#001138;
+    color:#fff;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    transition:opacity .4s ease;
+  }
+  #memuat.selesai{opacity:0;pointer-events:none;}
+  #memuat .tulisan{letter-spacing:.18em;font-size:12px;color:rgba(255,255,255,.65);margin-top:16px;}
+  @keyframes putar{to{transform:rotate(360deg)}}
+  #memuat svg{animation:putar 2.6s linear infinite;}
+
+  /* Jalan keluar, muncul hanya bila aplikasi tak selesai dimuat dalam 12 detik.
+     Tanpa ini, iframe yang gagal memuat menyisakan layar biru tanpa penjelasan
+     dan tanpa cara keluar. */
+  #darurat{
+    position:fixed;bottom:calc(24px + env(safe-area-inset-bottom, 0px));left:0;right:0;
+    z-index:3;text-align:center;font-family:system-ui,-apple-system,sans-serif;
+    font-size:13px;display:none;
+  }
+  #darurat a{color:#F7C331;text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<div id="memuat">
+  <div style="text-align:center">
+    <!-- Salinan bola solid Barca. Halaman ini tidak bisa memakai kumpulan
+         ikon aplikasi, jadi bentuknya memang disalin ke sini. -->
+    <svg width="64" height="64" viewBox="0 0 300 302" fill="#F7C331">
+      <path d="M299.9 150.6L299.9 151.2C299.9 233.4 232.2 301.1 150 301.1C67.7 301.1 0 233.4 0 151.2L0 150.6L0 150C0 67.7 67.7 0 150 0C232.2 0 299.9 67.7 299.9 150L299.9 150.6ZM277.9 202C283.1 189.2 286.3 175.5 287.4 161.3C272.4 135.1 246 103.2 214.1 85.2C194 73.9 171.8 68.1 148.9 73.3C135.2 90 130.3 102.4 130.9 112.6C131.3 119.7 134.5 125.3 138.6 130.3C141.9 134.3 145.7 137.8 149.5 141.1C164.8 132.4 179.4 130.8 191.7 136.7C203.2 142.2 213.1 154.4 219.7 174.9C244.1 168.7 267 183.6 277.9 202ZM149.3 12.2C142.1 18.8 138.2 25.4 137.2 32.2C135.8 41.8 139.9 51.4 147 61.2C172.6 55.6 197.6 61.9 220.1 74.6C247.3 90 270.8 114.8 287.3 138.4C281.3 68.1 221.7 12.2 150 12.2L149.3 12.2ZM148.8 12.2L148.8 12.3L149 12.2L148.8 12.2ZM132.1 13.4C110.2 16.2 89.9 24.3 72.4 36.3C64.4 65.8 57.9 95 59.2 120.3C60.4 144.6 69 165.2 91.3 178.5C105.3 186.9 117.1 182.4 125.9 174.3C133.3 167.6 139 158.5 142.6 151.3C131.7 141.5 119.7 130.1 118.7 113.3C118.1 101.7 122.5 87.1 137.2 68.4C128 55.6 123.3 42.8 125.1 30.4C126 24.7 128.2 19 132.1 13.4ZM271.2 216.3L271.2 216.3C265.4 198.3 243.9 180.1 220.9 187.2C199.9 234.8 149.5 259.3 78.6 268.8C99.5 281.6 123.9 289 150 289C202.1 289 247.8 259.4 271.2 216.3ZM12 151.2C11.9 151.3 11.9 151.3 11.8 151.4C11.6 151.6 11.4 151.7 11.1 151.7L11 151.7C11.7 151.7 12.2 151.2 12.2 150.6C12.2 150.9 12.1 151.1 12 151.2ZM12.2 150.6L12.2 151.2C12.2 169.2 15.7 186.4 22.1 202.2C35 201.5 44.8 200.2 53.7 194.7C59.4 191.1 64.7 185.8 70.4 177.9C54.9 162.9 48.2 143.3 47 121C45.9 99 50.2 74.4 56.5 49.1C29.3 74.3 12.2 110.3 12.2 150L12.2 150.6L12.2 150.6L11.1 151.7C11.2 151.7 11.7 151.6 12 151.2C12.1 151.1 12.2 150.8 12.2 150.6ZM27.5 214C36.4 231.2 48.8 246.2 63.7 258.3C136.1 250.8 188.5 229.6 209.4 183C204.2 164.1 196.5 152.5 186.5 147.7C177.5 143.4 167.1 145.2 155.9 151.5C152.1 160.3 144.6 173.8 134.1 183.3C121.6 194.8 104.9 200.9 85.1 189C83.2 187.9 81.5 186.8 79.8 185.6C73.2 194.8 66.8 200.8 60.1 205C50.7 210.8 40.5 213 27.5 214Z"/>
+    </svg>
+    <div class="tulisan">MEMUAT…</div>
+    <!-- Penanda versi halaman pembungkus. Naikkan angkanya setiap kali berkas
+         ini diubah. Gunanya menjawab satu pertanyaan yang selalu muncul setelah
+         mengunggah: yang tampil ini versi baru atau salinan lama dari cache?
+         Tanpa penanda, satu-satunya cara menjawabnya adalah menebak. -->
+    <div class="tulisan" style="margin-top:6px;opacity:.45;letter-spacing:.24em">R8</div>
+  </div>
+</div>
+
+<div id="darurat">
+  Aplikasi lama dimuat —
+  <a href="https://script.google.com/macros/s/AKfycbwYa13TLyaJ3moyHeQn7d4vH4F3P1T3oX9a7Vcb10kCofT8Mq9Sq2dThOAf5nigq_PL/exec">buka langsung di peramban</a>
+</div>
+
+<div id="ukur" aria-hidden="true"></div>
+
+<div id="bingkai">
+  <iframe
+    id="aplikasi"
+    title="INDOBARCA BALI — Community App"
+    src="https://script.google.com/macros/s/AKfycbwYa13TLyaJ3moyHeQn7d4vH4F3P1T3oX9a7Vcb10kCofT8Mq9Sq2dThOAf5nigq_PL/exec"
+    allow="clipboard-write *; fullscreen *"
+    referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+
+<script>
+  var memuat = document.getElementById('memuat');
+  var sudahDitutup = false;
+
+  /* Layar pemuatan ditutup saat APLIKASI mengabarkan dirinya siap, bukan saat
+     iframe selesai dimuat.
+
+     Peristiwa 'load' pada iframe menandai selesainya halaman perantara milik
+     Google, bukan selesainya aplikasi kita — aplikasi masih perlu memuat
+     sesinya dan menggambar layar pertama sesudah itu. Menutup layar pemuatan di
+     saat itu menyingkap halaman putih Google sepersekian detik, lalu disusul
+     layar pemuatan milik aplikasi sendiri dengan navy yang sedikit berbeda.
+     Tumpukan itulah yang terbaca sebagai kedipan. */
+  function tutupPemuatan() {
+    if (sudahDitutup) return;
+    sudahDitutup = true;
+    memuat.classList.add('selesai');
+  }
+
+  window.addEventListener('message', function (e) {
+    if (!e.data || e.data.ibb !== 'siap') return;
+    tutupPemuatan();
+    /* Aplikasi mengabarkan navy yang sedang dipakainya. Halaman ini statis dan
+       tidak punya cara lain untuk tahu palet mana yang berlaku — sementara
+       paletnya bisa diganti pemilik aplikasi kapan saja lewat Pengaturan.
+
+       Disimpan, lalu dipakai pada pembukaan BERIKUTNYA. Pembukaan pertama di
+       sebuah perangkat memakai warna bawaan di bawah; sesudah itu keduanya
+       selalu sewarna, tanpa perlu halaman ini diterbitkan ulang. */
+    if (/^#[0-9A-Fa-f]{6}$/.test(String(e.data.navy || ''))) {
+      try { localStorage.setItem('ibb_navy', e.data.navy); } catch (err) { /* mode privat */ }
+    }
+  });
+
+  /* Dipasang sedini mungkin — sebelum apa pun sempat tergambar dengan warna
+     bawaan lalu berganti di depan mata. */
+  (function warnaTersimpan() {
+    var w = null;
+    try { w = localStorage.getItem('ibb_navy'); } catch (err) { w = null; }
+    if (!/^#[0-9A-Fa-f]{6}$/.test(String(w || ''))) return;
+    document.documentElement.style.background = w;
+    document.body.style.background = w;
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', w);
+    var d = document.getElementById('darurat');
+    if (d) d.style.background = w;
+  })();
+
+  /* Jaring pengaman: versi aplikasi lama tidak mengirim kabar 'siap'. Delapan
+     detik cukup longgar untuk menunggu kabar itu menang, dan cukup pendek untuk
+     tidak terasa menggantung bila kabarnya memang tidak akan datang. */
+  var adaIframe = false;
+  document.getElementById('aplikasi').addEventListener('load', function () {
+    adaIframe = true;
+    setTimeout(tutupPemuatan, 8000);
+  });
+
+  // Iframe yang diblokir tidak pernah memicu 'load' sama sekali.
+  setTimeout(function () {
+    if (!adaIframe) document.getElementById('darurat').style.display = 'block';
+  }, 12000);
+
+  /* ---------------------------------------------------------------
+     Memberi tahu aplikasi setinggi apa ruang aman di bawah layar.
+
+     Aplikasi tidak bisa mengukurnya sendiri: env(safe-area-inset-*) selalu
+     bernilai nol di dalam iframe, dan angkanya berbeda antar model iPhone —
+     menebak dengan angka mati akan salah di perangkat tanpa home indicator.
+
+     Aplikasi yang memulai percakapan, bukan halaman ini. Sebabnya praktis:
+     aplikasi berada di iframe bersarang milik Google, jadi halaman ini tidak
+     punya cara menunjuk jendelanya secara langsung. Begitu aplikasi menyapa,
+     jendelanya terbaca dari event.source dan bisa dibalas.
+     --------------------------------------------------------------- */
+  var peminta = null;
+
+  function ruangAmanBawah() {
+    var n = parseFloat(getComputedStyle(document.getElementById('ukur')).height);
+    return isNaN(n) ? 0 : Math.round(n);
+  }
+
+  function kabari() {
+    if (peminta) peminta.postMessage({ ibb: 'inset', bawah: ruangAmanBawah() }, '*');
+  }
+
+  window.addEventListener('message', function (e) {
+    if (!e.data || e.data.ibb !== 'minta-inset' || !e.source) return;
+    peminta = e.source;
+    kabari();
+  });
+
+  // Nilainya berubah saat perangkat diputar.
+  window.addEventListener('resize', kabari);
+  window.addEventListener('orientationchange', function () { setTimeout(kabari, 300); });
+</script>
+
+</body>
+</html>

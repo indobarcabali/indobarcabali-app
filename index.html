@@ -1,292 +1,748 @@
 <!doctype html>
-<!--
-  ============================================================
-  INDOBARCA BALI — halaman pembungkus untuk GitHub Pages
-  ============================================================
-
-  Kenapa halaman ini ada:
-
-  iOS mengambil ikon layar utama dari tag <link rel="apple-touch-icon"> pada
-  halaman yang di-bookmark. Kalau anggota mem-bookmark URL /exec, halaman itu
-  adalah halaman pembungkus milik Google — dan Apps Script tidak menyediakan
-  cara menambahkan tag tersebut ke sana. Tanpa tag itu, iOS membuat ikon dari
-  huruf pertama judul: "I".
-
-  Halaman ini adalah halaman yang KITA kendalikan. Di sini tag itu bisa dipasang.
-  Sekalian: bilah peringatan abu-abu dari Google hilang, dan aplikasi terbuka
-  tanpa bilah Safari sehingga terasa seperti aplikasi sungguhan.
-
-  ------------------------------------------------------------
-  CARA MENERBITKAN (sekali saja, ~5 menit, tanpa perintah apa pun)
-  ------------------------------------------------------------
-  1. Buat repositori GitHub BARU dan bersifat PUBLIC, misalnya "indobarca-app".
-     Harus public: GitHub Pages gratis hanya berlaku untuk repo public.
-     JANGAN mengubah repo aplikasi jadi public — di sana ada PIN darurat.
-     Isi halaman ini tidak memuat rahasia apa pun, hanya iframe dan tag ikon.
-
-  2. Unggah DUA berkas ke repo itu (Add file → Upload files):
-       - berkas ini, dengan nama tepat  index.html
-       - logo 512x512 BERLATAR SOLID, dengan nama tepat  icon.png
-     Nama berkasnya harus persis seperti itu, huruf kecil semua.
-
-     icon.png hanya dipakai untuk ikon layar utama, yang menuntut latar solid.
-     Ikon tab mengambil berkas Drive yang sama dengan aplikasi — latar transparan,
-     karena di tab lambang bulat lebih rapi daripada kotak berwarna.
-
-  3. Settings → Pages → Source: "Deploy from a branch", Branch: main, folder: /
-     Simpan, tunggu 1-2 menit.
-
-  4. Alamat yang berlaku sekarang — INILAH yang dibagikan ke anggota:
-       https://indobarcabali10-cell.github.io/indobarcabali-app/
-
-  5. Setiap kali berkas ini diperbarui, GitHub menyetel cache 10 menit
-     (cache-control: max-age=600). Selama jeda itu peramban tetap menampilkan
-     salinan lama sekeras apa pun tombol muat ulang ditekan. Untuk memeriksa
-     versi baru seketika: buka di tab Private, atau tambahkan ?v=2 di ujung
-     alamat. Tampilan yang "tidak berubah" hampir selalu ini, bukan kegagalan.
-
-  ------------------------------------------------------------
-  UJI DULU SEBELUM DIBAGIKAN KE ANGGOTA
-  ------------------------------------------------------------
-  Token login anggota tersimpan di penyimpanan lokal peramban, pada domain milik
-  Google. Begitu aplikasi dibungkus halaman dari domain lain, penyimpanan itu
-  menjadi "pihak ketiga" — dan iOS Safari memblokir atau memisahkannya secara
-  bawaan. Akibat terburuknya: anggota tidak bisa login, atau ter-logout setiap
-  kali menutup aplikasi.
-
-  Jadi: buka alamat di atas di iPhone Anda sendiri, login, tutup penuh, buka
-  lagi. Kalau masih masuk tanpa diminta PIN, aman untuk dibagikan.
-  Kalau tidak, jangan dibagikan — URL /exec tetap berfungsi seperti biasa dan
-  bisa terus dipakai. Ikon huruf "I" adalah harga yang jauh lebih murah
-  dibanding login yang rusak.
--->
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>INDOBARCA BALI — Community App</title>
-
-<!-- Ikon layar utama iOS. Satu berkas 512x512 cukup; iOS menskalakannya sendiri.
-     Latarnya WAJIB solid, bukan transparan: area transparan menjadi hitam di
-     layar utama iOS, bukan menyatu dengan wallpaper. -->
-<link rel="apple-touch-icon" href="icon.png">
-
-<!-- Ikon TAB memakai berkas Drive yang sama dengan yang dipakai aplikasi lewat
-     setFaviconUrl(), supaya tab dari alamat ini dan tab dari /exec selalu
-     seragam — satu berkas, satu tempat mengurusnya.
-     Sengaja BUKAN icon.png: berkas itu berlatar solid karena tuntutan layar
-     utama iOS, dan di tab ia tampil sebagai kotak berwarna alih-alih lambang
-     bulat yang menyatu dengan latar tab. Dua keperluan, dua berkas. -->
-<link rel="icon" type="image/png"
-      href="https://drive.google.com/thumbnail?id=197Ne_Sj_bLQYaKpQFMQywGTz59WIJJo2&amp;sz=w128">
-
-<!-- Android tidak butuh tag tersendiri: tanpa manifest, Chrome ikut memakai
-     apple-touch-icon di atas untuk ikon layar utamanya. Menambahkan <link
-     rel="icon" sizes="512x512"> di sini justru membuat dua tag ikon tab saling
-     bersaing, dan peramban bebas memilih yang mana — hasilnya tidak menentu. -->
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Indobarca Bali">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<!-- Warna bilah status dan pita area aman. Disamakan dengan warna sidebar
-     aplikasi (#001138, palet Barca resmi) agar tampak menyatu. Kalau suatu saat
-     palet aplikasi diganti, cukup ubah nilai di sini dan di background body. -->
-<meta name="theme-color" content="#001138">
-<meta name="robots" content="noindex">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indobarca Bali — Komunitas Resmi Suporter FC Barcelona di Bali</title>
+<meta name="description" content="Komunitas resmi penggemar FC Barcelona di Bali. Fun Futsal tiap Selasa, minisoccer bulanan, nobar El Clásico, dan liga internal sendiri: Internal Futsal League (IFL).">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Indobarca Bali">
+<meta property="og:title" content="Indobarca Bali — Rumah Para Culers di Bali">
+<meta property="og:description" content="Fun Futsal tiap Selasa, minisoccer bulanan, nobar El Clásico, dan liga internal sendiri. Gabung bareng 400+ Culers se-Bali.">
+<meta property="og:url" content="https://indobarcabali.id/">
+<meta property="og:image" content="https://indobarcabali.id/foto/hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="aset/logo.png">
 <style>
-  /* Warna ini bukan sekadar latar di belakang iframe: di mode aplikasi iOS,
-     pita di belakang home indicator dan bilah status DICAT oleh sistem memakai
-     warna latar body. Jadi inilah satu-satunya tuas yang menentukan warna pita
-     itu — elemen apa pun yang digambar di atasnya tidak berpengaruh. */
-  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#001138;}
-
-  /* Aplikasi ditempatkan di dalam area aman, bukan memenuhi layar mentah.
-     apple-mobile-web-app-capable menghilangkan seluruh bilah Safari, sehingga
-     isi halaman dimulai dari piksel paling atas — tepat di bawah jam dan
-     indikator baterai. Ruang itu dulu ditempati bilah alamat Safari, jadi
-     masalahnya tidak pernah muncul sebelum halaman ini ada.
-
-     Aplikasinya TIDAK bisa memperbaiki sendiri: nilai env(safe-area-inset-*)
-     tidak menembus ke dalam iframe — di sana nilainya selalu nol. Hanya dokumen
-     utama yang bisa membacanya, dan itu halaman ini.
-
-     Inset dipasang pada WADAH, bukan langsung pada iframe. <iframe> adalah
-     elemen tergantikan: pada elemen semacam itu width/height:auto tidak melebar
-     mengikuti inset, melainkan jatuh ke ukuran bawaannya 300x150 piksel. Wadah
-     biasa melebar seperti yang diharapkan, lalu iframe mengisinya penuh. */
-  #bingkai{
-    position:fixed;
-    top:env(safe-area-inset-top, 0px);
-    right:env(safe-area-inset-right, 0px);
-    left:env(safe-area-inset-left, 0px);
-    /* Sengaja TIDAK disisakan di bawah. Aplikasi dibiarkan turun sampai tepi
-       layar supaya latar bilah navigasinya menyentuh dasar, seperti bilah bawah
-       aplikasi mobile pada umumnya. Yang diberi ruang aman cukup ikon-ikonnya —
-       aplikasi mengerjakan itu sendiri setelah diberi tahu ukurannya. */
-    bottom:0;
+  /* Font ditanam lokal, bukan ditarik dari Google Fonts: menghapus satu
+     permintaan jaringan yang menghambat render, dan membuat halaman ini
+     tetap utuh di lingkungan yang memblokir host luar. Subset latin. */
+  @font-face{
+    font-family:'Familjen Grotesk'; font-style:normal; font-weight:400 700;
+    font-display:swap; src:url(aset/fg.woff2) format('woff2');
+  }
+  @font-face{
+    font-family:'Inter'; font-style:normal; font-weight:700;
+    font-display:swap; src:url(aset/inter.woff2) format('woff2');
   }
 
-  /* Pengukur ruang aman bawah. Tak terlihat; hanya tingginya yang dibaca.
-     env() tidak bisa dibaca langsung dari JavaScript, dan tidak menembus ke
-     dalam iframe — jadi halaman inilah satu-satunya yang bisa mengukurnya. */
-  #ukur{
-    position:fixed;bottom:0;left:0;width:0;pointer-events:none;
-    height:env(safe-area-inset-bottom, 0px);
+  :root{
+    --navy-900:#071744; --navy:#0A1F62; --navy-700:#12307F;
+    --red:#E8253C; --red-700:#C4102A; --yellow:#F7C331;
+    --bg:#F4F5F8; --paper:#FFFFFF; --off:#F6F7FB; --ink:#0E1330; --muted:#5B6172; --line:#E7E9F2;
+    /* Jarak dari tepi layar ke tepi isi — angka yang sama dipakai .container,
+       garis pemisah antar-section, dan padding carousel, supaya semuanya
+       berbaris di satu garis. Dihitung dari 50% (lebar section, sudah tanpa
+       scrollbar) BUKAN 100vw yang ikut menghitung scrollbar dan meleset
+       ~8px di desktop. 558px = separuh 1116px isi. */
+    --tepi:max(32px, calc(50% - 558px));
+    /* Angka yang berdiri sebagai data (statistik, penomoran) pakai monospace
+       sistem — tumpukan yang sama dengan nomor Kartu Penya di aplikasi. */
+    --font-angka:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
   }
-  #bingkai iframe{width:100%;height:100%;border:0;display:block;}
+  *{box-sizing:border-box;}
+  html{color-scheme:light;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  img,svg{max-width:100%;}
+  .container{max-width:1180px;margin:0 auto;padding-left:32px;padding-right:32px;}
+  section{position:relative;}
+  /* Pemisah antar-section: strip biru/merah 50:50 sepanjang isi halaman.
+     2px, bukan 1px — di layar rasio piksel 1:1 garis 1px kehilangan warnanya
+     (biru/merah tergerus jadi abu) dan gunanya sebagai penanda warna klub
+     hilang. */
+  section+section::before{
+    content:''; position:absolute; top:0; left:var(--tepi); right:var(--tepi);
+    height:2px; background:linear-gradient(90deg,#1A47C2 50%,var(--red) 50%);
+  }
+  /* Kecuali tepat di bawah tiga foto Tentang: fotonya menempel rapat ke
+     batas ini, jadi stripnya akan terbaca sebagai garis tepi foto. */
+  .about + section::before{content:none;}
 
-  /* Layar pemuatan, tampil di depan iframe sampai aplikasi selesai dimuat. */
-  #memuat{
-    position:fixed;inset:0;z-index:2;display:grid;place-items:center;background:#001138;
-    color:#fff;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
-    transition:opacity .4s ease;
+  /* Judul dan nama di kartu memakai keluarga huruf yang sama. */
+  h1,h2,h3,.keg-pill .nm,.tw-nm{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-weight:700; letter-spacing:-.015em;
   }
-  #memuat.selesai{opacity:0;pointer-events:none;}
-  #memuat .tulisan{letter-spacing:.18em;font-size:12px;color:rgba(255,255,255,.65);margin-top:16px;}
-  @keyframes putar{to{transform:rotate(360deg)}}
-  #memuat svg{animation:putar 2.6s linear infinite;}
+  h1,h2,h3{margin:0; text-wrap:balance;}
+  p{margin:0; line-height:1.65; letter-spacing:-.02em;}
+  a:focus-visible,button:focus-visible{outline:2.5px solid var(--red); outline-offset:3px; border-radius:4px;}
 
-  /* Jalan keluar, muncul hanya bila aplikasi tak selesai dimuat dalam 12 detik.
-     Tanpa ini, iframe yang gagal memuat menyisakan layar biru tanpa penjelasan
-     dan tanpa cara keluar. */
-  #darurat{
-    position:fixed;bottom:calc(24px + env(safe-area-inset-bottom, 0px));left:0;right:0;
-    z-index:3;text-align:center;font-family:system-ui,-apple-system,sans-serif;
-    font-size:13px;display:none;
+  /* Ukuran tunggal untuk SEMUA tombol. Border transparan dipasang di sini,
+     bukan cuma di varian outline — tanpa itu tombol outline jadi 3px lebih
+     tinggi dari yang lain karena bordernya menambah kotak. */
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; font-weight:800; font-size:13px;
+    padding:11px 22px; border-radius:99px; text-decoration:none; white-space:nowrap;
+    border:1.5px solid transparent;
+    transition:transform .15s ease, filter .15s ease, background .15s ease;
   }
-  #darurat a{color:#F7C331;text-decoration:underline;}
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--red); color:#fff;}
+  .btn-primary:hover{filter:brightness(1.08);}
+  .btn-white{background:#fff; color:var(--navy-900);}
+  .btn-white:hover{filter:brightness(.96);}
+  .btn-outline{background:transparent; color:var(--ink); border-color:var(--line);}
+  .btn-outline:hover{border-color:var(--ink);}
+
+  .arrow-circ{
+    width:36px; height:36px; border-radius:50%; display:grid; place-items:center; flex:none;
+    background:var(--red); color:#fff; font-size:15px;
+  }
+
+  /* ================= TOPNAV — duduk transparan DI ATAS foto hero ======= */
+  .topnav{position:relative; z-index:3; padding:22px 0 0;}
+  .topnav .row{display:flex; align-items:center; justify-content:space-between; gap:20px;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-logo{width:42px; height:42px; border-radius:50%; flex:none; overflow:hidden; border:2px solid rgba(255,255,255,.35);}
+  .ib-logo{background:url(aset/logo.png) center/cover no-repeat;}
+  .brand-name{font-family:'Familjen Grotesk',sans-serif; font-size:19px; font-weight:600; letter-spacing:.04em; line-height:1.15; text-transform:uppercase; color:#fff;}
+  .brand-tag{font-family:'Familjen Grotesk',sans-serif; font-size:12.5px; font-weight:400; letter-spacing:.005em; line-height:1.2; color:rgba(255,255,255,.62); margin-top:1px;}
+  .navlinks{display:flex; gap:30px; font-size:13.5px; font-weight:700; color:rgba(255,255,255,.75);}
+  .navlinks a{color:inherit; text-decoration:none;}
+  .navlinks a:hover{color:#fff;}
+  @media (max-width:760px){ .navlinks{display:none;} }
+  @media (max-width:520px){
+    .brand-tag{display:none;}
+    .brand-name{font-size:16px;}
+    .brand-logo{width:36px; height:36px;}
+  }
+
+  /* ================= MINIBAR — nav di hero ikut tergulung habis, jadi
+     tombol Login lenyap begitu pengunjung turun sedikit. ================= */
+  .minibar{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    /* Alpha berhenti di .7: bilah ini juga melintasi bidang gelap (foto
+       Tentang, panel Liga, footer), dan di bawah itu nama navy-nya mulai
+       sulit dibaca. */
+    background:rgba(244,245,248,.7);
+    -webkit-backdrop-filter:blur(14px) saturate(160%);
+    backdrop-filter:blur(14px) saturate(160%);
+    border-bottom:1px solid rgba(7,23,68,.08); padding:10px 0;
+    transform:translateY(-100%); transition:transform .28s ease;
+  }
+  .minibar.on{transform:none;}
+  .minibar .row{display:flex; align-items:center; justify-content:space-between; gap:16px;}
+  .minibar .brand-logo{width:34px; height:34px; border-color:var(--line);}
+  .minibar .brand-name{color:var(--navy-900); font-size:16px;}
+  .minibar .brand-tag{display:none;}
+  @media (prefers-reduced-motion:reduce){ .minibar{transition:none;} }
+  /* Tanpa dukungan backdrop-filter, yang tersisa cuma lapisan tembus pandang
+     tanpa blur — teks navy langsung bertumpuk di atas foto. */
+  @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+    .minibar{background:rgba(244,245,248,.97);}
+  }
+
+  /* ================= HERO — penuh sisi kiri-kanan ================= */
+  .hero{padding:0;}
+  .hero-photo{
+    width:100%; height:min(88vh,760px); min-height:560px;
+    position:relative; overflow:hidden;
+    background:var(--navy-900) url(foto/hero.jpg) center/cover no-repeat;
+    display:flex; flex-direction:column;
+  }
+  /* Foto hero berupa foto kelompok yang ramai, jadi lapisan gelapnya harus
+     tebal justru di paruh bawah tempat judul dan statistik berdiri —
+     bukan cuma menipis mulus dari bawah ke atas. Titik .18 di 72% menjaga
+     wajah-wajah di bagian atas foto tetap terlihat. */
+  .hero-photo::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(0deg,
+      rgba(5,12,38,.94) 0%,
+      rgba(5,12,38,.88) 26%,
+      rgba(5,12,38,.62) 48%,
+      rgba(5,12,38,.18) 72%,
+      rgba(5,12,38,.5) 100%);
+  }
+  .hero-inner{position:relative; z-index:2; flex:1; display:flex; flex-direction:column; justify-content:flex-end; padding:40px 32px; gap:28px;}
+  .hero-text{text-align:center; max-width:640px; margin:0 auto;}
+  .hero-text h1{color:#fff; font-size:clamp(30px,5vw,50px); line-height:1.1;}
+  .hero-text p{color:rgba(255,255,255,.88); font-size:15.5px; margin:16px auto 0; max-width:48ch;}
+  .hero-cta{display:flex; gap:12px; margin-top:24px; flex-wrap:wrap; justify-content:center;}
+  .hero-stats{display:flex; gap:22px; align-items:center; justify-content:center; flex-wrap:wrap;}
+  .hero-stats .st{color:#fff; text-align:center;}
+  .hero-stats .st b{display:block; font-family:var(--font-angka); font-size:23px; font-weight:600; font-variant-numeric:tabular-nums; letter-spacing:-.02em;}
+  .hero-stats .st span{font-size:11px; color:rgba(255,255,255,.72); font-weight:700; letter-spacing:.01em;}
+  .hero-stats .div{width:1px; height:30px; background:rgba(255,255,255,.25);}
+  @media (max-width:640px){ .hero-photo{height:auto; min-height:640px;} }
+
+  /* ================= TENTANG ================= */
+  .about-text{max-width:62ch; margin:0 auto; text-align:center; padding:0 32px;}
+  .about-stack{margin-top:44px; display:grid; grid-template-columns:repeat(3,1fr); gap:0;}
+  .about-photo{position:relative; overflow:hidden; aspect-ratio:3/4; background:var(--navy-900) center/cover no-repeat;}
+  .about-p1{background-image:url(foto/tentang1.jpg);}
+  .about-p2{background-image:url(foto/tentang2.jpg);}
+  .about-p3{background-image:url(foto/tentang3.jpg);}
+  .about .eyebrow{font-size:12.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
+  .about h2{font-size:clamp(24px,3.4vw,32px); color:var(--navy-900); margin-top:10px;}
+  .about-body{margin-top:16px;}
+  .about-body p{font-size:15.5px; color:var(--muted); margin-bottom:14px;}
+  .about-body strong{color:var(--ink);}
+  .learn{display:inline-flex; align-items:center; gap:7px; color:var(--red-700); font-weight:800; font-size:14px; text-decoration:none; margin-top:4px; border-bottom:1.5px solid var(--red-700); padding-bottom:2px;}
+
+  /* ================= KEGIATAN ================= */
+  .upcoming .head{margin-bottom:16px;}
+  .upcoming h2{font-size:clamp(24px,3.2vw,32px); color:var(--navy-900);}
+  .upcoming .head p{color:var(--muted); font-size:14.5px; margin-top:8px; max-width:46ch;}
+  .keg-foot{display:flex; align-items:center; justify-content:space-between; gap:20px;}
+  .keg-nav{display:flex; gap:10px; flex:none;}
+  .keg-nav button{
+    width:40px; height:40px; border-radius:50%; flex:none; padding:0;
+    border:1.5px solid var(--line); background:var(--paper); color:var(--ink);
+    display:grid; place-items:center; cursor:pointer;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .keg-nav button:hover{background:var(--off); border-color:var(--muted);}
+  .keg-nav button:disabled{opacity:.35; cursor:default;}
+
+  /* Scroller SELEBAR LAYAR, bukan terkurung di .container — saat digeser
+     foto bisa sampai ke tepi paling kiri. Yang menahan kartu pertama tetap
+     sejajar dengan judul adalah paddingnya, dan scroll-padding menyamakan
+     titik henti snap dengan padding itu (tanpa ini, posisi diam paling
+     kiri bukan 0 dan tombol kiri tidak pernah mati). */
+  .keg-scroll{
+    display:flex; gap:22px; overflow-x:auto;
+    padding:6px var(--tepi) 8px;
+    scroll-padding-inline:var(--tepi);
+    scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .keg-scroll::-webkit-scrollbar{display:none;}
+  /* Isyarat "masih ada lagi": kartu yang BELUM utuh masuk layar di sisi
+     kanan ditampilkan samar — kartunya sendiri, bukan selubung kabut di
+     tepi layar yang ikut mengotori kartu yang sudah terlihat penuh. Sisi
+     kiri sengaja tidak diperlakukan begitu: di sana foto memang diminta
+     menembus tepi layar. */
+  .keg-card{flex:0 0 auto; width:290px; scroll-snap-align:start; padding-bottom:24px; transition:opacity .3s ease;}
+  .keg-card.samar{opacity:.3;}
+  @media (prefers-reduced-motion:reduce){ .keg-card{transition:none;} }
+  .keg-foto{aspect-ratio:4/5; border-radius:20px; position:relative; overflow:hidden; background:var(--navy-900) center/cover no-repeat;}
+  .keg-foto .arrow-circ{position:absolute; top:16px; left:16px; z-index:2;}
+  .keg-foto.k1{background-image:url(foto/keg1-funfutsal.jpg);}
+  .keg-foto.k2{background-image:url(foto/keg2-minisoccer.jpg);}
+  .keg-foto.k3{background-image:url(foto/keg3-nobar.jpg);}
+  .keg-foto.k4{background-image:url(foto/keg4-football.jpg);}
+  .keg-foto.k5{background-image:url(foto/keg5-kopdar.jpg);}
+  /* Padding bawah kartu bukan hiasan: scroller memotong di tepi paddingnya,
+     jadi ruang ini yang melindungi bayangan pil (jangkauan ~38px) dari
+     terpotong garis lurus. 24 + 8 dari scroller = 32px. */
+  .keg-pill{
+    position:relative; z-index:2; margin:-26px 14px 0; background:var(--paper);
+    border-radius:14px; padding:13px 16px; box-shadow:0 12px 26px rgba(7,23,68,.14);
+  }
+  .keg-pill .nm{font-size:16px; color:var(--navy-900);}
+  .keg-pill .meta{font-size:12px; color:var(--muted); margin-top:4px; line-height:1.5;}
+  .view-all{display:inline-flex; align-items:center; gap:8px;}
+  @media (max-width:760px){
+    .keg-card{width:220px;}
+    .keg-scroll{gap:14px;}
+  }
+
+  /* ================= IB BALI STORE — enam kotak 4:5 rapat seperti feed
+     Instagram: sudut siku dan jarak 3px. Tujuan kliknya memang Instagram,
+     jadi susunan serupa membuat perpindahannya terasa menyambung. ====== */
+  .store-grid{display:grid; grid-template-columns:.9fr 1.5fr; gap:40px; align-items:center;}
+  .store h2{font-size:clamp(24px,3.2vw,32px); color:var(--navy-900); line-height:1.2;}
+  .store .eyebrow{font-size:12.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:10px;}
+  .store p{color:var(--muted); font-size:14.5px; margin-top:12px; max-width:44ch;}
+  .store p + p{margin-top:14px;}
+  /* Tetap 3 kolom sampai layar tersempit — begitu jadi 2 atau 1 kolom,
+     kesan "feed" hilang dan berubah jadi daftar produk biasa. */
+  .store-feed{display:grid; grid-template-columns:repeat(3,1fr); gap:3px;}
+  .store-foto{aspect-ratio:4/5; position:relative; overflow:hidden; background:var(--navy-900) center/cover no-repeat;}
+  .store-foto.s1{background-image:url(foto/store1.jpg);}
+  .store-foto.s2{background-image:url(foto/store2.jpg);}
+  .store-foto.s3{background-image:url(foto/store3.jpg);}
+  .store-foto.s4{background-image:url(foto/store4.jpg);}
+  .store-foto.s5{background-image:url(foto/store5.jpg);}
+  .store-foto.s6{background-image:url(foto/store6.jpg);}
+  /* .btn itu inline-flex, dan margin auto tidak memusatkan elemen inline —
+     makanya dipaksa flex + fit-content. */
+  .store-cta{display:flex; width:fit-content; margin:16px auto 0;}
+  @media (max-width:820px){ .store-grid{grid-template-columns:1fr;} }
+
+  /* ================= APLIKASI ANGGOTA ================= */
+  .tawaran-grid{display:grid; grid-template-columns:.8fr 1.2fr; gap:56px; align-items:center;}
+  .tawaran .eyebrow{font-size:12.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
+  /* Pemenggalan baris judul diatur <br> di HTML, jadi max-width cuma perlu
+     cukup lebar agar baris pertama tidak ikut pecah. */
+  .tawaran h2{font-size:clamp(24px,3.4vw,32px); color:var(--navy-900); margin-top:10px; max-width:24ch; text-wrap:initial;}
+  .tawaran-list{display:flex; flex-direction:column;}
+  .tw-item{display:grid; grid-template-columns:auto 1fr; gap:18px; padding:13px 0; border-bottom:1px solid var(--line);}
+  .tw-item:first-child{padding-top:0;}
+  .tw-item:last-child{border-bottom:none; padding-bottom:0;}
+  .tw-no{font-family:var(--font-angka); font-size:14px; font-weight:600; color:var(--red-700); font-variant-numeric:tabular-nums; padding-top:3px;}
+  .tw-nm{font-size:16.5px; color:var(--navy-900);}
+  .tw-meta{font-size:14px; color:var(--muted); margin-top:5px; line-height:1.6;}
+  @media (max-width:820px){ .tawaran-grid{grid-template-columns:1fr; gap:26px;} }
+
+  /* ================= LIGA ================= */
+  .liga-panel{
+    border-radius:22px; overflow:hidden; position:relative; min-height:300px;
+    background:linear-gradient(150deg,var(--navy-900) 0%,var(--navy) 100%);
+    display:flex; align-items:center; padding:52px;
+  }
+  .liga-panel::after{content:''; position:absolute; right:-70px; top:50%; transform:translateY(-50%); width:320px; height:320px; border-radius:50%; border:2px solid rgba(255,255,255,.1);}
+  .liga-inner{position:relative; z-index:2; max-width:520px;}
+  .liga .eyebrow{color:var(--yellow); font-size:12.5px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;}
+  .liga h2{color:#fff; font-size:clamp(22px,3.2vw,30px); margin-top:14px;}
+  .liga p{color:rgba(255,255,255,.78); font-size:14.5px; margin-top:12px; line-height:1.7;}
+  .liga-cta{margin-top:24px;}
+  @media (max-width:640px){ .liga-panel{padding:34px 24px;} }
+
+  /* ================= TESTIMONI ================= */
+  .kata{text-align:center;}
+  .kata-mark{font-size:70px; font-weight:900; color:var(--red); line-height:.4; display:block; margin-bottom:18px;}
+  .kata-quote{font-size:clamp(19px,2.6vw,25px); font-weight:700; color:var(--navy-900); line-height:1.5; max-width:760px; margin:0 auto;}
+  .kata-who{margin-top:24px; font-size:13.5px; color:var(--muted); font-weight:600;}
+  .kata-who b{color:var(--ink);}
+
+  /* ================= FAQ — accordion <details>/<summary> bawaan browser,
+     tanpa JS. Ditaruh tepat sebelum Ajakan: menjawab keraguan terakhir
+     persis sebelum orang diminta memutuskan gabung. ================= */
+  .faq .eyebrow{font-size:12.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
+  .faq h2{font-size:clamp(24px,3.4vw,32px); color:var(--navy-900); margin-top:10px;}
+  .faq-head{margin-bottom:18px;}
+  .faq-list{max-width:820px;}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-item summary{
+    cursor:pointer; list-style:none; display:flex; align-items:center;
+    justify-content:space-between; gap:16px; padding:19px 2px;
+    font-weight:700; color:var(--navy-900); font-size:15.5px;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{
+    content:'+'; font-size:20px; font-weight:400; color:var(--muted);
+    flex:none; transition:transform .2s ease;
+  }
+  .faq-item[open] summary::after{transform:rotate(45deg);}
+  .faq-item p{margin:-4px 0 20px; padding-right:34px; color:var(--muted); font-size:14.5px; line-height:1.7;}
+  @media (prefers-reduced-motion:reduce){ .faq-item summary::after{transition:none;} }
+
+  /* ================= AJAKAN ================= */
+  .ajak-photo{
+    height:420px; border-radius:22px; position:relative; overflow:hidden;
+    background:var(--navy-900) url(foto/cta.jpg) center/cover no-repeat;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+  }
+  .ajak-inner{position:relative; z-index:2; padding:0 24px;}
+  .ajak-inner h2{color:#fff; font-size:clamp(26px,4vw,40px);}
+  .ajak-inner p{color:rgba(255,255,255,.85); font-size:15px; max-width:46ch; margin:14px auto 0;}
+  .ajak-inner .btn{margin-top:24px;}
+
+  /* ================= FOOTER ================= */
+  footer{background:#0A0E22; padding:56px 0 32px;}
+  .foot-cols{display:grid; grid-template-columns:1.3fr 1fr 1fr 1.3fr; gap:32px; padding-bottom:36px;}
+  .foot-brand{display:flex; align-items:center; gap:9px; color:#fff; font-weight:900; font-size:16px; margin-bottom:12px;}
+  .foot-logo{width:26px; height:26px; border-radius:50%; flex:none; display:block;}
+  .foot-lede{color:rgba(255,255,255,.55); font-size:13px; line-height:1.7; max-width:30ch;}
+  .foot-social{display:flex; gap:10px; margin-top:18px;}
+  .foot-social a{width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,.08); display:grid; place-items:center;}
+  .foot-h{color:#fff; font-size:11.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; margin-bottom:15px;}
+  .foot-links{display:flex; flex-direction:column; gap:11px;}
+  footer a{color:rgba(255,255,255,.6); text-decoration:none; font-size:13.5px;}
+  footer a:hover{color:#fff;}
+  .foot-legal{display:flex; justify-content:space-between; padding:20px 0; font-size:12px; color:rgba(255,255,255,.4); border-top:1px solid rgba(255,255,255,.1); flex-wrap:wrap; gap:10px;}
+  @media (max-width:820px){ .foot-cols{grid-template-columns:1fr 1fr; row-gap:32px;} }
+
+  /* Irama vertikal antar-section diatur SATU tempat, supaya jarak di atas
+     dan di bawah tiap pemisah selalu sama. Pengecualiannya cuma sisi bawah
+     .about — tiga fotonya memang dirancang menempel ke pemisah berikutnya. */
+  .upcoming,.store,.tawaran,.liga,.kata,.faq,.ajak{padding-top:40px; padding-bottom:40px;}
+  .about{padding:40px 0 0;}
 </style>
 </head>
 <body>
 
-<div id="memuat">
-  <div style="text-align:center">
-    <!-- Salinan bola solid Barca. Halaman ini tidak bisa memakai kumpulan
-         ikon aplikasi, jadi bentuknya memang disalin ke sini. -->
-    <svg width="64" height="64" viewBox="0 0 300 302" fill="#F7C331">
-      <path d="M299.9 150.6L299.9 151.2C299.9 233.4 232.2 301.1 150 301.1C67.7 301.1 0 233.4 0 151.2L0 150.6L0 150C0 67.7 67.7 0 150 0C232.2 0 299.9 67.7 299.9 150L299.9 150.6ZM277.9 202C283.1 189.2 286.3 175.5 287.4 161.3C272.4 135.1 246 103.2 214.1 85.2C194 73.9 171.8 68.1 148.9 73.3C135.2 90 130.3 102.4 130.9 112.6C131.3 119.7 134.5 125.3 138.6 130.3C141.9 134.3 145.7 137.8 149.5 141.1C164.8 132.4 179.4 130.8 191.7 136.7C203.2 142.2 213.1 154.4 219.7 174.9C244.1 168.7 267 183.6 277.9 202ZM149.3 12.2C142.1 18.8 138.2 25.4 137.2 32.2C135.8 41.8 139.9 51.4 147 61.2C172.6 55.6 197.6 61.9 220.1 74.6C247.3 90 270.8 114.8 287.3 138.4C281.3 68.1 221.7 12.2 150 12.2L149.3 12.2ZM148.8 12.2L148.8 12.3L149 12.2L148.8 12.2ZM132.1 13.4C110.2 16.2 89.9 24.3 72.4 36.3C64.4 65.8 57.9 95 59.2 120.3C60.4 144.6 69 165.2 91.3 178.5C105.3 186.9 117.1 182.4 125.9 174.3C133.3 167.6 139 158.5 142.6 151.3C131.7 141.5 119.7 130.1 118.7 113.3C118.1 101.7 122.5 87.1 137.2 68.4C128 55.6 123.3 42.8 125.1 30.4C126 24.7 128.2 19 132.1 13.4ZM271.2 216.3L271.2 216.3C265.4 198.3 243.9 180.1 220.9 187.2C199.9 234.8 149.5 259.3 78.6 268.8C99.5 281.6 123.9 289 150 289C202.1 289 247.8 259.4 271.2 216.3ZM12 151.2C11.9 151.3 11.9 151.3 11.8 151.4C11.6 151.6 11.4 151.7 11.1 151.7L11 151.7C11.7 151.7 12.2 151.2 12.2 150.6C12.2 150.9 12.1 151.1 12 151.2ZM12.2 150.6L12.2 151.2C12.2 169.2 15.7 186.4 22.1 202.2C35 201.5 44.8 200.2 53.7 194.7C59.4 191.1 64.7 185.8 70.4 177.9C54.9 162.9 48.2 143.3 47 121C45.9 99 50.2 74.4 56.5 49.1C29.3 74.3 12.2 110.3 12.2 150L12.2 150.6L12.2 150.6L11.1 151.7C11.2 151.7 11.7 151.6 12 151.2C12.1 151.1 12.2 150.8 12.2 150.6ZM27.5 214C36.4 231.2 48.8 246.2 63.7 258.3C136.1 250.8 188.5 229.6 209.4 183C204.2 164.1 196.5 152.5 186.5 147.7C177.5 143.4 167.1 145.2 155.9 151.5C152.1 160.3 144.6 173.8 134.1 183.3C121.6 194.8 104.9 200.9 85.1 189C83.2 187.9 81.5 186.8 79.8 185.6C73.2 194.8 66.8 200.8 60.1 205C50.7 210.8 40.5 213 27.5 214Z"/>
-    </svg>
-    <div class="tulisan">MEMUAT…</div>
-    <!-- Penanda versi halaman pembungkus. Naikkan angkanya setiap kali berkas
-         ini diubah. Gunanya menjawab satu pertanyaan yang selalu muncul setelah
-         mengunggah: yang tampil ini versi baru atau salinan lama dari cache?
-         Tanpa penanda, satu-satunya cara menjawabnya adalah menebak. -->
-    <div class="tulisan" style="margin-top:6px;opacity:.45;letter-spacing:.24em">R8</div>
+<!-- Bar tipis yang menggantikan nav hero setelah tergulung habis. -->
+<div class="minibar" id="minibar">
+  <div class="container row">
+    <div class="brand">
+      <div class="brand-logo ib-logo"></div>
+      <div class="brand-name">Indobarca Bali</div>
+    </div>
+    <a class="btn btn-primary" href="https://indobarcabali.id/app">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 19 7a4 4 0 0 1-3 3.87"/></svg>
+      Login
+    </a>
   </div>
 </div>
 
-<div id="darurat">
-  Aplikasi lama dimuat —
-  <a href="https://script.google.com/macros/s/AKfycbwYa13TLyaJ3moyHeQn7d4vH4F3P1T3oX9a7Vcb10kCofT8Mq9Sq2dThOAf5nigq_PL/exec">buka langsung di peramban</a>
-</div>
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-photo">
+    <nav class="topnav">
+      <div class="container row">
+        <div class="brand">
+          <div class="brand-logo ib-logo" role="img" aria-label="Lambang Indobarca Bali"></div>
+          <div>
+            <div class="brand-name">Indobarca Bali</div>
+            <div class="brand-tag">Komunitas Resmi FC Barcelona</div>
+          </div>
+        </div>
+        <div class="navlinks">
+          <a href="#tentang">Tentang</a>
+          <a href="#kegiatan">Kegiatan</a>
+          <a href="#store">Store</a>
+          <a href="#liga">Turnamen</a>
+        </div>
+        <a class="btn btn-primary" href="https://indobarcabali.id/app">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 19 7a4 4 0 0 1-3 3.87"/></svg>
+          Login
+        </a>
+      </div>
+    </nav>
+    <div class="hero-inner">
+      <div class="hero-text">
+        <h1>BIENVENIDOS CULÉS!</h1>
+        <p>Hola semeton! Ayo bergabung bersama komunitas resmi Penya Indobarça chapter Bali — berdiri sejak 2012, dan diakui oleh Barca Penyes (Supporter resmi FC Barcelona).</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="https://wa.me/6289683532476">Gabung Jadi Anggota</a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="st"><b>400+</b><span>ANGGOTA</span></div>
+        <div class="div"></div>
+        <div class="st"><b>5+</b><span>EVENTS</span></div>
+        <div class="div"></div>
+        <div class="st"><b>3</b><span>TOURNAMENT</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<div id="ukur" aria-hidden="true"></div>
+<!-- ================= TENTANG ================= -->
+<section class="about" id="tentang">
+  <div class="about-text">
+    <div class="eyebrow">Tentang Kami</div>
+    <h2>Lebih dari Sekadar Komunitas</h2>
+    <div class="about-body">
+      <p><strong>Indobarca Bali</strong> adalah komunitas resmi penggemar FC Barcelona yang berbasis di Bali. Kami percaya jadi Culer bukan cuma soal nonton pertandingan — tapi kebersamaan yang terbawa sampai ke lapangan futsal, layar nobar, dan turnamen sendiri yang kami jalankan setiap musim.</p>
+      <p>Apa pun latar belakangnya, selama Blaugrana mengalir di darah, di sinilah rumahnya.</p>
+    </div>
+    <a class="learn" href="#aplikasi">Lihat aplikasi anggotanya →</a>
+  </div>
+  <div class="about-stack">
+    <div class="about-photo about-p1" role="img" aria-label="Anggota Indobarca Bali berfoto bersama membawa bendera klub"></div>
+    <div class="about-photo about-p2" role="img" aria-label="Tim Indobarca Bali berkumpul di lapangan"></div>
+    <div class="about-photo about-p3" role="img" aria-label="Anggota berkumpul di dalam ruangan bersama spanduk komunitas"></div>
+  </div>
+</section>
 
-<div id="bingkai">
-  <iframe
-    id="aplikasi"
-    title="INDOBARCA BALI — Community App"
-    src="https://script.google.com/macros/s/AKfycbwYa13TLyaJ3moyHeQn7d4vH4F3P1T3oX9a7Vcb10kCofT8Mq9Sq2dThOAf5nigq_PL/exec"
-    allow="clipboard-write *; fullscreen *"
-    referrerpolicy="no-referrer-when-downgrade"></iframe>
-</div>
+<!-- ================= KEGIATAN ================= -->
+<section class="upcoming" id="kegiatan">
+  <div class="container">
+    <div class="head">
+      <h2>Kegiatan Rutin Kami</h2>
+      <p>Lima kegiatan yang menghidupkan komunitas ini — ada yang rutin tiap pekan, ada yang menunggu momen besar.</p>
+    </div>
+  </div>
+  <div class="keg-wrap">
+    <div class="keg-scroll" id="keg-scroll">
+      <div class="keg-card">
+        <div class="keg-foto k1" role="img" aria-label="Pemain futsal Indobarca Bali menguasai bola"><span class="arrow-circ">↗</span></div>
+        <div class="keg-pill">
+          <div class="nm">Fun Futsal</div>
+          <div class="meta">Rutin tiap Selasa · My Stadium Futsal Arena</div>
+        </div>
+      </div>
+      <div class="keg-card">
+        <div class="keg-foto k2" role="img" aria-label="Pertandingan minisoccer Indobarca Bali"><span class="arrow-circ">↗</span></div>
+        <div class="keg-pill">
+          <div class="nm">Minisoccer</div>
+          <div class="meta">Sebulan sekali · Bali Sepak Bumi 1.0</div>
+        </div>
+      </div>
+      <div class="keg-card">
+        <div class="keg-foto k3" role="img" aria-label="Anggota berkumpul saat nonton bareng"><span class="arrow-circ">↗</span></div>
+        <div class="keg-pill">
+          <div class="nm">Nobar</div>
+          <div class="meta">Big Match &amp; El Clásico · Venue menyusul</div>
+        </div>
+      </div>
+      <div class="keg-card">
+        <div class="keg-foto k4" role="img" aria-label="Pertandingan sepak bola Indobarca Bali"><span class="arrow-circ">↗</span></div>
+        <div class="keg-pill">
+          <div class="nm">Football</div>
+          <div class="meta">Sebulan sekali · Menyesuaikan kesempatan</div>
+        </div>
+      </div>
+      <div class="keg-card">
+        <div class="keg-foto k5" role="img" aria-label="Anggota berkumpul santai saat kopdar"><span class="arrow-circ">↗</span></div>
+        <div class="keg-pill">
+          <div class="nm">Kopdar</div>
+          <div class="meta">Menyesuaikan kesempatan · Sekitar Denpasar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="keg-foot">
+      <a class="btn btn-outline view-all" href="https://www.instagram.com/indobarca_bali" target="_blank" rel="noopener">Lihat Semua Kegiatan</a>
+      <div class="keg-nav">
+        <button type="button" id="keg-prev" aria-label="Kegiatan sebelumnya" aria-controls="keg-scroll">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </button>
+        <button type="button" id="keg-next" aria-label="Kegiatan selanjutnya" aria-controls="keg-scroll">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= IB BALI STORE ================= -->
+<section class="store" id="store">
+  <div class="container store-grid">
+    <div>
+      <div class="eyebrow">IB Bali Official Store</div>
+      <h2>Lebih dari sebuah Identitas</h2>
+      <p>Koleksi merchandise resmi IB Bali Store hadir sebagai bagian dari identitas dan kebanggaan kita terhadap komunitas yang kita cintai seperti Jersey, T-shirt, syal, hingga jaket resmi Indobarca Bali.</p>
+      <p>Cek semua catalognya melalui Instagram resmi IB Bali / IB Bali Store. Koleksi sekarang, kenakan identitasmu, dan tunjukkan bahwa kita lebih dari sebuah Komunitas.</p>
+    </div>
+    <div>
+      <div class="store-feed">
+        <div class="store-foto s1" role="img" aria-label="Merchandise resmi IB Bali Store"></div>
+        <div class="store-foto s2" role="img" aria-label="Merchandise resmi IB Bali Store"></div>
+        <div class="store-foto s3" role="img" aria-label="Merchandise resmi IB Bali Store"></div>
+        <div class="store-foto s4" role="img" aria-label="Merchandise resmi IB Bali Store"></div>
+        <div class="store-foto s5" role="img" aria-label="Merchandise resmi IB Bali Store"></div>
+        <div class="store-foto s6" role="img" aria-label="Merchandise resmi IB Bali Store"></div>
+      </div>
+      <a class="btn btn-primary store-cta" href="https://www.instagram.com/ibbali.store"
+         target="_blank" rel="noopener" aria-label="Instagram IB Bali Store, @ibbali.store">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+        @ibbali.store
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= APLIKASI ANGGOTA ================= -->
+<section class="tawaran" id="aplikasi">
+  <div class="container tawaran-grid">
+    <div>
+      <div class="eyebrow">Aplikasi Anggota</div>
+      <h2>Kenalkan, Indobarça Bali<br>— Community Hub</h2>
+    </div>
+    <div class="tawaran-list">
+      <div class="tw-item">
+        <div class="tw-no">01</div>
+        <div>
+          <div class="tw-nm">Kartu Membership Penya</div>
+          <div class="tw-meta">Informasi No. Kartu Penya Indobarca milik member tersimpan di ponsel — tidak perlu dibawa untuk validasi di event tertentu.</div>
+        </div>
+      </div>
+      <div class="tw-item">
+        <div class="tw-no">02</div>
+        <div>
+          <div class="tw-nm">Kehadiran Tercatat Sendiri</div>
+          <div class="tw-meta">Setiap kali ikut kegiatan futsal, nobar, atau kopdar, kehadiran anggota tercatat rapi di aplikasi.</div>
+        </div>
+      </div>
+      <div class="tw-item">
+        <div class="tw-no">03</div>
+        <div>
+          <div class="tw-nm">Jadwal &amp; Klasemen Turnamen</div>
+          <div class="tw-meta">Pantau hasil pertandingan, klasemen, dan bagan gugur liga / kompetisi internal IB Bali yang sedang berjalan secara langsung.</div>
+        </div>
+      </div>
+      <div class="tw-item">
+        <div class="tw-no">04</div>
+        <div>
+          <div class="tw-nm">Registrasi Event</div>
+          <div class="tw-meta">Memudahkan para anggota untuk memantau &amp; mendaftar kegiatan terdekat IB Bali yang akan datang.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LIGA ================= -->
+<section class="liga" id="liga">
+  <div class="container">
+    <div class="liga-panel">
+      <div class="liga-inner">
+        <div class="eyebrow">Internal Futsal League (IFL)</div>
+        <h2>Bukan Cuma Nonton, Kami Juga Bertanding</h2>
+        <p>Liga futsal internal kami sendiri — format liga penuh dan babak gugur antar tim, digelar tiap 4–5 bulan sekali. Musim ke-3 sedang berjalan sekarang.</p>
+        <div class="liga-cta"><a class="btn btn-primary" href="https://indobarcabali.id/app">Lihat Klasemen &amp; Jadwal</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONI ================= -->
+<section class="kata">
+  <div class="container">
+    <span class="kata-mark">“</span>
+    <p class="kata-quote">Indobarca Bali adalah salah satu wadah untuk terus bisa bertumbuh bersama, karena menyediakan berbagai event olahraga yang pastinya cocok untuk semua kalangan. Dan tidak kalah serunya, ya Nobar El Clásico bareng IB Bali — nyesel kalau nggak gabung!</p>
+    <div class="kata-who"><b>Iniesta</b> — anggota sejak 2010</div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="faq-head">
+      <div class="eyebrow">FAQ</div>
+      <h2>Masih Ada yang Ingin Ditanyakan?</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Bagaimana cara gabung jadi anggota Indobarca Bali?</summary>
+        <p>Hubungi kami lewat tombol Contact Admin di halaman ini — kami bantu prosesnya dari awal sampai jadi anggota bahkan member resmi Penya Indobarca.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Apakah harus sudah lama jadi Culer untuk bisa gabung?</summary>
+        <p>Tidak. Apa pun latar belakangnya, selama Blaugrana mengalir di darah, Indobarca Bali adalah rumahnya.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Apa saja syarat untuk gabung?</summary>
+        <p>Merupakan fans dari FC Barcelona, berdomisili di Bali, dan terbuka untuk siapa pun.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Apa itu Kartu Penya?</summary>
+        <p>Kartu keanggotaan resmi yang dikeluarkan oleh Penya Indobarca pusat. Informasinya tersimpan otomatis di aplikasi (profil) jika sudah diinput anggota dan terverifikasi admin — tidak perlu dibawa fisik untuk validasi di event tertentu IB Bali.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Apa bedanya jadi anggota biasa dengan punya Kartu Penya?</summary>
+        <p>Anggota yang bergabung harus masuk ke Official WA Group IB Bali. Membership merupakan program Penya Indobarca (Pusat), bisa dibeli lewat IB Bali, dan setahun akan dibuka pendaftaran 2x.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Kegiatan apa saja yang rutin diadakan?</summary>
+        <p>Ada lima: Fun Futsal rutin setiap Selasa, Minisoccer, Nobar, Fun Football, dan Kopdar santai di luar jadwal olahraga. Detail lengkapnya ada di bagian Kegiatan Rutin Kami di atas.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Apa itu Internal Futsal League (IFL)?</summary>
+        <p>Liga futsal internal kami sendiri, digelar tiap 4–5 bulan sekali dengan format liga penuh dan babak gugur antar tim. Musim ke-3 sedang berjalan sekarang.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Bagaimana cara pesan merchandise IB Bali Store?</summary>
+        <p>Semua koleksi dan cara pemesanannya diumumkan lewat Instagram resmi IB Bali Store, @ibbali.store / @indobarca_bali.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Ada biaya keanggotaan atau iuran?</summary>
+        <p>Gratis! Bergabung dengan IB Bali tidak dipungut biaya sama sekali. Iuran atau HTM tentu ada untuk kegiatan tertentu seperti olahraga, nobar, dan acara tertentu.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= AJAKAN ================= -->
+<section class="ajak">
+  <div class="container">
+    <div class="ajak-photo">
+      <div class="ajak-inner">
+        <h2>Siap Gabung Bersama Kami?</h2>
+        <p>Komunitas yang bikin anggota tetap terhubung, aktif, dan selalu punya alasan buat kumpul.</p>
+        <a class="btn btn-white" href="https://wa.me/6289683532476">Gabung Jadi Anggota</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-cols">
+      <div>
+        <div class="foot-brand">
+          <span class="foot-logo ib-logo"></span>
+          Indobarca Bali
+        </div>
+        <p class="foot-lede">Lebih dari komunitas — kami keluarga Culers yang hidup lewat nobar, tawa, dan pertandingan persahabatan.</p>
+        <div class="foot-social">
+          <a href="https://www.instagram.com/indobarca_bali" target="_blank" rel="noopener" aria-label="Instagram Indobarca Bali">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/@indobarca.bali" target="_blank" rel="noopener" aria-label="TikTok Indobarca Bali">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 0h-3.9v15.7a3.1 3.1 0 0 1-3.1 3 3.06 3.06 0 0 1-3.1-3 3.1 3.1 0 0 1 3-3.06V8.7A6.98 6.98 0 0 0 2 15.7a7 7 0 0 0 14 0V7.64a8.55 8.55 0 0 0 5 1.6V5.35a4.85 4.85 0 0 1-4.5-5.35Z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="foot-h">Navigasi</div>
+        <div class="foot-links">
+          <a href="#tentang">Tentang</a>
+          <a href="#kegiatan">Kegiatan</a>
+          <a href="#store">Store</a>
+          <a href="#liga">Turnamen</a>
+        </div>
+      </div>
+      <div>
+        <div class="foot-h">Dukungan</div>
+        <div class="foot-links">
+          <a href="#faq">FAQ</a>
+          <a href="https://indobarcabali.id/privacy.html">Privacy Policy</a>
+        </div>
+      </div>
+      <div>
+        <div class="foot-h">Ingin Bergabung?</div>
+        <p class="foot-lede" style="margin-bottom:16px">Hubungi Divisi Membership lewat WhatsApp — kami bantu dari awal sampai jadi anggota resmi.</p>
+        <a class="btn btn-primary" href="https://wa.me/6289683532476">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23a8.2 8.2 0 0 1 8.24 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.78.97-.15.16-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.23.25-.85.84-.85 2.04s.87 2.37 1 2.53c.12.17 1.72 2.62 4.16 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29Z"/></svg>
+          Contact Admin
+        </a>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <span>© 2026 Indobarca Bali</span>
+      <span>Mes Que Un Comunitat</span>
+    </div>
+  </div>
+</footer>
 
 <script>
-  var memuat = document.getElementById('memuat');
-  var sudahDitutup = false;
+(function () {
+  'use strict';
 
-  /* Layar pemuatan ditutup saat APLIKASI mengabarkan dirinya siap, bukan saat
-     iframe selesai dimuat.
-
-     Peristiwa 'load' pada iframe menandai selesainya halaman perantara milik
-     Google, bukan selesainya aplikasi kita — aplikasi masih perlu memuat
-     sesinya dan menggambar layar pertama sesudah itu. Menutup layar pemuatan di
-     saat itu menyingkap halaman putih Google sepersekian detik, lalu disusul
-     layar pemuatan milik aplikasi sendiri dengan navy yang sedikit berbeda.
-     Tumpukan itulah yang terbaca sebagai kedipan. */
-  function tutupPemuatan() {
-    if (sudahDitutup) return;
-    sudahDitutup = true;
-    memuat.classList.add('selesai');
+  // Bar tipis muncul begitu hero tergulung habis. IntersectionObserver
+  // dipakai supaya browser yang menghitung, bukan listener scroll yang
+  // menyala di tiap piksel.
+  var minibar = document.getElementById('minibar');
+  var hero = document.querySelector('.hero');
+  if (minibar && hero && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (masuk) {
+      minibar.classList.toggle('on', !masuk[0].isIntersecting);
+    }, { rootMargin: '-70px 0px 0px 0px' }).observe(hero);
   }
 
-  window.addEventListener('message', function (e) {
-    if (!e.data || e.data.ibb !== 'siap') return;
-    tutupPemuatan();
-    /* Aplikasi mengabarkan navy yang sedang dipakainya. Halaman ini statis dan
-       tidak punya cara lain untuk tahu palet mana yang berlaku — sementara
-       paletnya bisa diganti pemilik aplikasi kapan saja lewat Pengaturan.
-
-       Disimpan, lalu dipakai pada pembukaan BERIKUTNYA. Pembukaan pertama di
-       sebuah perangkat memakai warna bawaan di bawah; sesudah itu keduanya
-       selalu sewarna, tanpa perlu halaman ini diterbitkan ulang. */
-    if (/^#[0-9A-Fa-f]{6}$/.test(String(e.data.navy || ''))) {
-      try { localStorage.setItem('ibb_navy', e.data.navy); } catch (err) { /* mode privat */ }
-    }
-  });
-
-  /* Dipasang sedini mungkin — sebelum apa pun sempat tergambar dengan warna
-     bawaan lalu berganti di depan mata. */
-  (function warnaTersimpan() {
-    var w = null;
-    try { w = localStorage.getItem('ibb_navy'); } catch (err) { w = null; }
-    if (!/^#[0-9A-Fa-f]{6}$/.test(String(w || ''))) return;
-    document.documentElement.style.background = w;
-    document.body.style.background = w;
-    var m = document.querySelector('meta[name="theme-color"]');
-    if (m) m.setAttribute('content', w);
-    var d = document.getElementById('darurat');
-    if (d) d.style.background = w;
-  })();
-
-  /* Jaring pengaman: versi aplikasi lama tidak mengirim kabar 'siap'. Delapan
-     detik cukup longgar untuk menunggu kabar itu menang, dan cukup pendek untuk
-     tidak terasa menggantung bila kabarnya memang tidak akan datang. */
-  var adaIframe = false;
-  document.getElementById('aplikasi').addEventListener('load', function () {
-    adaIframe = true;
-    setTimeout(tutupPemuatan, 8000);
-  });
-
-  // Iframe yang diblokir tidak pernah memicu 'load' sama sekali.
-  setTimeout(function () {
-    if (!adaIframe) document.getElementById('darurat').style.display = 'block';
-  }, 12000);
-
-  /* ---------------------------------------------------------------
-     Memberi tahu aplikasi setinggi apa ruang aman di bawah layar.
-
-     Aplikasi tidak bisa mengukurnya sendiri: env(safe-area-inset-*) selalu
-     bernilai nol di dalam iframe, dan angkanya berbeda antar model iPhone —
-     menebak dengan angka mati akan salah di perangkat tanpa home indicator.
-
-     Aplikasi yang memulai percakapan, bukan halaman ini. Sebabnya praktis:
-     aplikasi berada di iframe bersarang milik Google, jadi halaman ini tidak
-     punya cara menunjuk jendelanya secara langsung. Begitu aplikasi menyapa,
-     jendelanya terbaca dari event.source dan bisa dibalas.
-     --------------------------------------------------------------- */
-  var peminta = null;
-
-  function ruangAmanBawah() {
-    var n = parseFloat(getComputedStyle(document.getElementById('ukur')).height);
-    return isNaN(n) ? 0 : Math.round(n);
+  var rel = document.getElementById('keg-scroll');
+  var prev = document.getElementById('keg-prev');
+  var next = document.getElementById('keg-next');
+  if (rel && prev && next) {
+    var kartuSemua = rel.querySelectorAll('.keg-card');
+    // Langkahnya dihitung dari lebar kartu sesungguhnya — angka tetap
+    // meleset begitu kartu mengecil di layar sempit, dan itu berkelahi
+    // dengan scroll-snap.
+    var langkah = function () {
+      var kartu = rel.querySelector('.keg-card');
+      if (!kartu) return 300;
+      var gap = parseFloat(getComputedStyle(rel).columnGap) || 0;
+      return kartu.getBoundingClientRect().width + gap;
+    };
+    var segarkan = function () {
+      var sisa = rel.scrollWidth - rel.clientWidth - rel.scrollLeft;
+      prev.disabled = rel.scrollLeft <= 2;
+      next.disabled = sisa <= 2;
+      // Batasnya tepi luar scroller (selebar layar), bukan area isinya —
+      // kartu yang masuk ke zona padding kanan masih terlihat mata.
+      var batas = rel.getBoundingClientRect().right + 1;
+      Array.prototype.forEach.call(kartuSemua, function (k) {
+        k.classList.toggle('samar', k.getBoundingClientRect().right > batas);
+      });
+    };
+    prev.addEventListener('click', function () { rel.scrollBy({ left: -langkah(), behavior: 'smooth' }); });
+    next.addEventListener('click', function () { rel.scrollBy({ left: langkah(), behavior: 'smooth' }); });
+    rel.addEventListener('scroll', segarkan, { passive: true });
+    window.addEventListener('resize', segarkan);
+    segarkan();
   }
-
-  function kabari() {
-    if (peminta) peminta.postMessage({ ibb: 'inset', bawah: ruangAmanBawah() }, '*');
-  }
-
-  window.addEventListener('message', function (e) {
-    if (!e.data || e.data.ibb !== 'minta-inset' || !e.source) return;
-    peminta = e.source;
-    kabari();
-  });
-
-  // Nilainya berubah saat perangkat diputar.
-  window.addEventListener('resize', kabari);
-  window.addEventListener('orientationchange', function () { setTimeout(kabari, 300); });
+})();
 </script>
-
 </body>
 </html>
