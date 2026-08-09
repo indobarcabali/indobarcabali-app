@@ -88,13 +88,13 @@
   }
   *{box-sizing:border-box;}
   html{color-scheme:light; scroll-behavior:smooth;}
-  /* Sasaran tautan menu bukan lagi <section>-nya melainkan blok judulnya:
-     di Store dan Aplikasi, gridnya align-items:center sehingga teks
-     melayang di tengah mengikuti tinggi foto — berhenti di awal section
-     berarti berhenti 225px di atas judulnya.
-     scroll-margin-top menyisakan ruang untuk minibar yang menempel di
-     atas; tanpa itu judulnya tertutup bilah tersebut. */
-  [id]{scroll-margin-top:calc(80px + env(safe-area-inset-top,0px));}
+  /* Sasaran tautan menu adalah BATAS SECTION — strip biru/merah di
+     pangkalnya — supaya pengunjung melihat sectionnya utuh dari awal,
+     bukan mendarat di tengah-tengah isinya.
+     72px menyisakan ruang untuk minibar setinggi 61px yang menempel di
+     atas, plus 11px napas; tanpa itu stripnya justru tersembunyi persis
+     di balik bilah tersebut. */
+  section[id]{scroll-margin-top:calc(72px + env(safe-area-inset-top,0px));}
   /* Hormati pengaturan sistem: sebagian orang mual oleh gerakan gulir. */
   @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
   body{
@@ -494,8 +494,8 @@
 </section>
 
 <!-- ================= TENTANG ================= -->
-<section class="about">
-  <div class="about-text" id="tentang">
+<section class="about" id="tentang">
+  <div class="about-text">
     <div class="eyebrow">Tentang Kami</div>
     <h2>Lebih dari Sekadar Komunitas</h2>
     <div class="about-body">
@@ -512,9 +512,9 @@
 </section>
 
 <!-- ================= KEGIATAN ================= -->
-<section class="upcoming">
+<section class="upcoming" id="kegiatan">
   <div class="container">
-    <div class="head" id="kegiatan">
+    <div class="head">
       <h2>Kegiatan Rutin Kami</h2>
       <p>Lima kegiatan yang menghidupkan komunitas ini — ada yang rutin tiap pekan, ada yang menunggu momen besar.</p>
     </div>
@@ -574,10 +574,10 @@
 </section>
 
 <!-- ================= IB BALI STORE ================= -->
-<section class="store">
+<section class="store" id="store">
   <div class="container store-grid">
     <div>
-      <div class="eyebrow" id="store">IB Bali Official Store</div>
+      <div class="eyebrow">IB Bali Official Store</div>
       <h2>Lebih dari sebuah Identitas</h2>
       <p>Koleksi merchandise resmi IB Bali Store hadir sebagai bagian dari identitas dan kebanggaan kita terhadap komunitas yang kita cintai seperti Jersey, T-shirt, syal, hingga jaket resmi Indobarca Bali.</p>
       <p>Cek semua catalognya melalui Instagram resmi IB Bali / IB Bali Store. Koleksi sekarang, kenakan identitasmu, dan tunjukkan bahwa kita lebih dari sebuah Komunitas.</p>
@@ -601,10 +601,10 @@
 </section>
 
 <!-- ================= APLIKASI ANGGOTA ================= -->
-<section class="tawaran">
+<section class="tawaran" id="aplikasi">
   <div class="container tawaran-grid">
     <div>
-      <div class="eyebrow" id="aplikasi">Aplikasi Anggota</div>
+      <div class="eyebrow">Aplikasi Anggota</div>
       <h2>Kenalkan, Indobarça Bali<br>— Community Hub</h2>
     </div>
     <div class="tawaran-list">
@@ -641,10 +641,10 @@
 </section>
 
 <!-- ================= LIGA ================= -->
-<section class="liga">
+<section class="liga" id="liga">
   <div class="container">
     <div class="liga-panel">
-      <div class="liga-inner" id="liga">
+      <div class="liga-inner">
         <div class="eyebrow">Internal Futsal League (IFL)</div>
         <h2>Bukan Cuma Nonton, Kami Juga Bertanding</h2>
         <p>Liga futsal internal kami sendiri — format liga penuh dan babak gugur antar tim, digelar tiap 4–5 bulan sekali. Musim ke-3 sedang berjalan sekarang.</p>
@@ -664,9 +664,9 @@
 </section>
 
 <!-- ================= FAQ ================= -->
-<section class="faq">
+<section class="faq" id="faq">
   <div class="container">
-    <div class="faq-head" id="faq">
+    <div class="faq-head">
       <div class="eyebrow">FAQ</div>
       <h2>Masih Ada yang Ingin Ditanyakan?</h2>
     </div>
