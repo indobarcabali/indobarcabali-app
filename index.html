@@ -783,6 +783,69 @@
 (function () {
   'use strict';
 
+  // ============ Gulir menu dengan pelambatan sendiri ============
+  // scroll-behavior:smooth memakai durasi dan pelambatan bawaan peramban,
+  // dan CSS tidak menyediakan cara mengaturnya sama sekali — di Chrome ia
+  // terasa cepat lalu berhenti mendadak. Di sini durasinya mengikuti jarak
+  // dan pelambatannya easeInOutCubic: berangkat pelan, memuncak di tengah,
+  // lalu melandai sebelum berhenti.
+  var akar = document.documentElement;
+  var kurangGerak = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var animasi = null;
+
+  // CSS smooth dimatikan begitu JS jalan supaya tidak berkelahi dengan
+  // animasi ini; kalau JS gagal dimuat, aturan CSS-nya tetap berlaku
+  // sebagai cadangan.
+  akar.style.scrollBehavior = 'auto';
+
+  var batal = function () {
+    if (animasi) { cancelAnimationFrame(animasi); animasi = null; }
+  };
+  // Sentuhan atau putaran roda di tengah animasi langsung membatalkannya —
+  // gerakan yang melawan tangan pengguna terasa macet, bukan mulus.
+  ['wheel', 'touchstart', 'keydown'].forEach(function (ev) {
+    window.addEventListener(ev, batal, { passive: true });
+  });
+
+  var gulirKe = function (sasaran) {
+    // scroll-margin-top dibaca dari CSS, bukan ditulis ulang di sini, supaya
+    // angkanya tetap satu sumber saat tinggi minibar berubah.
+    var margin = parseFloat(getComputedStyle(sasaran).scrollMarginTop) || 0;
+    var batas = Math.max(0, document.body.scrollHeight - window.innerHeight);
+    var tujuan = Math.max(0, Math.min(
+      sasaran.getBoundingClientRect().top + window.scrollY - margin, batas));
+    var awal = window.scrollY, jarak = tujuan - awal;
+    if (Math.abs(jarak) < 2) return;
+    if (kurangGerak.matches) { window.scrollTo(0, tujuan); return; }
+
+    // Durasi ikut jarak: lompatan pendek tidak terasa lamban, lompatan jauh
+    // tidak terasa terburu-buru. Dibatasi 500-1100 ms.
+    var durasi = Math.min(1100, Math.max(500, Math.abs(jarak) * 0.55));
+    var mulai = performance.now();
+    batal();
+    var langkah = function (kini) {
+      var t = Math.min(1, (kini - mulai) / durasi);
+      var e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      window.scrollTo(0, awal + jarak * e);
+      animasi = t < 1 ? requestAnimationFrame(langkah) : null;
+    };
+    animasi = requestAnimationFrame(langkah);
+  };
+
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var id = a.getAttribute('href').slice(1);
+      if (!id) return;
+      var sasaran = document.getElementById(id);
+      if (!sasaran) return;
+      e.preventDefault();
+      gulirKe(sasaran);
+      // Alamat tetap diperbarui supaya tombol kembali dan penyalinan tautan
+      // berperilaku seperti tautan biasa.
+      if (history.pushState) history.pushState(null, '', '#' + id);
+    });
+  });
+
   // Bar tipis muncul begitu hero tergulung habis. IntersectionObserver
   // dipakai supaya browser yang menghitung, bukan listener scroll yang
   // menyala di tiap piksel.
