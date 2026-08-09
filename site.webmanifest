@@ -1,0 +1,16 @@
+{
+  "name": "Indobarca Bali — Komunitas Resmi Suporter FC Barcelona di Bali",
+  "short_name": "Indobarca Bali",
+  "description": "Komunitas resmi penggemar FC Barcelona di Bali sejak 2012.",
+  "lang": "id",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#071744",
+  "theme_color": "#071744",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

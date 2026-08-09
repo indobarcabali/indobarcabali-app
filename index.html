@@ -12,15 +12,23 @@
      terpotong jadi tak terbaca — apple-mobile-web-app-title memisahkan
      keduanya. Tanpa apple-touch-icon, iOS memakai cuplikan layar halaman
      sebagai ikon, bukan lambang klub. -->
+<!-- Sejak iOS 15.4 Safari mengambil nama layar utama dari short_name di
+     manifest, BUKAN lagi dari apple-mobile-web-app-title. Meta itu tetap
+     dipasang untuk iOS lama; manifest yang menentukan di iOS baru dan di
+     Android. -->
+<link rel="manifest" href="/site.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Indobarca Bali">
-<link rel="apple-touch-icon" href="/icon.png">
+<!-- 180x180 adalah ukuran yang diminta iOS. Sebelumnya menunjuk icon.png
+     yang ternyata berkas JPEG bernama .png — Safari menolak menggambarnya
+     dan jatuh ke placeholder huruf. -->
+<link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#071744">
 <meta name="description" content="Komunitas resmi penggemar FC Barcelona di Bali. Fun Futsal tiap Selasa, minisoccer bulanan, nobar El Clásico, dan liga internal sendiri: Internal Futsal League (IFL).">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Indobarca Bali">
-<meta property="og:title" content="Indobarca Bali — Rumah Para Culers di Bali">
+<meta property="og:title" content="Indobarça Chapter Bali">
 <meta property="og:description" content="Fun Futsal tiap Selasa, minisoccer bulanan, nobar El Clásico, dan liga internal sendiri. Gabung bareng 400+ Culers se-Bali.">
 <meta property="og:url" content="https://indobarcabali.id/">
 <meta property="og:image" content="https://indobarcabali.id/foto/hero.jpg">
