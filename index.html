@@ -156,6 +156,17 @@
     background:var(--red); color:#fff; font-size:15px;
   }
 
+  /* Tirai perpindahan ke aplikasi. Warnanya #001138 — persis latar halaman
+     /app, bukan navy halaman ini — supaya begitu halaman berganti tidak ada
+     perubahan warna yang tertangkap mata. Yang dihilangkan bukan sekadar
+     kekakuan, tapi kilatan putih yang muncul di antara dua halaman. */
+  .tirai{
+    position:fixed; inset:0; z-index:100; background:#001138;
+    opacity:0; pointer-events:none; transition:opacity .24s ease;
+  }
+  .tirai.on{opacity:1; pointer-events:auto;}
+  @media (prefers-reduced-motion:reduce){ .tirai{transition:none;} }
+
   /* ================= TOPNAV — duduk transparan DI ATAS foto hero ======= */
   /* Saat dibuka dari layar utama iOS, status bar tembus pandang menumpang
      DI ATAS halaman. Tanpa env(safe-area-inset-top), jam dan sinyal akan
@@ -435,6 +446,8 @@
 </style>
 </head>
 <body>
+
+<div class="tirai" id="tirai" aria-hidden="true"></div>
 
 <!-- Bar tipis yang menggantikan nav hero setelah tergulung habis. -->
 <div class="minibar" id="minibar">
@@ -845,6 +858,28 @@
       if (history.pushState) history.pushState(null, '', '#' + id);
     });
   });
+
+  // ============ Perpindahan halus ke aplikasi ============
+  var tirai = document.getElementById('tirai');
+  var keApp = /\/\/[^/]*indobarcabali\.id\/app(\/|$|\?|#)/;
+  if (tirai) {
+    document.querySelectorAll('a[href]').forEach(function (a) {
+      if (!keApp.test(a.href)) return;
+      a.addEventListener('click', function (e) {
+        // Biarkan cara membuka di tab baru bekerja seperti biasa.
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        if (kurangGerak.matches) return;
+        e.preventDefault();
+        tirai.classList.add('on');
+        setTimeout(function () { window.location.href = a.href; }, 240);
+      });
+    });
+    // Menekan tombol kembali dari aplikasi bisa memulihkan halaman ini dari
+    // cache dengan tirai MASIH menutup — layar akan gelap total dan terlihat
+    // seperti halaman gagal dimuat. Karena itu tirainya selalu dibuka lagi
+    // setiap halaman ditampilkan, bukan cuma saat dimuat pertama kali.
+    window.addEventListener('pageshow', function () { tirai.classList.remove('on'); });
+  }
 
   // Bar tipis muncul begitu hero tergulung habis. IntersectionObserver
   // dipakai supaya browser yang menghitung, bukan listener scroll yang
