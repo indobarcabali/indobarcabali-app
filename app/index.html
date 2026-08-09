@@ -69,7 +69,12 @@
 <!-- Ikon layar utama iOS. Satu berkas 512x512 cukup; iOS menskalakannya sendiri.
      Latarnya WAJIB solid, bukan transparan: area transparan menjadi hitam di
      layar utama iOS, bukan menyatu dengan wallpaper. -->
-<link rel="apple-touch-icon" href="/icon.png">
+<!-- Sejak iOS 15.4 layar peluncuran aplikasi layar-utama dibangun dari
+     background_color di manifest. Tanpa manifest, iOS menampilkan layar
+     PUTIH lebih dulu sebelum halaman ini sempat menggambar latarnya
+     sendiri yang gelap. -->
+<link rel="manifest" href="/app/site.webmanifest">
+<link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png">
 
 <!-- Ikon TAB memakai berkas Drive yang sama dengan yang dipakai aplikasi lewat
      setFaviconUrl(), supaya tab dari alamat ini dan tab dari /exec selalu
