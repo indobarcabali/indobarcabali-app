@@ -370,8 +370,14 @@
      lambangnya. Garis tegak memisahkan tiga kelompok yang dibaca berbeda:
      kapan, di mana, siapa. */
   .jadwal-baris{display:grid; gap:8px;}
+  /* Semua kolom SELEBAR ISINYA, sisanya disebar merata lewat space-between.
+     Dengan 1fr pada kolom tim, seluruh sisa lebar jatuh ke satu kolom dan
+     isinya yang dipusatkan menyisakan rongga menganga di kiri-kanan tim;
+     memindahkannya ke kolom terakhir cuma memindahkan rongganya, tidak
+     menghilangkannya. Disebar merata, jaraknya jadi seimbang di layar lebar
+     dan mengecil sendiri jadi sekadar sela begitu layar menyempit. */
   .jb{
-    display:grid; grid-template-columns:auto auto auto 1fr auto;
+    display:grid; grid-template-columns:repeat(5,auto); justify-content:space-between;
     align-items:center; gap:11px;
     background:var(--paper); border:1px solid var(--line); border-radius:12px;
     padding:13px 15px;
@@ -388,7 +394,7 @@
   .jb-arah{display:grid; place-items:center;}
   .jb-arah svg{width:27px; height:27px; color:var(--red);}
   .jb-duel{display:flex; align-items:center; justify-content:center; gap:9px; min-width:0;}
-  .jb-duel img{width:25px; height:25px; object-fit:contain; flex:none;}
+  .jb-duel img{width:28px; height:28px; object-fit:contain; flex:none;}
   /* Terpotong elipsis, bukan mendorong baris sampai meluber: berkas jadwal
      lama belum punya tla, jadi nama penuh bisa muncul di layar sempit. */
   .jb-duel b{
@@ -400,6 +406,12 @@
   .jb-kanan b{
     display:block; font-family:var(--font-angka); font-variant-numeric:tabular-nums;
     font-size:13.5px; font-weight:700; color:var(--red-700); white-space:nowrap;
+  }
+  /* WITA memakai huruf teks biasa, bukan huruf angka: ia bukan angka, dan
+     lebar tetap huruf angka membuatnya jauh lebih lebar dari perlunya. */
+  .jb-kanan i{
+    font-family:inherit; font-style:normal; font-weight:800; font-size:9px;
+    color:var(--muted); letter-spacing:.03em; margin-left:3px;
   }
   .jb-kanan span{
     display:block; max-width:64px; margin-left:auto; line-height:1.2;
@@ -432,17 +444,21 @@
        Sela lambang-ke-nama dinaikkan dari 3px ke 5px karena itu yang paling
        terasa mampat, dan biayanya disebar tipis: lambang 21->19, inisial
        13,5->12,5, tanggal 10,5->10, label babak 9->8,5. */
-    .jb{gap:5px; padding:12px 9px;}
+    /* Lambang tim diperbesar 19->22. Biayanya diambil dari sela ANTAR
+       kelompok dan ukuran huruf, bukan dari sela lambang-ke-nama: sela itu
+       yang dulu terasa mampat, jadi ia dipertahankan di 5px. */
+    .jb{gap:4px; padding:12px 9px;}
     .jb-liga{width:17px; height:16px;}
     .jb-liga[data-liga="PD"] img{width:25.5px; left:-4.2px; top:-.8px;}
-    .jb-tgl{font-size:9.5px;}
-    .jb-pisah{padding-left:4px;}
+    .jb-tgl{font-size:9px;}
+    .jb-pisah{padding-left:3px;}
     .jb-arah svg{width:22px; height:22px;}
     .jb-duel{gap:5px;}
-    .jb-duel img{width:19px; height:19px;}
-    .jb-duel b{font-size:12.5px;}
-    .jb-duel .vs{font-size:8.5px;}
+    .jb-duel img{width:23px; height:23px;}
+    .jb-duel b{font-size:12px;}
+    .jb-duel .vs{font-size:8px;}
     .jb-kanan span{max-width:62px; font-size:9px; letter-spacing:.01em;}
+    .jb-kanan i{font-size:8.5px; margin-left:2px;}
     .jb-kanan b{font-size:12px;}
     .jb-kanan span{font-size:9px;}
   }
@@ -1238,8 +1254,14 @@
             var babak = babakDari(p);
             // Inisial resmi, bukan nama penuh: barisnya memuat dua tim beserta
             // lambangnya dan harus tetap muat satu baris di layar 390px.
-            var pihak = function (t) {
-              return gambar(t.crest) + '<b>' + aman(t.tla || t.nama || '') + '</b>';
+            // Sisi kanan dicerminkan: lambang - inisial - vs - inisial - lambang.
+            // Dua lambang di tepi luar membuat pertemuannya terbaca sekali lihat;
+            // kalau keduanya memakai urutan yang sama, lambang tamu terjepit di
+            // tengah dan barisnya terbaca sebagai daftar, bukan sebagai laga.
+            var pihak = function (t, balik) {
+              var im = gambar(t.crest);
+              var nm = '<b>' + aman(t.tla || t.nama || '') + '</b>';
+              return balik ? nm + im : im + nm;
             };
             return '<div class="jb">' +
               (p.liga_lambang
@@ -1253,9 +1275,9 @@
               '<span class="jb-pisah jb-arah" role="img" aria-label="' +
                 (p.kandang ? 'Main di kandang' : 'Main tandang') + '" title="' +
                 (p.kandang ? 'Kandang' : 'Tandang') + '">' + IKON[arah] + '</span>' +
-              '<span class="jb-pisah jb-duel">' + pihak(sisi[0]) +
-                '<span class="vs">vs</span>' + pihak(sisi[1]) + '</span>' +
-              '<span class="jb-kanan"><b>' + aman(jamWita(t)) + '</b>' +
+              '<span class="jb-pisah jb-duel">' + pihak(sisi[0], false) +
+                '<span class="vs">vs</span>' + pihak(sisi[1], true) + '</span>' +
+              '<span class="jb-kanan"><b>' + aman(jamWita(t)) + '<i>WITA</i></b>' +
                 (babak ? '<span>' + aman(babak) + '</span>' : '') + '</span>' +
             '</div>';
           }).join('') + '</div>';
