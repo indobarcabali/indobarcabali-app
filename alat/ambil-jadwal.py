@@ -29,10 +29,38 @@ import urllib.request
 
 TIM = 81          # FC Barcelona
 LIGA = 'PD'       # Primera Division — termasuk paket gratis football-data.org
-JUMLAH = 5
+JUMLAH = 5        # jumlah AKHIR yang ditulis ke jadwal.json
+CALON = 10        # kandidat internal sebelum digabung+diurut+dipotong ke JUMLAH
 AKAR = pathlib.Path(__file__).resolve().parent.parent
 TUJUAN = AKAR / 'jadwal.json'
 CREST = AKAR / 'crest'
+
+# --- Sumber kedua: TheSportsDB, mengisi yang TIDAK ADA di paket gratis
+# football-data.org — Copa del Rey, Supercopa de España, laga persahabatan.
+# Dipastikan lewat pengujian langsung, bukan dokumentasi: paket gratis
+# football-data.org terbukti TIDAK mengembalikan laga-laga itu sama sekali.
+#
+# Kunci "3" adalah kunci UJI publik TheSportsDB, dibagi bersama semua
+# pengguna gratis — bukan kunci produksi. Karena itu sumber ini best-effort
+# murni: dibungkus try/except Exception yang luas (bukan jenis per-jenis
+# seperti football-data di bawah), dan kegagalannya TIDAK PERNAH menjatuhkan
+# keseluruhan pengambilan. football-data.org tetap sumber utama.
+TSDB_TIM = 133739   # id FC Barcelona di TheSportsDB
+TSDB_KUNCI = '3'
+TSDB_WAKTU = 10     # detik — pendek: sumber opsional tidak boleh menyandera Action
+
+# Daftar IZIN, bukan daftar larang: hanya liga di sini yang diterima dari
+# TheSportsDB. LaLiga dan Liga Champions SENGAJA tidak masuk — itu sudah
+# ditangani football-data.org dengan data lebih kaya (matchday, TLA resmi),
+# dan mengizinkannya di sini berisiko menduplikasi laga yang sama dari dua
+# sumber sekaligus.
+TSDB_KOMPETISI = {
+    'Club Friendlies': 'Laga Persahabatan',
+    'Copa del Rey': 'Copa del Rey',
+    'Supercopa de Espana': 'Supercopa',
+    'UEFA Super Cup': 'Piala Super Eropa',
+    'FIFA Club World Cup': 'Piala Dunia Antarklub',
+}
 
 # football-data.org menandai pertandingan yang jam mainnya sudah pasti sebagai
 # TIMED dan yang belum pasti sebagai SCHEDULED — menyaring salah satunya saja
@@ -147,7 +175,7 @@ def ambil_jadwal(kunci: str) -> list:
     for m in sorted(semua, key=lambda x: x.get('utcDate') or ''):
         if m.get('status') in SELESAI:
             continue
-        if len(keluar) >= JUMLAH:
+        if len(keluar) >= CALON:   # dipotong ke JUMLAH setelah digabung dgn TSDB
             break
         rumah = m.get('homeTeam') or {}
         tamu = m.get('awayTeam') or {}
@@ -171,6 +199,61 @@ def ambil_jadwal(kunci: str) -> list:
             'kompetisi': NAMA_KOMPETISI.get(komp.get('name') or '', komp.get('name') or ''),
             'liga_lambang': simpan_lambang(komp.get('emblem'), komp.get('code') or komp.get('id'), 'liga-'),
         })
+    return keluar
+
+
+def ambil_jadwal_tsdb() -> list:
+    """Laga di luar LaLiga/UCL: Copa del Rey, Supercopa, laga persahabatan.
+
+    Best-effort murni — lihat catatan di TSDB_TIM di atas. Kegagalan apa pun
+    (jaringan, format tak terduga, rate limit) menghasilkan daftar kosong,
+    tidak pernah exception yang menjatuhkan pengambilan football-data.
+    """
+    try:
+        url = ('https://www.thesportsdb.com/api/v1/json/%s/eventsnext.php'
+               '?id=%d' % (TSDB_KUNCI, TSDB_TIM))
+        req = urllib.request.Request(url)
+        with urllib.request.urlopen(req, timeout=TSDB_WAKTU) as r:
+            data = json.load(r)
+        acara = data.get('events') or []
+        print('TheSportsDB: %d acara mendatang.' % len(acara))
+    except Exception as e:
+        print('::warning::TheSportsDB gagal diambil (%s). Dilewati.' % e)
+        return []
+
+    def sisi(nama, ident, badge):
+        return {
+            'nama': nama or '?',
+            'tla': '',   # TheSportsDB tidak menyediakan singkatan resmi
+            'crest': simpan_lambang(badge, ident, 'tsdb'),
+        }
+
+    keluar = []
+    for acr in acara:
+        liga = acr.get('strLeague') or ''
+        if liga not in TSDB_KOMPETISI:
+            continue   # di luar daftar izin — termasuk menolak LaLiga/UCL
+        utc = acr.get('strTimestamp')
+        if not utc:
+            continue
+        try:
+            babak = ''
+            ronde = acr.get('intRound')
+            if ronde and str(ronde).isdigit() and int(ronde) > 0:
+                babak = 'Babak %s' % ronde
+            keluar.append({
+                'utc': utc.replace(' ', 'T') + ('Z' if not utc.endswith('Z') else ''),
+                'home': sisi(acr.get('strHomeTeam'), acr.get('idHomeTeam'), acr.get('strHomeTeamBadge')),
+                'away': sisi(acr.get('strAwayTeam'), acr.get('idAwayTeam'), acr.get('strAwayTeamBadge')),
+                'kandang': str(acr.get('idHomeTeam')) == str(TSDB_TIM),
+                'matchday': None,
+                'babak': babak,
+                'venue': acr.get('strVenue') or '',
+                'kompetisi': TSDB_KOMPETISI[liga],
+                'liga_lambang': simpan_lambang(acr.get('strLeagueBadge'), acr.get('idLeague'), 'tsdb-liga-'),
+            })
+        except Exception as err:  # satu acara aneh tidak boleh menjatuhkan yang lain
+            print('  acara TheSportsDB dilewati (%s): %s' % (err, acr.get('strEvent')))
     return keluar
 
 
@@ -248,7 +331,7 @@ def main() -> None:
         sys.exit('FOOTBALL_DATA_KEY tidak diatur.')
 
     try:
-        pertandingan = ambil_jadwal(kunci)
+        dari_fd = ambil_jadwal(kunci)
     except urllib.error.HTTPError as e:
         # Peringatan GitHub, bukan sekadar cetakan: kegagalan yang cuma
         # tercetak di log terlalu mudah luput karena langkahnya tetap hijau.
@@ -258,9 +341,34 @@ def main() -> None:
         print('::warning::Jadwal gagal diambil (%s). Berkas lama dibiarkan.' % e)
         return
 
+    # TheSportsDB murni tambahan: gagal pun football-data.org tetap terbit.
+    dari_tsdb = ambil_jadwal_tsdb()
+
+    # Digabung lalu diurut ulang berdasarkan tanggal — hero harus menampilkan
+    # laga paling dekat LINTAS SEMUA KOMPETISI, bukan cuma LaLiga/UCL.
+    # Dedup HANYA berdasarkan tanggal kalender (UTC): Barça tidak pernah main
+    # dua kali di hari yang sama, jadi ini aman dan tidak bergantung pada
+    # kecocokan nama tim yang bisa berbeda ejaan antar API. football-data.org
+    # diproses lebih dulu supaya jika bentrok, datanya yang lebih kaya
+    # (matchday, TLA resmi) yang dipertahankan.
+    tanggal_terpakai = set()
+    pertandingan = []
+    for p in dari_fd + dari_tsdb:
+        tgl = (p.get('utc') or '')[:10]
+        if not tgl or tgl in tanggal_terpakai:
+            if tgl:
+                print('  dilewati (bentrok tanggal %s): %s' % (tgl, p.get('kompetisi')))
+            continue
+        tanggal_terpakai.add(tgl)
+        pertandingan.append(p)
+    pertandingan.sort(key=lambda x: x['utc'])
+    pertandingan = pertandingan[:JUMLAH]
+
     if not pertandingan:
         print('::warning::Tidak ada pertandingan mendatang. Berkas lama dibiarkan.')
         return
+    print('Gabungan: %d dari football-data, %d dari TheSportsDB, %d setelah dedup+potong.'
+          % (len(dari_fd), len(dari_tsdb), len(pertandingan)))
 
     # Klasemen boleh gagal sendiri tanpa menjatuhkan jadwal: kompetisi bisa
     # sedang jeda, atau paketnya tidak mencakup liga ini.
