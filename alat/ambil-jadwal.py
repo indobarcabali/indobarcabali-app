@@ -39,6 +39,17 @@ CREST = AKAR / 'crest'
 # membuat hasil kosong padahal datanya ada.
 SELESAI = {'FINISHED', 'AWARDED', 'CANCELLED', 'POSTPONED', 'SUSPENDED'}
 
+# Nama resmi di API bukan nama yang dikenal orang. 'Primera Division' itu nama
+# administratif; yang tertera di lambang dan disebut suporter adalah LaLiga.
+NAMA_KOMPETISI = {
+    'Primera Division': 'LaLiga',
+    'Primera División': 'LaLiga',
+    'UEFA Champions League': 'Champions League',
+    'Copa del Rey': 'Copa del Rey',
+    'Supercopa de Espana': 'Supercopa',
+    'Supercopa de España': 'Supercopa',
+}
+
 
 def minta(url: str, kunci: str) -> dict:
     req = urllib.request.Request(url, headers={'X-Auth-Token': kunci})
@@ -70,6 +81,21 @@ def simpan_lambang(url: str, ident, awalan: str = '') -> str:
         return ''
 
 
+def sisi_tim(tim: dict) -> dict:
+    """Satu tim seperti yang dipakai kartu jadwal: nama, singkatan, lambang.
+
+    `tla` ikut disertakan supaya halaman punya pilihan untuk nama yang terlalu
+    panjang bagi kartu sempit di ponsel ("Real Valladolid" -> "VLL"). Singkatan
+    ini datang dari football-data.org, bukan karangan sendiri — jadi yang tampil
+    adalah singkatan resmi yang memang dipakai orang.
+    """
+    return {
+        'nama': tim.get('shortName') or tim.get('name') or '?',
+        'tla': tim.get('tla') or '',
+        'crest': simpan_lambang(tim.get('crest'), tim.get('id')),
+    }
+
+
 def ambil_jadwal(kunci: str) -> list:
     hari_ini = datetime.date.today()
     data = minta('https://api.football-data.org/v4/teams/%d/matches'
@@ -99,14 +125,12 @@ def ambil_jadwal(kunci: str) -> list:
             # Kedua tim disimpan utuh dan berurutan, bukan cuma "lawan":
             # tata letaknya menampilkan tuan rumah di kiri dan tamu di kanan,
             # dan urutan itu tidak bisa dipulihkan dari satu nama saja.
-            'home': {'nama': rumah.get('shortName') or rumah.get('name') or '?',
-                     'crest': simpan_lambang(rumah.get('crest'), rumah.get('id'))},
-            'away': {'nama': tamu.get('shortName') or tamu.get('name') or '?',
-                     'crest': simpan_lambang(tamu.get('crest'), tamu.get('id'))},
+            'home': sisi_tim(rumah),
+            'away': sisi_tim(tamu),
             'kandang': kandang,
             'lawan': lawan.get('shortName') or lawan.get('name') or '?',
             'matchday': m.get('matchday'),
-            'kompetisi': komp.get('name') or '',
+            'kompetisi': NAMA_KOMPETISI.get(komp.get('name') or '', komp.get('name') or ''),
             'liga_lambang': simpan_lambang(komp.get('emblem'), komp.get('code') or komp.get('id'), 'liga-'),
         })
     return keluar
