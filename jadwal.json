@@ -1,6 +1,25 @@
 {
   "pertandingan": [
     {
+      "utc": "2026-08-19T18:00:00Z",
+      "home": {
+        "nama": "Barcelona",
+        "tla": "",
+        "crest": "crest/tsdb133739.png"
+      },
+      "away": {
+        "nama": "Al Ahly",
+        "tla": "",
+        "crest": "crest/tsdb138995.png"
+      },
+      "kandang": true,
+      "matchday": null,
+      "babak": "",
+      "venue": "Spotify Camp Nou",
+      "kompetisi": "Laga Persahabatan",
+      "liga_lambang": "crest/tsdb-liga-4569.png"
+    },
+    {
       "utc": "2026-08-23T19:30:00Z",
       "home": {
         "nama": "Elche",
@@ -61,7 +80,7 @@
       "liga_lambang": "crest/liga-PD.png"
     },
     {
-      "utc": "2026-09-06T15:00:00Z",
+      "utc": "2026-09-06T14:15:00Z",
       "home": {
         "nama": "Valencia",
         "tla": "VAL",
@@ -76,26 +95,6 @@
       "lawan": "Valencia",
       "matchday": 4,
       "babak": "Jornada 4",
-      "venue": "",
-      "kompetisi": "LaLiga",
-      "liga_lambang": "crest/liga-PD.png"
-    },
-    {
-      "utc": "2026-09-13T15:00:00Z",
-      "home": {
-        "nama": "Levante",
-        "tla": "LEV",
-        "crest": "crest/88.png"
-      },
-      "away": {
-        "nama": "Barça",
-        "tla": "FCB",
-        "crest": "crest/81.png"
-      },
-      "kandang": false,
-      "lawan": "Levante",
-      "matchday": 5,
-      "babak": "Jornada 5",
       "venue": "",
       "kompetisi": "LaLiga",
       "liga_lambang": "crest/liga-PD.png"
