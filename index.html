@@ -307,7 +307,7 @@
      bobotnya dengan "Champions League". */
   .jh-komp{display:flex; align-items:center; justify-content:center; gap:11px; flex-wrap:wrap;}
   .jh-komp .lambang-liga{width:36px; height:31px;}
-  .jh-komp .lambang-liga[data-liga="PD"] img{width:53px; left:-9px; top:-3px;}
+
   .jh-komp span{font-size:19px; font-weight:800; color:var(--navy-900); letter-spacing:-.01em;}
   .jh-tanggal{font-size:14.5px; color:var(--muted); margin-top:9px;}
 
@@ -325,7 +325,10 @@
   /* max-width:none wajib: reset global img,svg{max-width:100%} di atas
      menjepit lebar gambar ke lebar span-nya, jadi pembesaran untuk
      memotong tulisan tidak pernah terjadi. */
-  .lambang-liga[data-liga="PD"] img{inset:auto; height:auto; max-width:none;}
+  /* Persen, bukan piksel: nilainya relatif terhadap kotak pembungkus,
+     jadi potongannya tetap tepat berapa pun ukuran kotaknya. */
+  .lambang-liga[data-liga="PD"] img{inset:auto; height:auto; max-width:none;
+    width:150%; left:-25%; top:-5%;}
   .jh-laga{
     display:grid; grid-template-columns:1fr auto 1fr; gap:14px;
     align-items:start; margin:22px auto 0; max-width:620px;
@@ -368,61 +371,89 @@
   /* Baris sisa: sengaja tanpa nama kompetisi tertulis — lambangnya sudah
      membawa nama itu, dan ruang yang dihemat dipakai kedua tim beserta
      lambangnya. Garis tegak memisahkan tiga kelompok yang dibaca berbeda:
-     kapan, di mana, siapa. */
-  .jadwal-baris{display:grid; gap:8px;}
-  /* Semua kolom SELEBAR ISINYA, sisanya disebar merata lewat space-between.
-     Dengan 1fr pada kolom tim, seluruh sisa lebar jatuh ke satu kolom dan
-     isinya yang dipusatkan menyisakan rongga menganga di kiri-kanan tim;
-     memindahkannya ke kolom terakhir cuma memindahkan rongganya, tidak
-     menghilangkannya. Disebar merata, jaraknya jadi seimbang di layar lebar
-     dan mengecil sendiri jadi sekadar sela begitu layar menyempit. */
+     kapan, di mana, siapa.
+
+     UKURANNYA PROPORSIONAL, BUKAN PIKSEL TETAP. Tiap unsur diukur dari
+     rancangan acuan sebagai persen lebar kartu, lalu ditulis dalam cqw
+     (1cqw = 1% lebar kartu). Piksel tetap tidak bisa benar di sini: angka
+     yang pas di 390px membuat setiap inisial tim terpotong di 360px —
+     lebar yang dipakai banyak ponsel Android — dan menyisakan rongga di
+     430px. Dengan cqw, komposisinya sama persis di setiap lebar layar,
+     yang memang inti dari rancangan acuannya.
+
+     clamp() memberi batas bawah supaya masih terbaca di layar sangat
+     sempit, dan batas atas supaya tidak menggelembung di kartu desktop
+     selebar 1000px. Nilai px di depan cqw adalah cadangan untuk peramban
+     tanpa container query. */
+  .jadwal-baris{display:grid; gap:8px; container-type:inline-size;}
   .jb{
-    display:grid; grid-template-columns:repeat(5,auto); justify-content:space-between;
-    align-items:center; gap:11px;
+    display:grid; grid-template-columns:repeat(5,auto); justify-content:center;
+    align-items:center;
+    gap:9px; gap:clamp(4px,2.9cqw,26px);
     background:var(--paper); border:1px solid var(--line); border-radius:12px;
-    padding:13px 15px;
+    padding:12px 9px; padding:clamp(10px,1.5cqw,18px) clamp(5px,2.1cqw,20px);
   }
-  .jb-liga{width:21px; height:20px; justify-self:center;}
-  .jb-liga[data-liga="PD"] img{width:32px; left:-5.5px; top:-1px;}
+  .jb-liga{
+    width:13px; width:clamp(9px,3.9cqw,25px);
+    height:12px; height:clamp(8.5px,3.6cqw,23px);
+    justify-self:center;
+  }
   .jb-liga-teks{font-size:10.5px; font-weight:800; color:var(--muted); white-space:nowrap;}
   .jb-tgl{
-    font-size:11.5px; font-weight:800; color:var(--navy-900); line-height:1.3;
+    font-size:9px; font-size:clamp(7px,2.75cqw,13px);
+    font-weight:800; color:var(--navy-900); line-height:1.3;
     text-transform:uppercase; letter-spacing:.02em; white-space:nowrap;
   }
   .jb-tgl span{display:block; font-variant-numeric:tabular-nums;}
-  .jb-pisah{padding-left:12px; border-left:1px solid var(--line);}
+  .jb-pisah{padding-left:9px; padding-left:clamp(4px,2.9cqw,26px); border-left:1px solid var(--line);}
   .jb-arah{display:grid; place-items:center;}
-  .jb-arah svg{width:27px; height:27px; color:var(--red);}
-  .jb-duel{display:flex; align-items:center; justify-content:center; gap:9px; min-width:0;}
-  .jb-duel img{width:28px; height:28px; object-fit:contain; flex:none;}
+  .jb-arah svg{
+    width:22px; width:clamp(15px,5.9cqw,33px);
+    height:22px; height:clamp(15px,5.9cqw,33px);
+    color:var(--red);
+  }
+  .jb-duel{
+    display:flex; align-items:center; justify-content:center;
+    gap:4px; gap:clamp(2.5px,1.2cqw,11px); min-width:0;
+  }
+  .jb-duel img{
+    width:22px; width:clamp(15px,5.9cqw,33px);
+    height:22px; height:clamp(15px,5.9cqw,33px);
+    object-fit:contain; flex:none;
+  }
   /* Terpotong elipsis, bukan mendorong baris sampai meluber: berkas jadwal
      lama belum punya tla, jadi nama penuh bisa muncul di layar sempit. */
   .jb-duel b{
-    font-size:14.5px; font-weight:800; color:var(--ink); white-space:nowrap;
+    font-size:13.5px; font-size:clamp(9.5px,3.7cqw,17px);
+    font-weight:800; color:var(--ink); white-space:nowrap;
     overflow:hidden; text-overflow:ellipsis; min-width:0;
   }
-  .jb-duel .vs{font-size:9px; font-weight:800; color:var(--red-700); flex:none;}
+  .jb-duel .vs{font-size:9px; font-size:clamp(6.5px,2.5cqw,11.5px); font-weight:800; color:var(--red-700); flex:none;}
   .jb-kanan{text-align:right; line-height:1.3;}
   .jb-kanan b{
     display:block; font-family:var(--font-angka); font-variant-numeric:tabular-nums;
-    font-size:13.5px; font-weight:700; color:var(--red-700); white-space:nowrap;
+    font-size:13.5px; font-size:clamp(9px,3.6cqw,17px);
+    font-weight:700; color:var(--red-700); white-space:nowrap;
   }
   /* WITA memakai huruf teks biasa, bukan huruf angka: ia bukan angka, dan
      lebar tetap huruf angka membuatnya jauh lebih lebar dari perlunya. */
   .jb-kanan i{
-    font-family:inherit; font-style:normal; font-weight:800; font-size:9px;
+    font-family:inherit; font-style:normal; font-weight:800;
+    font-size:8.5px; font-size:clamp(6px,2.3cqw,11px);
     color:var(--muted); letter-spacing:.03em; margin-left:3px;
   }
   .jb-kanan span{
-    display:block; max-width:64px; margin-left:auto; line-height:1.2;
-    font-size:9.5px; font-weight:800; color:var(--muted);
-    text-transform:uppercase; letter-spacing:.04em;
+    display:block; margin-left:auto; line-height:1.2;
+    max-width:60px; max-width:clamp(37px,17cqw,95px);
+    font-size:9px; font-size:clamp(7px,2.5cqw,11.5px);
+    font-weight:800; color:var(--muted);
+    text-transform:uppercase; letter-spacing:.02em;
   }
   @media (max-width:560px){
     .jh{padding:20px 14px 16px; border-radius:18px;}
     .jh-komp{gap:9px;}
     .jh-komp .lambang-liga{width:32px; height:27px;}
-    .jh-komp .lambang-liga[data-liga="PD"] img{width:47px; left:-8px; top:-2px;}
+
     .jh-komp span{font-size:17px;}
     .jh-tanggal{font-size:13.5px; margin-top:7px;}
     .jh-laga{gap:8px; margin-top:18px;}
@@ -435,32 +466,6 @@
     .jh-tempat{margin-top:18px; padding-top:14px; gap:9px; font-size:13.5px;}
     .jh-tempat svg{width:23px; height:23px;}
     .jh-tempat .venue{font-size:11.5px;}
-    /* Setiap piksel di bawah ini sudah diukur, bukan ditebak: di 390px baris
-       ini pas tanpa sisa, dan melebarkan satu kolom berarti kolom lain
-       memendekkan isinya. Prioritasnya nama tim tetap utuh, label babak
-       boleh turun baris. */
-    /* Barisnya terikat lebar, bukan tinggi. Menaikkan tinggi gratis; membuka
-       sela mendatar tidak — tiap piksel sela harus diambil dari kolom lain.
-       Sela lambang-ke-nama dinaikkan dari 3px ke 5px karena itu yang paling
-       terasa mampat, dan biayanya disebar tipis: lambang 21->19, inisial
-       13,5->12,5, tanggal 10,5->10, label babak 9->8,5. */
-    /* Lambang tim diperbesar 19->22. Biayanya diambil dari sela ANTAR
-       kelompok dan ukuran huruf, bukan dari sela lambang-ke-nama: sela itu
-       yang dulu terasa mampat, jadi ia dipertahankan di 5px. */
-    .jb{gap:4px; padding:12px 9px;}
-    .jb-liga{width:17px; height:16px;}
-    .jb-liga[data-liga="PD"] img{width:25.5px; left:-4.2px; top:-.8px;}
-    .jb-tgl{font-size:9px;}
-    .jb-pisah{padding-left:3px;}
-    .jb-arah svg{width:22px; height:22px;}
-    .jb-duel{gap:5px;}
-    .jb-duel img{width:23px; height:23px;}
-    .jb-duel b{font-size:12px;}
-    .jb-duel .vs{font-size:8px;}
-    .jb-kanan span{max-width:62px; font-size:9px; letter-spacing:.01em;}
-    .jb-kanan i{font-size:8.5px; margin-left:2px;}
-    .jb-kanan b{font-size:12px;}
-    .jb-kanan span{font-size:9px;}
   }
   .jadwal-nb{font-size:12px; color:var(--muted); margin-top:14px;}
 
@@ -1183,7 +1188,7 @@
         // Lubang lapangannya dibuat lewat fill-rule, bukan bentuk putih di
         // atasnya — supaya ikonnya tetap benar di latar warna apa pun.
         var IKON = {
-          kandang: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 11.2v3.1c0 2.6-4.5 4.7-10 4.7S2 16.9 2 14.3v-3.1c1.9 2 5.6 3.3 10 3.3s8.1-1.3 10-3.3Z" opacity=".45"/><path fill-rule="evenodd" d="M12 5.1c-5.5 0-10 2.1-10 4.7s4.5 4.7 10 4.7 10-2.1 10-4.7-4.5-4.7-10-4.7Zm0 3.1c2.7 0 4.9.9 4.9 1.9s-2.2 1.9-4.9 1.9-4.9-.9-4.9-1.9 2.2-1.9 4.9-1.9Z"/></svg>',
+          kandang: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.4 10.6v3.7c0 2.7-4.7 4.8-10.4 4.8S1.6 17 1.6 14.3v-3.7c2 2.1 5.8 3.4 10.4 3.4s8.4-1.3 10.4-3.4Z" opacity=".4"/><path fill-rule="evenodd" d="M12 4.9C6.3 4.9 1.6 7 1.6 9.7s4.7 4.8 10.4 4.8 10.4-2.1 10.4-4.8S17.7 4.9 12 4.9Zm0 3.6c2.1 0 3.8.55 3.8 1.2s-1.7 1.2-3.8 1.2-3.8-.55-3.8-1.2S9.9 8.5 12 8.5Z"/></svg>',
           tandang: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>'
         };
 
