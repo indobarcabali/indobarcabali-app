@@ -307,6 +307,7 @@
      bobotnya dengan "Champions League". */
   .jh-komp{display:flex; align-items:center; justify-content:center; gap:11px; flex-wrap:wrap;}
   .jh-komp .lambang-liga{width:36px; height:31px;}
+  .jh-komp .lambang-liga[data-liga="PD"]{width:48px; height:32px;}
 
   .jh-komp span{font-size:19px; font-weight:800; color:var(--navy-900); letter-spacing:-.01em;}
   .jh-tanggal{font-size:14.5px; color:var(--muted); margin-top:9px;}
@@ -320,15 +321,17 @@
   /* NAMA KELASNYA JANGAN "liga": halaman ini sudah memakai .liga untuk
      section Turnamen, lengkap dengan padding 40px — span lambang akan
      mewarisinya dan tumbuh jadi 80px. */
-  .lambang-liga{display:block; position:relative; overflow:hidden; flex:none;}
-  .lambang-liga img{position:absolute; inset:0; width:100%; height:100%; object-fit:contain;}
-  /* max-width:none wajib: reset global img,svg{max-width:100%} di atas
-     menjepit lebar gambar ke lebar span-nya, jadi pembesaran untuk
-     memotong tulisan tidak pernah terjadi. */
-  /* Persen, bukan piksel: nilainya relatif terhadap kotak pembungkus,
-     jadi potongannya tetap tepat berapa pun ukuran kotaknya. */
-  .lambang-liga[data-liga="PD"] img{inset:auto; height:auto; max-width:none;
-    width:150%; left:-25%; top:-5%;}
+  .lambang-liga{display:block; overflow:hidden; flex:none;}
+  .lambang-liga img{display:block; width:100%; height:100%; object-fit:contain;}
+  /* Potongan tulisan LaLiga memakai object-fit, BUKAN gambar berposisi
+     absolut yang digeser. Cara lama — position:absolute + width:150% +
+     height:auto — tampil benar di Chrome, tetapi WebKit menghitung tinggi
+     gambar semacam itu jadi nol, sehingga di peramban ponsel lambangnya
+     HILANG sama sekali. Di sini gambarnya elemen biasa: kotaknya dibuat 3:2
+     dan cover-dari-atas menampilkan dua pertiga bagian atas berkas persegi
+     itu — persis tandanya, tanpa tulisan di bawahnya. Tidak ada penempatan
+     absolut dan tidak ada persen yang perlu diselesaikan peramban. */
+  .lambang-liga[data-liga="PD"] img{object-fit:cover; object-position:center top;}
   .jh-laga{
     display:grid; grid-template-columns:1fr auto 1fr; gap:14px;
     align-items:start; margin:22px auto 0; max-width:620px;
@@ -411,9 +414,16 @@
      jadi noda merah. Ruangnya ada — baris tersempit menyisakan 18px di 390px
      dan 6px di 320px, dan pembesaran ini masih di dalam keduanya. */
   .jb-liga{
-    width:26px; width:clamp(21px,10.2cqw,36px);
-    height:24px; height:clamp(19px,9.4cqw,34px);
+    width:16px; width:clamp(16px,6.2cqw,33px);
+    height:16px; height:clamp(16px,6.2cqw,33px);
     justify-self:center;
+  }
+  /* Kotak LaLiga lebih lebar dan 3:2 karena hanya bagian atas berkasnya yang
+     tampil. Tandanya mengisi 65% lebar berkas, jadi kotak 9,1% lebar kartu
+     membuat tandanya jatuh di 5,9% — sama besar dengan lambang tim. */
+  .jb-liga[data-liga="PD"]{
+    width:23px; width:clamp(23px,9.1cqw,51px);
+    height:15px; height:clamp(15px,6.06cqw,34px);
   }
   .jb-liga-teks{font-size:10.5px; font-weight:800; color:var(--muted); white-space:nowrap;}
   .jb-tgl{
@@ -463,6 +473,7 @@
     .jh{padding:20px 14px 16px; border-radius:18px;}
     .jh-komp{gap:9px;}
     .jh-komp .lambang-liga{width:32px; height:27px;}
+    .jh-komp .lambang-liga[data-liga="PD"]{width:42px; height:28px;}
 
     .jh-komp span{font-size:17px;}
     .jh-tanggal{font-size:13.5px; margin-top:7px;}
