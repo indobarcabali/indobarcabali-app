@@ -2,38 +2,83 @@
   "pertandingan": [
     {
       "utc": "2026-08-23T19:30:00Z",
-      "lawan": "Elche",
-      "crest": "crest/285.png",
+      "home": {
+        "nama": "Elche",
+        "crest": "crest/285.png"
+      },
+      "away": {
+        "nama": "Barça",
+        "crest": "crest/81.png"
+      },
       "kandang": false,
-      "kompetisi": "Primera Division"
+      "lawan": "Elche",
+      "matchday": 2,
+      "kompetisi": "Primera Division",
+      "liga_lambang": "crest/liga-PD.png"
     },
     {
       "utc": "2026-08-27T19:00:00Z",
-      "lawan": "Athletic",
-      "crest": "crest/77.png",
+      "home": {
+        "nama": "Barça",
+        "crest": "crest/81.png"
+      },
+      "away": {
+        "nama": "Athletic",
+        "crest": "crest/77.png"
+      },
       "kandang": true,
-      "kompetisi": "Primera Division"
+      "lawan": "Athletic",
+      "matchday": 1,
+      "kompetisi": "Primera Division",
+      "liga_lambang": "crest/liga-PD.png"
     },
     {
       "utc": "2026-08-31T19:30:00Z",
-      "lawan": "Rayo Vallecano",
-      "crest": "crest/87.png",
+      "home": {
+        "nama": "Barça",
+        "crest": "crest/81.png"
+      },
+      "away": {
+        "nama": "Rayo Vallecano",
+        "crest": "crest/87.png"
+      },
       "kandang": true,
-      "kompetisi": "Primera Division"
+      "lawan": "Rayo Vallecano",
+      "matchday": 3,
+      "kompetisi": "Primera Division",
+      "liga_lambang": "crest/liga-PD.png"
     },
     {
       "utc": "2026-09-06T15:00:00Z",
-      "lawan": "Valencia",
-      "crest": "crest/95.png",
+      "home": {
+        "nama": "Valencia",
+        "crest": "crest/95.png"
+      },
+      "away": {
+        "nama": "Barça",
+        "crest": "crest/81.png"
+      },
       "kandang": false,
-      "kompetisi": "Primera Division"
+      "lawan": "Valencia",
+      "matchday": 4,
+      "kompetisi": "Primera Division",
+      "liga_lambang": "crest/liga-PD.png"
     },
     {
       "utc": "2026-09-13T15:00:00Z",
-      "lawan": "Levante",
-      "crest": "crest/88.png",
+      "home": {
+        "nama": "Levante",
+        "crest": "crest/88.png"
+      },
+      "away": {
+        "nama": "Barça",
+        "crest": "crest/81.png"
+      },
       "kandang": false,
-      "kompetisi": "Primera Division"
+      "lawan": "Levante",
+      "matchday": 5,
+      "kompetisi": "Primera Division",
+      "liga_lambang": "crest/liga-PD.png"
     }
   ]
 }
