@@ -37,12 +37,14 @@ jobs:
 
       - name: Simpan kalau berubah
         run: |
-          if git diff --quiet -- jadwal.json; then
+          # Memakai git status, bukan git diff: berkas lambang yang baru
+          # diunduh masih TAK TERLACAK, dan git diff buta terhadapnya.
+          if [ -z "$(git status --porcelain -- jadwal.json crest)" ]; then
             echo "Tidak ada perubahan, tidak ada commit."
             exit 0
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add jadwal.json
+          git add jadwal.json crest
           git commit -m "Perbarui jadwal Barcelona (otomatis)"
           git push
