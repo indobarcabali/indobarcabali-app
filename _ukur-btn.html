@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0">
+<iframe id="f" src="/" style="width:390px;height:800px;border:0"></iframe><pre id="UJI"></pre>
+<script>var f=document.getElementById('f');f.onload=function(){setTimeout(function(){
+ var d=f.contentDocument,o=[],px=function(e){return e?e.getBoundingClientRect():{width:0,height:0}};
+ var doc=d.documentElement;
+ o.push('lebar dokumen vs viewport: '+doc.scrollWidth+' / '+doc.clientWidth+(doc.scrollWidth>doc.clientWidth?' <-- MELUBER':' ok'));
+ var btn=d.querySelector('.hero-cta .btn'), r=px(btn);
+ o.push('tombol Gabung: '+r.width.toFixed(1)+'x'+r.height.toFixed(1)+' | font='+getComputedStyle(btn).fontSize+' padding='+getComputedStyle(btn).padding);
+ var login=d.querySelectorAll('.nav .btn')[0] || d.querySelectorAll('.topnav .btn')[0];
+ document.getElementById('UJI').textContent=o.join('\n');},1500);};</script></body>
