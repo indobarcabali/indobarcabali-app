@@ -1,3 +1,34 @@
 {
-  "pertandingan": []
+  "pertandingan": [
+    {
+      "utc": "2026-08-23T19:30:00Z",
+      "lawan": "Elche",
+      "kandang": false,
+      "kompetisi": "Primera Division"
+    },
+    {
+      "utc": "2026-08-27T19:00:00Z",
+      "lawan": "Athletic",
+      "kandang": true,
+      "kompetisi": "Primera Division"
+    },
+    {
+      "utc": "2026-08-31T19:30:00Z",
+      "lawan": "Rayo Vallecano",
+      "kandang": true,
+      "kompetisi": "Primera Division"
+    },
+    {
+      "utc": "2026-09-06T15:00:00Z",
+      "lawan": "Valencia",
+      "kandang": false,
+      "kompetisi": "Primera Division"
+    },
+    {
+      "utc": "2026-09-13T15:00:00Z",
+      "lawan": "Levante",
+      "kandang": false,
+      "kompetisi": "Primera Division"
+    }
+  ]
 }
