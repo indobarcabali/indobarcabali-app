@@ -50,6 +50,15 @@
   if (document.fonts && document.fonts.ready) tunggu.push(document.fonts.ready);
   Promise.all(tunggu).then(tampil);
 })();
+
+/* Didaftarkan setelah event load supaya tidak berebut jaringan dengan cat
+   pertama halaman. Kegagalannya sengaja didiamkan: service worker itu
+   percepatan, bukan syarat — halaman harus tetap jalan tanpanya. */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function () {});
+  });
+}
 </script>
 <link rel="manifest" href="/site.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Indobarca Bali">
