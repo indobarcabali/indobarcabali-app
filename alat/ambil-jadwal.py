@@ -104,6 +104,18 @@ def ambil_jadwal(kunci: str) -> list:
 
 def ambil_klasemen(kunci: str) -> list:
     data = minta('https://api.football-data.org/v4/competitions/%s/standings' % LIGA, kunci)
+
+    # Menjelang musim baru, endpoint ini masih mengembalikan tabel AKHIR musim
+    # lalu — lengkap 38 pertandingan dan juaranya. Dipajang apa adanya, halaman
+    # akan mengumumkan Barca juara dengan 94 poin padahal musimnya belum
+    # dimulai. Karena itu musim yang sudah lewat tanggal akhirnya dibuang.
+    musim = data.get('season') or {}
+    habis = musim.get('endDate') or ''
+    if habis and habis < datetime.date.today().isoformat():
+        print('Klasemen dilewati: musim %s..%s sudah selesai.'
+              % (musim.get('startDate'), habis))
+        return []
+
     blok = None
     for s in data.get('standings', []):
         if s.get('type') == 'TOTAL':
@@ -111,6 +123,9 @@ def ambil_klasemen(kunci: str) -> list:
             break
     baris = (blok or {}).get('table', [])
     print('Klasemen: %d tim.' % len(baris))
+    if baris and not any((b.get('playedGames') or 0) > 0 for b in baris):
+        print('Klasemen dilewati: belum ada pertandingan dimainkan.')
+        return []
 
     keluar = []
     for b in baris:
