@@ -1,5 +1,10 @@
 <!doctype html>
-<html lang="id">
+<!-- Warna latar dipasang sebagai ATRIBUT, bukan hanya di blok <style> di
+     bawah: atribut ini diurai pada token pertama dokumen, jadi bingkai
+     paling awal yang digambar peramban sudah navy. Tanpa ini <html>
+     tidak punya latar sama sekali dan bingkai itu putih bawaan — persis
+     kedipan yang terlihat antara layar peluncur dan halaman. -->
+<html lang="id" style="background:#071744">
 <head>
 <meta charset="utf-8">
 <!-- viewport-fit=cover wajib berpasangan dengan status-bar black-translucent
@@ -16,6 +21,36 @@
      manifest, BUKAN lagi dari apple-mobile-web-app-title. Meta itu tetap
      dipasang untuk iOS lama; manifest yang menentukan di iOS baru dan di
      Android. -->
+<!-- Foto hero itu latar CSS seberat 416 KB; tanpa preload peramban baru
+     menemukannya setelah seluruh blok <style> diurai. -->
+<link rel="preload" as="image" href="/foto/hero.jpg" fetchpriority="high">
+<script>
+/* Dipasang di <head>, bukan di akhir <body>: kelasnya harus sudah menempel
+   sebelum peramban menggambar apa pun, kalau tidak isi halaman sempat
+   terlihat lebih dulu dan selubungnya justru menambah kedipan. */
+(function () {
+  var akar = document.documentElement, sudah = false;
+  akar.className += ' memuat';
+  var tampil = function () {
+    if (sudah) return;
+    sudah = true;
+    akar.className = akar.className.replace(/\s*\bmemuat\b/, '');
+  };
+  /* Jaring pengaman berlapis: batas waktu keras, plus event load. Foto
+     yang gagal diunduh atau jaringan yang menggantung tidak boleh
+     menyandera halaman. */
+  setTimeout(tampil, 1600);
+  window.addEventListener('load', tampil);
+  if (!window.Promise) return;
+  var tunggu = [new Promise(function (selesai) {
+    var im = new Image();
+    im.onload = im.onerror = selesai;
+    im.src = '/foto/hero.jpg';
+  })];
+  if (document.fonts && document.fonts.ready) tunggu.push(document.fonts.ready);
+  Promise.all(tunggu).then(tampil);
+})();
+</script>
 <link rel="manifest" href="/site.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Indobarca Bali">
 <!-- 180x180 adalah ukuran yang diminta iOS. Sebelumnya menunjuk icon.png
@@ -87,7 +122,7 @@
     --font-angka:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box;}
-  html{color-scheme:light; scroll-behavior:smooth;}
+  html{color-scheme:light; scroll-behavior:smooth; background:var(--navy-900);}
   /* Sasaran tautan menu adalah BATAS SECTION — strip biru/merah di
      pangkalnya — supaya pengunjung melihat sectionnya utuh dari awal,
      bukan mendarat di tengah-tengah isinya.
@@ -160,6 +195,23 @@
      /app, bukan navy halaman ini — supaya begitu halaman berganti tidak ada
      perubahan warna yang tertangkap mata. Yang dihilangkan bukan sekadar
      kekakuan, tapi kilatan putih yang muncul di antara dua halaman. */
+  /* Selubung sewarna layar peluncur yang memudar begitu foto hero dan
+     fontnya siap. Tujuannya menyambung splash ke halaman tanpa patahan:
+     tanpa ini isi halaman muncul sekaligus di tengah pemuatan, dan foto
+     hero menyusul belakangan sebagai lompatan tersendiri.
+
+     Kelas .memuat hanya dipasang oleh skrip. Kalau JS mati atau gagal,
+     kelas itu tidak pernah ada dan selubungnya lahir tak terlihat —
+     halaman yang tak pernah muncul jauh lebih buruk daripada transisi
+     yang kurang mulus. */
+  .selubung{
+    position:fixed; inset:0; z-index:200; background:var(--navy-900);
+    pointer-events:none; opacity:0; visibility:hidden;
+    transition:opacity .55s ease, visibility 0s linear .55s;
+  }
+  html.memuat .selubung{opacity:1; visibility:visible; transition:none;}
+  @media (prefers-reduced-motion:reduce){ .selubung{transition:none;} }
+
   .tirai{
     position:fixed; inset:0; z-index:100; background:#001138;
     opacity:0; pointer-events:none; transition:opacity .24s ease;
@@ -704,6 +756,7 @@
 </head>
 <body>
 
+<div class="selubung" aria-hidden="true"></div>
 <div class="tirai" id="tirai" aria-hidden="true"></div>
 
 <!-- Bar tipis yang menggantikan nav hero setelah tergulung habis. -->
