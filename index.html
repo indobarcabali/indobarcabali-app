@@ -266,6 +266,38 @@
   .about-body strong{color:var(--ink);}
   .learn{display:inline-flex; align-items:center; gap:7px; color:var(--red-700); font-weight:800; font-size:14px; text-decoration:none; margin-top:4px; border-bottom:1.5px solid var(--red-700); padding-bottom:2px;}
 
+  /* ================= JADWAL BARCELONA =================
+     Seluruh bagian ini lahir dalam keadaan hidden dan hanya dibuka JS
+     ketika benar-benar ada pertandingan yang belum lewat. Kalau datanya
+     gagal diambil, berkasnya basi, atau JS mati — bagian ini tidak pernah
+     muncul. Jadwal yang salah lebih merugikan daripada tidak ada jadwal. */
+  [hidden]{display:none !important;}
+  .jadwal .eyebrow{font-size:12.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
+  .jadwal h2{font-size:clamp(24px,3.4vw,32px); color:var(--navy-900); margin-top:10px;}
+  .jadwal-head{margin-bottom:18px;}
+  .jadwal-list{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .jd{
+    display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:center;
+    background:var(--paper); border:1px solid var(--line);
+    border-radius:14px; padding:14px 18px;
+  }
+  .jd-tgl{
+    font-family:var(--font-angka); font-variant-numeric:tabular-nums;
+    text-align:center; line-height:1.15; color:var(--navy-900); flex:none;
+    border-right:1px solid var(--line); padding-right:16px;
+  }
+  .jd-tgl b{display:block; font-size:20px; font-weight:600;}
+  .jd-tgl span{font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);}
+  .jd-nm{font-size:15px; font-weight:800; color:var(--navy-900);}
+  .jd-meta{font-size:12.5px; color:var(--muted); margin-top:3px;}
+  .jd-kandang{
+    display:inline-block; font-size:10px; font-weight:800; letter-spacing:.04em;
+    padding:2px 7px; border-radius:99px; margin-left:6px;
+    background:var(--yellow); color:var(--navy-900);
+  }
+  .jadwal-nb{font-size:12px; color:var(--muted); margin-top:14px;}
+  @media (max-width:760px){ .jadwal-list{grid-template-columns:1fr;} }
+
   /* ================= KEGIATAN ================= */
   .upcoming .head{margin-bottom:16px;}
   .upcoming h2{font-size:clamp(24px,3.2vw,32px); color:var(--navy-900);}
@@ -441,7 +473,7 @@
   /* Irama vertikal antar-section diatur SATU tempat, supaya jarak di atas
      dan di bawah tiap pemisah selalu sama. Pengecualiannya cuma sisi bawah
      .about — tiga fotonya memang dirancang menempel ke pemisah berikutnya. */
-  .upcoming,.store,.tawaran,.liga,.kata,.faq,.ajak{padding-top:40px; padding-bottom:40px;}
+  .jadwal,.upcoming,.store,.tawaran,.liga,.kata,.faq,.ajak{padding-top:40px; padding-bottom:40px;}
   .about{padding:40px 0 0;}
 </style>
 </head>
@@ -521,6 +553,19 @@
     <div class="about-photo about-p1" role="img" aria-label="Anggota Indobarca Bali berfoto bersama membawa bendera klub"></div>
     <div class="about-photo about-p2" role="img" aria-label="Tim Indobarca Bali berkumpul di lapangan"></div>
     <div class="about-photo about-p3" role="img" aria-label="Anggota berkumpul di dalam ruangan bersama spanduk komunitas"></div>
+  </div>
+</section>
+
+<!-- ================= JADWAL BARCELONA =================
+     Lahir hidden; dibuka JS hanya kalau ada pertandingan yang belum lewat. -->
+<section class="jadwal" id="jadwal" hidden>
+  <div class="container">
+    <div class="jadwal-head">
+      <div class="eyebrow">Jadwal Terdekat</div>
+      <h2>Pertandingan Barça Berikutnya</h2>
+    </div>
+    <div class="jadwal-list" id="jadwal-list"></div>
+    <p class="jadwal-nb">Waktu Bali (WITA). Jadwal dapat berubah sewaktu-waktu — pengumuman nobar tetap lewat grup WhatsApp.</p>
   </div>
 </section>
 
@@ -858,6 +903,57 @@
       if (history.pushState) history.pushState(null, '', '#' + id);
     });
   });
+
+  // ============ Jadwal pertandingan Barcelona ============
+  // Datanya berkas statis di server yang sama, ditulis GitHub Actions sekali
+  // sehari — bukan panggilan ke API luar dari peramban pengunjung. Karena itu
+  // tidak ada kunci yang terbuka, tidak ada CORS, dan halaman tetap tampil
+  // utuh walau sumber datanya sedang mati.
+  (function () {
+    var bagian = document.getElementById('jadwal');
+    var wadah = document.getElementById('jadwal-list');
+    if (!bagian || !wadah || !window.fetch) return;
+
+    var aman = function (s) {
+      return String(s).replace(/[&<>"]/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+      });
+    };
+    var WITA = { timeZone: 'Asia/Makassar' };
+    var gabung = function (a, b) {
+      var o = {}; for (var k in a) o[k] = a[k]; for (var j in b) o[j] = b[j]; return o;
+    };
+
+    fetch('/jadwal.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(function (d) {
+        var kini = Date.now();
+        // Menyaring yang sudah lewat di sisi peramban, bukan hanya saat
+        // diambil: dengan begitu berkas yang terlanjur basi mengosongkan
+        // diri sendiri alih-alih memajang pertandingan yang sudah usai.
+        var daftar = (d.pertandingan || []).filter(function (p) {
+          var t = Date.parse(p.utc);
+          return t && t > kini;
+        }).slice(0, 4);
+        if (!daftar.length) return;
+
+        wadah.innerHTML = daftar.map(function (p) {
+          var t = new Date(p.utc);
+          var tgl = t.toLocaleDateString('id-ID', gabung(WITA, { day: 'numeric' }));
+          var bln = t.toLocaleDateString('id-ID', gabung(WITA, { month: 'short' }));
+          var hari = t.toLocaleDateString('id-ID', gabung(WITA, { weekday: 'long' }));
+          var jam = t.toLocaleTimeString('id-ID', gabung(WITA, { hour: '2-digit', minute: '2-digit' }));
+          return '<div class="jd">' +
+            '<div class="jd-tgl"><b>' + aman(tgl) + '</b><span>' + aman(bln) + '</span></div>' +
+            '<div><div class="jd-nm">Barcelona vs ' + aman(p.lawan) +
+              (p.kandang ? '<span class="jd-kandang">KANDANG</span>' : '') + '</div>' +
+            '<div class="jd-meta">' + aman(hari) + ', ' + aman(jam) + ' WITA · ' + aman(p.kompetisi) + '</div>' +
+            '</div></div>';
+        }).join('');
+        bagian.hidden = false;
+      })
+      .catch(function () { /* diam: lebih baik tidak tampil daripada salah */ });
+  })();
 
   // ============ Perpindahan halus ke aplikasi ============
   var tirai = document.getElementById('tirai');
