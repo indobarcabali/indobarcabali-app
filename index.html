@@ -306,9 +306,26 @@
      memutuskan apakah laganya layak ditunggu, dan "LaLiga" tidak sama
      bobotnya dengan "Champions League". */
   .jh-komp{display:flex; align-items:center; justify-content:center; gap:11px; flex-wrap:wrap;}
-  .jh-komp img{height:27px; width:auto; max-width:80px; object-fit:contain;}
-  .jh-komp span{font-size:18px; font-weight:800; color:var(--navy-900); letter-spacing:-.01em;}
+  .jh-komp .lambang-liga{width:36px; height:31px;}
+  .jh-komp .lambang-liga[data-liga="PD"] img{width:53px; left:-9px; top:-3px;}
+  .jh-komp span{font-size:19px; font-weight:800; color:var(--navy-900); letter-spacing:-.01em;}
   .jh-tanggal{font-size:14.5px; color:var(--muted); margin-top:9px;}
+
+  /* Lambang kompetisi punya isi yang berbeda-beda: milik LaLiga memuat tanda
+     DAN tulisan "LALIGA" di bawahnya dalam satu berkas 200x200, sehingga
+     diskalakan ke tinggi baris tandanya tinggal remah. Jendela ini memotong
+     tulisannya. Ditandai per kompetisi, bukan diterapkan ke semua: lambang
+     Liga Champions dan Copa del Rey tidak bertulisan dan akan kehilangan
+     separuh badannya kalau ikut dipangkas. */
+  /* NAMA KELASNYA JANGAN "liga": halaman ini sudah memakai .liga untuk
+     section Turnamen, lengkap dengan padding 40px — span lambang akan
+     mewarisinya dan tumbuh jadi 80px. */
+  .lambang-liga{display:block; position:relative; overflow:hidden; flex:none;}
+  .lambang-liga img{position:absolute; inset:0; width:100%; height:100%; object-fit:contain;}
+  /* max-width:none wajib: reset global img,svg{max-width:100%} di atas
+     menjepit lebar gambar ke lebar span-nya, jadi pembesaran untuk
+     memotong tulisan tidak pernah terjadi. */
+  .lambang-liga[data-liga="PD"] img{inset:auto; height:auto; max-width:none;}
   .jh-laga{
     display:grid; grid-template-columns:1fr auto 1fr; gap:14px;
     align-items:start; margin:22px auto 0; max-width:620px;
@@ -342,7 +359,7 @@
     font-size:14px; font-weight:800; color:var(--navy-900);
     letter-spacing:.06em; text-transform:uppercase;
   }
-  .jh-tempat svg{width:23px; height:23px; flex:none; color:var(--red);}
+  .jh-tempat svg{width:24px; height:24px; flex:none; color:var(--red);}
   .jh-tempat .venue{
     font-size:12.5px; font-weight:600; color:var(--muted);
     letter-spacing:0; text-transform:none;
@@ -355,33 +372,34 @@
   .jadwal-baris{display:grid; gap:8px;}
   .jb{
     display:grid; grid-template-columns:auto auto auto 1fr auto;
-    align-items:center; gap:10px;
+    align-items:center; gap:9px;
     background:var(--paper); border:1px solid var(--line); border-radius:12px;
     padding:9px 13px;
   }
-  .jb-liga{height:23px; width:auto; max-width:28px; object-fit:contain; justify-self:center;}
+  .jb-liga{width:21px; height:20px; justify-self:center;}
+  .jb-liga[data-liga="PD"] img{width:32px; left:-5.5px; top:-1px;}
   .jb-liga-teks{font-size:10.5px; font-weight:800; color:var(--muted); white-space:nowrap;}
   .jb-tgl{
-    font-size:11px; font-weight:800; color:var(--navy-900); line-height:1.3;
+    font-size:11.5px; font-weight:800; color:var(--navy-900); line-height:1.3;
     text-transform:uppercase; letter-spacing:.02em; white-space:nowrap;
   }
   .jb-tgl span{display:block; font-variant-numeric:tabular-nums;}
   .jb-pisah{padding-left:10px; border-left:1px solid var(--line);}
   .jb-arah{display:grid; place-items:center;}
-  .jb-arah svg{width:25px; height:25px; color:var(--red);}
+  .jb-arah svg{width:27px; height:27px; color:var(--red);}
   .jb-duel{display:flex; align-items:center; justify-content:center; gap:6px; min-width:0;}
-  .jb-duel img{width:23px; height:23px; object-fit:contain; flex:none;}
+  .jb-duel img{width:25px; height:25px; object-fit:contain; flex:none;}
   /* Terpotong elipsis, bukan mendorong baris sampai meluber: berkas jadwal
      lama belum punya tla, jadi nama penuh bisa muncul di layar sempit. */
   .jb-duel b{
-    font-size:13.5px; font-weight:800; color:var(--ink); white-space:nowrap;
+    font-size:14.5px; font-weight:800; color:var(--ink); white-space:nowrap;
     overflow:hidden; text-overflow:ellipsis; min-width:0;
   }
   .jb-duel .vs{font-size:9px; font-weight:800; color:var(--red-700); flex:none;}
   .jb-kanan{text-align:right; line-height:1.3;}
   .jb-kanan b{
     display:block; font-family:var(--font-angka); font-variant-numeric:tabular-nums;
-    font-size:13px; font-weight:700; color:var(--red-700); white-space:nowrap;
+    font-size:13.5px; font-weight:700; color:var(--red-700); white-space:nowrap;
   }
   .jb-kanan span{
     display:block; max-width:64px; margin-left:auto; line-height:1.2;
@@ -391,9 +409,10 @@
   @media (max-width:560px){
     .jh{padding:20px 14px 16px; border-radius:18px;}
     .jh-komp{gap:9px;}
-    .jh-komp img{height:23px;}
-    .jh-komp span{font-size:15.5px;}
-    .jh-tanggal{font-size:13px; margin-top:7px;}
+    .jh-komp .lambang-liga{width:32px; height:27px;}
+    .jh-komp .lambang-liga[data-liga="PD"] img{width:47px; left:-8px; top:-2px;}
+    .jh-komp span{font-size:17px;}
+    .jh-tanggal{font-size:13.5px; margin-top:7px;}
     .jh-laga{gap:8px; margin-top:18px;}
     .jh-lambang{width:74px; height:74px;}
     .jh-lambang img{width:46px; height:46px;}
@@ -401,22 +420,23 @@
     .jh-sisi b{font-size:12.5px;}
     .jh-tengah{padding-top:16px; gap:7px;}
     .jh-mundur{font-size:11.5px; padding:8px 13px;}
-    .jh-tempat{margin-top:18px; padding-top:14px; gap:9px; font-size:12.5px;}
-    .jh-tempat svg{width:20px; height:20px;}
+    .jh-tempat{margin-top:18px; padding-top:14px; gap:9px; font-size:13.5px;}
+    .jh-tempat svg{width:23px; height:23px;}
     .jh-tempat .venue{font-size:11.5px;}
     /* Setiap piksel di bawah ini sudah diukur, bukan ditebak: di 390px baris
        ini pas tanpa sisa, dan melebarkan satu kolom berarti kolom lain
        memendekkan isinya. Prioritasnya nama tim tetap utuh, label babak
        boleh turun baris. */
-    .jb{gap:5px; padding:8px 9px;}
-    .jb-liga{height:17px; max-width:19px;}
-    .jb-tgl{font-size:9px;}
-    .jb-pisah{padding-left:5px;}
-    .jb-arah svg{width:23px; height:23px;}
+    .jb{gap:4px; padding:8px 9px;}
+    .jb-liga{width:18px; height:17px;}
+    .jb-liga[data-liga="PD"] img{width:27px; left:-4.5px; top:-1px;}
+    .jb-tgl{font-size:10.5px;}
+    .jb-pisah{padding-left:4px;}
+    .jb-arah svg{width:22px; height:22px;}
     .jb-duel{gap:3px;}
-    .jb-duel img{width:17px; height:17px;}
-    .jb-duel b{font-size:12.5px;}
-    .jb-kanan span{max-width:60px; font-size:8.5px; letter-spacing:.01em;}
+    .jb-duel img{width:21px; height:21px;}
+    .jb-duel b{font-size:13.5px;}
+    .jb-kanan span{max-width:58px; font-size:9px; letter-spacing:.01em;}
     .jb-kanan b{font-size:12px;}
     .jb-kanan span{font-size:9px;}
   }
@@ -1163,6 +1183,17 @@
           return src ? '<img' + (kelas ? ' class="' + kelas + '"' : '') +
             ' src="' + aman(src) + '" alt="" loading="lazy">' : '';
         };
+        // Kode kompetisi diambil dari nama berkasnya (skrip menyimpannya
+        // sebagai liga-<kode>.png), bukan dari field terpisah — dengan begitu
+        // pemotongan tulisan pada lambang berlaku tanpa perlu jadwal.json
+        // ditulis ulang lebih dulu.
+        var lambangLiga = function (p, kelas) {
+          if (!p.liga_lambang) return '';
+          var kode = (p.liga_lambang.match(/liga-([A-Za-z0-9]+)\./) || [])[1] || '';
+          return '<span class="lambang-liga ' + kelas + '" data-liga="' + aman(kode) + '">' +
+            '<img src="' + aman(p.liga_lambang) + '" alt="' + aman(p.kompetisi) + '" loading="lazy">' +
+          '</span>';
+        };
 
         // ---- Kartu utama: laga terdekat ----
         var utama = daftar[0];
@@ -1175,7 +1206,7 @@
         var babakU = babakDari(utama);
         var arahU = utama.kandang ? 'kandang' : 'tandang';
         var html = '<article class="jh">' +
-          '<div class="jh-komp">' + gambar(utama.liga_lambang) +
+          '<div class="jh-komp">' + lambangLiga(utama, '') +
             '<span>' + aman(utama.kompetisi) +
               (babakU ? ' — ' + aman(babakU) : '') + '</span>' +
           '</div>' +
@@ -1206,7 +1237,7 @@
             };
             return '<div class="jb">' +
               (p.liga_lambang
-                ? '<img class="jb-liga" src="' + aman(p.liga_lambang) + '" alt="' + aman(p.kompetisi) + '" loading="lazy">'
+                ? lambangLiga(p, 'jb-liga')
                 : '<span class="jb-liga-teks">' + aman(p.kompetisi) + '</span>') +
               '<span class="jb-tgl">' +
                 aman(t.toLocaleDateString('id-ID', gabung(WITA, { weekday: 'long' })).toUpperCase()) +
