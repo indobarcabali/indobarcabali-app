@@ -4,80 +4,90 @@
       "utc": "2026-08-23T19:30:00Z",
       "home": {
         "nama": "Elche",
+        "tla": "ELC",
         "crest": "crest/285.png"
       },
       "away": {
         "nama": "Barça",
+        "tla": "FCB",
         "crest": "crest/81.png"
       },
       "kandang": false,
       "lawan": "Elche",
       "matchday": 2,
-      "kompetisi": "Primera Division",
+      "kompetisi": "LaLiga",
       "liga_lambang": "crest/liga-PD.png"
     },
     {
       "utc": "2026-08-27T19:00:00Z",
       "home": {
         "nama": "Barça",
+        "tla": "FCB",
         "crest": "crest/81.png"
       },
       "away": {
         "nama": "Athletic",
+        "tla": "ATH",
         "crest": "crest/77.png"
       },
       "kandang": true,
       "lawan": "Athletic",
       "matchday": 1,
-      "kompetisi": "Primera Division",
+      "kompetisi": "LaLiga",
       "liga_lambang": "crest/liga-PD.png"
     },
     {
       "utc": "2026-08-31T19:30:00Z",
       "home": {
         "nama": "Barça",
+        "tla": "FCB",
         "crest": "crest/81.png"
       },
       "away": {
         "nama": "Rayo Vallecano",
+        "tla": "RAY",
         "crest": "crest/87.png"
       },
       "kandang": true,
       "lawan": "Rayo Vallecano",
       "matchday": 3,
-      "kompetisi": "Primera Division",
+      "kompetisi": "LaLiga",
       "liga_lambang": "crest/liga-PD.png"
     },
     {
       "utc": "2026-09-06T15:00:00Z",
       "home": {
         "nama": "Valencia",
+        "tla": "VAL",
         "crest": "crest/95.png"
       },
       "away": {
         "nama": "Barça",
+        "tla": "FCB",
         "crest": "crest/81.png"
       },
       "kandang": false,
       "lawan": "Valencia",
       "matchday": 4,
-      "kompetisi": "Primera Division",
+      "kompetisi": "LaLiga",
       "liga_lambang": "crest/liga-PD.png"
     },
     {
       "utc": "2026-09-13T15:00:00Z",
       "home": {
         "nama": "Levante",
+        "tla": "LEV",
         "crest": "crest/88.png"
       },
       "away": {
         "nama": "Barça",
+        "tla": "FCB",
         "crest": "crest/81.png"
       },
       "kandang": false,
       "lawan": "Levante",
       "matchday": 5,
-      "kompetisi": "Primera Division",
+      "kompetisi": "LaLiga",
       "liga_lambang": "crest/liga-PD.png"
     }
   ]
