@@ -15,6 +15,7 @@ menyembunyikan pertandingan yang tanggalnya lewat, jadi berkas basi akan
 mengosongkan diri sendiri — jauh lebih baik daripada menimpanya dengan
 daftar kosong setiap kali API sedang bermasalah.
 """
+import datetime
 import json
 import os
 import pathlib
@@ -28,15 +29,36 @@ AKAR = pathlib.Path(__file__).resolve().parent.parent
 TUJUAN = AKAR / 'jadwal.json'
 
 
+# Sengaja TIDAK memakai status=SCHEDULED. football-data.org menandai
+# pertandingan yang jam mainnya sudah pasti sebagai TIMED, dan yang jadwalnya
+# belum pasti sebagai SCHEDULED — menyaring salah satunya saja membuat hasil
+# kosong padahal datanya ada. Yang dipakai rentang tanggal, lalu yang sudah
+# usai disaring di sini.
+SELESAI = {'FINISHED', 'AWARDED', 'CANCELLED', 'POSTPONED', 'SUSPENDED'}
+
+
 def ambil(kunci: str) -> list:
+    hari_ini = datetime.date.today()
     url = ('https://api.football-data.org/v4/teams/%d/matches'
-           '?status=SCHEDULED&limit=%d' % (TIM, JUMLAH))
+           '?dateFrom=%s&dateTo=%s' % (TIM, hari_ini, hari_ini + datetime.timedelta(days=90)))
     req = urllib.request.Request(url, headers={'X-Auth-Token': kunci})
     with urllib.request.urlopen(req, timeout=30) as r:
         data = json.load(r)
 
+    semua = data.get('matches', [])
+    print('API mengembalikan %d pertandingan dalam 90 hari ke depan.' % len(semua))
+    if semua:
+        dilihat = {}
+        for m in semua:
+            dilihat[m.get('status')] = dilihat.get(m.get('status'), 0) + 1
+        print('  status yang ada: %s' % dilihat)
+
     keluar = []
-    for m in data.get('matches', []):
+    for m in sorted(semua, key=lambda x: x.get('utcDate') or ''):
+        if m.get('status') in SELESAI:
+            continue
+        if len(keluar) >= JUMLAH:
+            break
         kandang = (m.get('homeTeam', {}).get('id') == TIM)
         lawan = (m.get('awayTeam') if kandang else m.get('homeTeam')) or {}
         keluar.append({
@@ -55,14 +77,24 @@ def main() -> None:
 
     try:
         pertandingan = ambil(kunci)
-    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, ValueError) as e:
+    except urllib.error.HTTPError as e:
+        # Peringatan GitHub, bukan sekadar cetakan: kegagalan yang cuma
+        # tercetak di log terlalu mudah luput karena langkahnya tetap hijau.
+        print('::warning::football-data.org menolak: HTTP %s %s' % (e.code, e.reason))
+        try:
+            print('  balasan: %s' % e.read().decode()[:300])
+        except Exception:
+            pass
+        return
+    except (urllib.error.URLError, TimeoutError, ValueError) as e:
         # Sengaja keluar 0: kegagalan API bukan kegagalan build. Berkas lama
         # tetap dipakai, dan halaman menyaring yang sudah lewat sendiri.
-        print('Gagal mengambil jadwal (%s). Berkas lama dibiarkan.' % e)
+        print('::warning::Gagal mengambil jadwal (%s). Berkas lama dibiarkan.' % e)
         return
 
     if not pertandingan:
-        print('API tidak mengembalikan pertandingan. Berkas lama dibiarkan.')
+        print('::warning::Tidak ada pertandingan mendatang yang bisa dipakai. '
+              'Berkas lama dibiarkan.')
         return
 
     baru = json.dumps({'pertandingan': pertandingan}, ensure_ascii=False, indent=2) + '\n'
