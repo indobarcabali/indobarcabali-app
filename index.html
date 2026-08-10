@@ -494,20 +494,9 @@ if ('serviceWorker' in navigator) {
      390px baris tersempit menyisakan hampir 12px, tapi pada 320px cuma 1px.
      Sela yang lurus proporsional akan menghabiskan sisa itu di 320px dan
      memotong inisial tim, sementara di 390px justru meninggalkan rongga di
-     kiri lambang liga dan kanan jam.
-
-     Empat kelompok kiri (lambang, tanggal, ikon, duel) selebar isinya dan
-     dipadatkan ke kiri. Kolom KELIMA — pembungkus jam — dibuat 1fr dengan
-     isinya rata-kanan (justify-self:end pada .jb-kanan): sisa lebar baris
-     jatuh SELURUHNYA sebagai ruang lentur sebelum blok jam, bukan tersebar
-     ke tiap sela (itu pernah membuat garis pemisah mengambang jauh dari
-     kelompoknya di layar ~520px) atau menumpuk jadi rongga di sekitar tim
-     (itu pernah terjadi saat 1fr dipasang di kolom duel, bukan di sini).
-     Track 1fr tidak pernah lebih sempit dari isi minimalnya, jadi di layar
-     sesak (320px, nyaris tanpa sisa) hasilnya identik dengan sebelumnya —
-     lenturnya baru terasa begitu ada ruang lebih. */
+     kiri lambang liga dan kanan jam. */
   .jb{
-    display:grid; grid-template-columns:auto auto auto auto 1fr;
+    display:grid; grid-template-columns:repeat(5,auto); justify-content:center;
     align-items:center;
     gap:7px; gap:clamp(4px,calc(4.4cqw - 4.2px),24px);
     background:var(--paper); border:1px solid var(--line); border-radius:12px;
@@ -563,7 +552,7 @@ if ('serviceWorker' in navigator) {
     overflow:hidden; text-overflow:ellipsis; min-width:0;
   }
   .jb-duel .vs{font-size:6.5px; font-size:clamp(6.5px,2.5cqw,11.5px); font-weight:800; color:var(--red-700); flex:none;}
-  .jb-kanan{text-align:right; line-height:1.3; justify-self:end;}
+  .jb-kanan{text-align:right; line-height:1.3;}
   .jb-kanan b{
     display:block; font-family:var(--font-angka); font-variant-numeric:tabular-nums;
     font-size:8.2px; font-size:clamp(8.5px,3.2cqw,15px);
