@@ -383,8 +383,15 @@
 
      clamp() memberi batas bawah supaya masih terbaca di layar sangat
      sempit, dan batas atas supaya tidak menggelembung di kartu desktop
-     selebar 1000px. Nilai px di depan cqw adalah cadangan untuk peramban
-     tanpa container query. */
+     selebar 1000px.
+
+     NILAI PX DI DEPAN TIAP cqw ADALAH CADANGAN untuk peramban tanpa
+     container query, dan harus tetap utuh SEBAGAI SATU SET: semuanya
+     disetel ke angka yang dihasilkan cqw pada kartu 256px (layar 320px),
+     lebar tersempit yang masih dilayani. Pernah kejadian cadangan ini tertinggal dari tata letak
+     lama, dan hasilnya setiap inisial tim terpotong di peramban tanpa
+     container query — tidak terlihat sama sekali dari pengujian biasa.
+     Kalau salah satu angka cqw diubah, ubah juga px di depannya. */
   .jadwal-baris{display:grid; gap:8px; container-type:inline-size;}
   /* Sela tumbuh LEBIH CEPAT dari lebar kartu (5cqw dikurangi 5,5px), bukan
      lurus mengikutinya. Sisa lebar baris tidak sebanding dengan layar: pada
@@ -395,60 +402,60 @@
   .jb{
     display:grid; grid-template-columns:repeat(5,auto); justify-content:center;
     align-items:center;
-    gap:9px; gap:clamp(4px,calc(4.4cqw - 4.2px),24px);
+    gap:7px; gap:clamp(4px,calc(4.4cqw - 4.2px),24px);
     background:var(--paper); border:1px solid var(--line); border-radius:12px;
-    padding:12px 9px; padding:clamp(10px,1.5cqw,18px) clamp(5px,2.1cqw,20px);
+    padding:15px 5px; padding:clamp(14px,4.4cqw,22px) clamp(5px,2.1cqw,20px);
   }
   /* Lebih besar dari proporsi acuannya (3,9% jadi 6% lebar kartu): tanda
      LaLiga itu dua goresan tipis, dan pada 12px di layar ponsel ia menghilang
      jadi noda merah. Ruangnya ada — baris tersempit menyisakan 18px di 390px
      dan 6px di 320px, dan pembesaran ini masih di dalam keduanya. */
   .jb-liga{
-    width:28px; width:clamp(19px,8.6cqw,32px);
-    height:26px; height:clamp(17px,7.9cqw,30px);
+    width:26px; width:clamp(21px,10.2cqw,36px);
+    height:24px; height:clamp(19px,9.4cqw,34px);
     justify-self:center;
   }
   .jb-liga-teks{font-size:10.5px; font-weight:800; color:var(--muted); white-space:nowrap;}
   .jb-tgl{
-    font-size:9px; font-size:clamp(6.5px,2.45cqw,11.5px);
+    font-size:6.5px; font-size:clamp(6.5px,2.45cqw,11.5px);
     font-weight:800; color:var(--navy-900); line-height:1.3;
     text-transform:uppercase; letter-spacing:.02em; white-space:nowrap;
   }
   .jb-tgl span{display:block; font-variant-numeric:tabular-nums;}
-  .jb-pisah{padding-left:9px; padding-left:clamp(4px,calc(4.4cqw - 4.2px),24px); border-left:1px solid var(--line);}
+  .jb-pisah{padding-left:7px; padding-left:clamp(4px,calc(4.4cqw - 4.2px),24px); border-left:1px solid var(--line);}
   .jb-arah{display:grid; place-items:center;}
   .jb-arah svg{
-    width:22px; width:clamp(15px,5.9cqw,33px);
-    height:22px; height:clamp(15px,5.9cqw,33px);
+    width:15px; width:clamp(15px,5.9cqw,33px);
+    height:15px; height:clamp(15px,5.9cqw,33px);
     color:var(--red);
   }
   .jb-duel{
     display:flex; align-items:center; justify-content:center;
-    gap:4px; gap:clamp(2.5px,1.2cqw,11px); min-width:0;
+    gap:3px; gap:clamp(2.5px,1.2cqw,11px); min-width:0;
   }
   .jb-duel img{
-    width:22px; width:clamp(15px,5.9cqw,33px);
-    height:22px; height:clamp(15px,5.9cqw,33px);
+    width:15px; width:clamp(15px,5.9cqw,33px);
+    height:15px; height:clamp(15px,5.9cqw,33px);
     object-fit:contain; flex:none;
   }
   /* Terpotong elipsis, bukan mendorong baris sampai meluber: berkas jadwal
      lama belum punya tla, jadi nama penuh bisa muncul di layar sempit. */
   .jb-duel b{
-    font-size:13.5px; font-size:clamp(9.5px,3.7cqw,17px);
+    font-size:8.5px; font-size:clamp(8.5px,3.3cqw,15px);
     font-weight:800; color:var(--ink); white-space:nowrap;
     overflow:hidden; text-overflow:ellipsis; min-width:0;
   }
-  .jb-duel .vs{font-size:9px; font-size:clamp(6.5px,2.5cqw,11.5px); font-weight:800; color:var(--red-700); flex:none;}
+  .jb-duel .vs{font-size:6.5px; font-size:clamp(6.5px,2.5cqw,11.5px); font-weight:800; color:var(--red-700); flex:none;}
   .jb-kanan{text-align:right; line-height:1.3;}
   .jb-kanan b{
     display:block; font-family:var(--font-angka); font-variant-numeric:tabular-nums;
-    font-size:13.5px; font-size:clamp(8.5px,3.2cqw,15px);
+    font-size:8.2px; font-size:clamp(8.5px,3.2cqw,15px);
     font-weight:700; color:var(--red-700); white-space:nowrap;
   }
   .jb-kanan span{
     display:block; margin-left:auto; line-height:1.2;
-    max-width:60px; max-width:clamp(37px,15.5cqw,95px);
-    font-size:9px; font-size:clamp(6.5px,2.2cqw,10px);
+    max-width:40px; max-width:clamp(37px,15.5cqw,95px);
+    font-size:6.5px; font-size:clamp(6.5px,2.2cqw,10px);
     font-weight:800; color:var(--muted);
     text-transform:uppercase; letter-spacing:.02em;
   }
