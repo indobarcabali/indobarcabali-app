@@ -46,12 +46,11 @@ def minta(url: str, kunci: str) -> dict:
         return json.load(r)
 
 
-def simpan_crest(tim: dict) -> str:
-    """Unduh lambang satu tim kalau belum ada. Mengembalikan path relatifnya."""
-    url = tim.get('crest')
-    ident = tim.get('id')
+def simpan_lambang(url: str, ident, awalan: str = '') -> str:
+    """Unduh satu lambang kalau belum ada. Mengembalikan path relatifnya."""
     if not url or not ident:
         return ''
+    ident = '%s%s' % (awalan, ident)
     ext = '.svg' if url.lower().endswith('.svg') else '.png'
     nama = '%s%s' % (ident, ext)
     berkas = CREST / nama
@@ -90,14 +89,25 @@ def ambil_jadwal(kunci: str) -> list:
             continue
         if len(keluar) >= JUMLAH:
             break
-        kandang = (m.get('homeTeam', {}).get('id') == TIM)
-        lawan = (m.get('awayTeam') if kandang else m.get('homeTeam')) or {}
+        rumah = m.get('homeTeam') or {}
+        tamu = m.get('awayTeam') or {}
+        komp = m.get('competition') or {}
+        kandang = (rumah.get('id') == TIM)
+        lawan = tamu if kandang else rumah
         keluar.append({
             'utc': m.get('utcDate'),
-            'lawan': lawan.get('shortName') or lawan.get('name') or '?',
-            'crest': simpan_crest(lawan),
+            # Kedua tim disimpan utuh dan berurutan, bukan cuma "lawan":
+            # tata letaknya menampilkan tuan rumah di kiri dan tamu di kanan,
+            # dan urutan itu tidak bisa dipulihkan dari satu nama saja.
+            'home': {'nama': rumah.get('shortName') or rumah.get('name') or '?',
+                     'crest': simpan_lambang(rumah.get('crest'), rumah.get('id'))},
+            'away': {'nama': tamu.get('shortName') or tamu.get('name') or '?',
+                     'crest': simpan_lambang(tamu.get('crest'), tamu.get('id'))},
             'kandang': kandang,
-            'kompetisi': (m.get('competition') or {}).get('name') or '',
+            'lawan': lawan.get('shortName') or lawan.get('name') or '?',
+            'matchday': m.get('matchday'),
+            'kompetisi': komp.get('name') or '',
+            'liga_lambang': simpan_lambang(komp.get('emblem'), komp.get('code') or komp.get('id'), 'liga-'),
         })
     return keluar
 
@@ -140,7 +150,7 @@ def ambil_klasemen(kunci: str, musim: int) -> list:
         keluar.append({
             'pos': b.get('position'),
             'tim': tim.get('shortName') or tim.get('name') or '?',
-            'crest': simpan_crest(tim),
+            'crest': simpan_lambang(tim.get('crest'), tim.get('id')),
             'main': b.get('playedGames'),
             'sg': b.get('goalDifference'),
             'poin': b.get('points'),
