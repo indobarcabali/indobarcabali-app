@@ -372,9 +372,9 @@
   .jadwal-baris{display:grid; gap:8px;}
   .jb{
     display:grid; grid-template-columns:auto auto auto 1fr auto;
-    align-items:center; gap:9px;
+    align-items:center; gap:11px;
     background:var(--paper); border:1px solid var(--line); border-radius:12px;
-    padding:9px 13px;
+    padding:13px 15px;
   }
   .jb-liga{width:21px; height:20px; justify-self:center;}
   .jb-liga[data-liga="PD"] img{width:32px; left:-5.5px; top:-1px;}
@@ -384,10 +384,10 @@
     text-transform:uppercase; letter-spacing:.02em; white-space:nowrap;
   }
   .jb-tgl span{display:block; font-variant-numeric:tabular-nums;}
-  .jb-pisah{padding-left:10px; border-left:1px solid var(--line);}
+  .jb-pisah{padding-left:12px; border-left:1px solid var(--line);}
   .jb-arah{display:grid; place-items:center;}
   .jb-arah svg{width:27px; height:27px; color:var(--red);}
-  .jb-duel{display:flex; align-items:center; justify-content:center; gap:6px; min-width:0;}
+  .jb-duel{display:flex; align-items:center; justify-content:center; gap:9px; min-width:0;}
   .jb-duel img{width:25px; height:25px; object-fit:contain; flex:none;}
   /* Terpotong elipsis, bukan mendorong baris sampai meluber: berkas jadwal
      lama belum punya tla, jadi nama penuh bisa muncul di layar sempit. */
@@ -427,16 +427,22 @@
        ini pas tanpa sisa, dan melebarkan satu kolom berarti kolom lain
        memendekkan isinya. Prioritasnya nama tim tetap utuh, label babak
        boleh turun baris. */
-    .jb{gap:4px; padding:8px 9px;}
-    .jb-liga{width:18px; height:17px;}
-    .jb-liga[data-liga="PD"] img{width:27px; left:-4.5px; top:-1px;}
-    .jb-tgl{font-size:10.5px;}
+    /* Barisnya terikat lebar, bukan tinggi. Menaikkan tinggi gratis; membuka
+       sela mendatar tidak — tiap piksel sela harus diambil dari kolom lain.
+       Sela lambang-ke-nama dinaikkan dari 3px ke 5px karena itu yang paling
+       terasa mampat, dan biayanya disebar tipis: lambang 21->19, inisial
+       13,5->12,5, tanggal 10,5->10, label babak 9->8,5. */
+    .jb{gap:5px; padding:12px 9px;}
+    .jb-liga{width:17px; height:16px;}
+    .jb-liga[data-liga="PD"] img{width:25.5px; left:-4.2px; top:-.8px;}
+    .jb-tgl{font-size:9.5px;}
     .jb-pisah{padding-left:4px;}
     .jb-arah svg{width:22px; height:22px;}
-    .jb-duel{gap:3px;}
-    .jb-duel img{width:21px; height:21px;}
-    .jb-duel b{font-size:13.5px;}
-    .jb-kanan span{max-width:58px; font-size:9px; letter-spacing:.01em;}
+    .jb-duel{gap:5px;}
+    .jb-duel img{width:19px; height:19px;}
+    .jb-duel b{font-size:12.5px;}
+    .jb-duel .vs{font-size:8.5px;}
+    .jb-kanan span{max-width:62px; font-size:9px; letter-spacing:.01em;}
     .jb-kanan b{font-size:12px;}
     .jb-kanan span{font-size:9px;}
   }
