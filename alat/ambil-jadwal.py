@@ -102,19 +102,26 @@ def ambil_jadwal(kunci: str) -> list:
     return keluar
 
 
-def ambil_klasemen(kunci: str) -> list:
-    data = minta('https://api.football-data.org/v4/competitions/%s/standings' % LIGA, kunci)
+def musim_dari(tanggal_iso: str) -> int:
+    """Tahun awal musim untuk satu tanggal. Musim Eropa mulai Juli/Agustus,
+    jadi laga Januari 2027 masih milik musim 2026."""
+    t = datetime.date.fromisoformat(tanggal_iso[:10])
+    return t.year if t.month >= 7 else t.year - 1
 
-    # Menjelang musim baru, endpoint ini masih mengembalikan tabel AKHIR musim
-    # lalu — lengkap 38 pertandingan dan juaranya. Dipajang apa adanya, halaman
-    # akan mengumumkan Barca juara dengan 94 poin padahal musimnya belum
-    # dimulai. Karena itu musim yang sudah lewat tanggal akhirnya dibuang.
-    musim = data.get('season') or {}
-    habis = musim.get('endDate') or ''
-    if habis and habis < datetime.date.today().isoformat():
-        print('Klasemen dilewati: musim %s..%s sudah selesai.'
-              % (musim.get('startDate'), habis))
-        return []
+
+def ambil_klasemen(kunci: str, musim: int) -> list:
+    # Musimnya DIMINTA secara tegas, tidak dibiarkan menjadi default. Tanpa
+    # parameter ini, menjelang musim baru endpoint tetap mengembalikan tabel
+    # AKHIR musim lalu — lengkap 38 pertandingan dan juaranya — sehingga
+    # halaman mengumumkan Barca juara 94 poin padahal musimnya belum dimulai.
+    # Percobaan sebelumnya menyaring lewat season.endDate dan gagal, karena
+    # isi lapangan itu ternyata tidak seperti dugaan. Meminta musim yang sama
+    # dengan jadwalnya tidak bergantung pada tafsiran apa pun.
+    data = minta('https://api.football-data.org/v4/competitions/%s/standings'
+                 '?season=%d' % (LIGA, musim), kunci)
+    m = data.get('season') or {}
+    print('Klasemen: musim diminta %d, dilaporkan %s..%s, matchday %s'
+          % (musim, m.get('startDate'), m.get('endDate'), m.get('currentMatchday')))
 
     blok = None
     for s in data.get('standings', []):
@@ -165,7 +172,7 @@ def main() -> None:
     # Klasemen boleh gagal sendiri tanpa menjatuhkan jadwal: kompetisi bisa
     # sedang jeda, atau paketnya tidak mencakup liga ini.
     try:
-        klasemen = ambil_klasemen(kunci)
+        klasemen = ambil_klasemen(kunci, musim_dari(pertandingan[0]['utc']))
     except Exception as e:
         print('::warning::Klasemen gagal diambil (%s). Jadwal tetap diperbarui.' % e)
         klasemen = []
