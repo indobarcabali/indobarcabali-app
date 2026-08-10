@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Mengambil jadwal pertandingan FC Barcelona berikutnya dari football-data.org
-dan menuliskannya ke jadwal.json.
+Mengambil jadwal pertandingan dan klasemen dari football-data.org, lalu
+menuliskannya ke jadwal.json beserta lambang tim ke folder crest/.
 
 Dijalankan GitHub Actions, BUKAN dari peramban pengunjung — dengan begitu
 kunci API tersimpan sebagai rahasia repo dan tidak pernah sampai ke publik.
@@ -9,6 +9,10 @@ kunci API tersimpan sebagai rahasia repo dan tidak pernah sampai ke publik.
 Keluarannya berkas terpisah, sengaja TIDAK menyunting index.html: halaman itu
 disalin dari repo aplikasi setiap kali ada perubahan, jadi suntingan otomatis
 di sana akan tertimpa tanpa disadari.
+
+Lambang tim ikut diunduh, bukan ditaut ke server football-data.org: halaman
+ini sudah menanam font dan fotonya sendiri supaya tidak bergantung pada host
+lain saat dibuka, dan lambang tidak perlu jadi pengecualian.
 
 Kalau pengambilan gagal, berkas lama DIBIARKAN apa adanya. Halaman sudah
 menyembunyikan pertandingan yang tanggalnya lewat, jadi berkas basi akan
@@ -24,34 +28,61 @@ import urllib.error
 import urllib.request
 
 TIM = 81          # FC Barcelona
+LIGA = 'PD'       # Primera Division — termasuk paket gratis football-data.org
 JUMLAH = 5
 AKAR = pathlib.Path(__file__).resolve().parent.parent
 TUJUAN = AKAR / 'jadwal.json'
+CREST = AKAR / 'crest'
 
-
-# Sengaja TIDAK memakai status=SCHEDULED. football-data.org menandai
-# pertandingan yang jam mainnya sudah pasti sebagai TIMED, dan yang jadwalnya
-# belum pasti sebagai SCHEDULED — menyaring salah satunya saja membuat hasil
-# kosong padahal datanya ada. Yang dipakai rentang tanggal, lalu yang sudah
-# usai disaring di sini.
+# football-data.org menandai pertandingan yang jam mainnya sudah pasti sebagai
+# TIMED dan yang belum pasti sebagai SCHEDULED — menyaring salah satunya saja
+# membuat hasil kosong padahal datanya ada.
 SELESAI = {'FINISHED', 'AWARDED', 'CANCELLED', 'POSTPONED', 'SUSPENDED'}
 
 
-def ambil(kunci: str) -> list:
-    hari_ini = datetime.date.today()
-    url = ('https://api.football-data.org/v4/teams/%d/matches'
-           '?dateFrom=%s&dateTo=%s' % (TIM, hari_ini, hari_ini + datetime.timedelta(days=90)))
+def minta(url: str, kunci: str) -> dict:
     req = urllib.request.Request(url, headers={'X-Auth-Token': kunci})
     with urllib.request.urlopen(req, timeout=30) as r:
-        data = json.load(r)
+        return json.load(r)
 
+
+def simpan_crest(tim: dict) -> str:
+    """Unduh lambang satu tim kalau belum ada. Mengembalikan path relatifnya."""
+    url = tim.get('crest')
+    ident = tim.get('id')
+    if not url or not ident:
+        return ''
+    ext = '.svg' if url.lower().endswith('.svg') else '.png'
+    nama = '%s%s' % (ident, ext)
+    berkas = CREST / nama
+    if berkas.exists():                       # lambang klub praktis tak berubah
+        return 'crest/' + nama
+    try:
+        with urllib.request.urlopen(url, timeout=30) as r:
+            isi = r.read()
+        if not isi:
+            return ''
+        CREST.mkdir(exist_ok=True)
+        berkas.write_bytes(isi)
+        print('  lambang baru: %s (%d B)' % (nama, len(isi)))
+        return 'crest/' + nama
+    except Exception as e:                    # lambang gagal bukan alasan gagal total
+        print('  lambang %s gagal: %s' % (ident, e))
+        return ''
+
+
+def ambil_jadwal(kunci: str) -> list:
+    hari_ini = datetime.date.today()
+    data = minta('https://api.football-data.org/v4/teams/%d/matches'
+                 '?dateFrom=%s&dateTo=%s'
+                 % (TIM, hari_ini, hari_ini + datetime.timedelta(days=90)), kunci)
     semua = data.get('matches', [])
-    print('API mengembalikan %d pertandingan dalam 90 hari ke depan.' % len(semua))
+    print('Jadwal: API mengembalikan %d pertandingan dalam 90 hari.' % len(semua))
     if semua:
-        dilihat = {}
+        ragam = {}
         for m in semua:
-            dilihat[m.get('status')] = dilihat.get(m.get('status'), 0) + 1
-        print('  status yang ada: %s' % dilihat)
+            ragam[m.get('status')] = ragam.get(m.get('status'), 0) + 1
+        print('  status yang ada: %s' % ragam)
 
     keluar = []
     for m in sorted(semua, key=lambda x: x.get('utcDate') or ''):
@@ -64,8 +95,34 @@ def ambil(kunci: str) -> list:
         keluar.append({
             'utc': m.get('utcDate'),
             'lawan': lawan.get('shortName') or lawan.get('name') or '?',
+            'crest': simpan_crest(lawan),
             'kandang': kandang,
             'kompetisi': (m.get('competition') or {}).get('name') or '',
+        })
+    return keluar
+
+
+def ambil_klasemen(kunci: str) -> list:
+    data = minta('https://api.football-data.org/v4/competitions/%s/standings' % LIGA, kunci)
+    blok = None
+    for s in data.get('standings', []):
+        if s.get('type') == 'TOTAL':
+            blok = s
+            break
+    baris = (blok or {}).get('table', [])
+    print('Klasemen: %d tim.' % len(baris))
+
+    keluar = []
+    for b in baris:
+        tim = b.get('team') or {}
+        keluar.append({
+            'pos': b.get('position'),
+            'tim': tim.get('shortName') or tim.get('name') or '?',
+            'crest': simpan_crest(tim),
+            'main': b.get('playedGames'),
+            'sg': b.get('goalDifference'),
+            'poin': b.get('points'),
+            'kami': tim.get('id') == TIM,
         })
     return keluar
 
@@ -76,38 +133,40 @@ def main() -> None:
         sys.exit('FOOTBALL_DATA_KEY tidak diatur.')
 
     try:
-        pertandingan = ambil(kunci)
+        pertandingan = ambil_jadwal(kunci)
     except urllib.error.HTTPError as e:
         # Peringatan GitHub, bukan sekadar cetakan: kegagalan yang cuma
         # tercetak di log terlalu mudah luput karena langkahnya tetap hijau.
-        print('::warning::football-data.org menolak: HTTP %s %s' % (e.code, e.reason))
-        try:
-            print('  balasan: %s' % e.read().decode()[:300])
-        except Exception:
-            pass
+        print('::warning::Jadwal ditolak: HTTP %s %s' % (e.code, e.reason))
         return
     except (urllib.error.URLError, TimeoutError, ValueError) as e:
-        # Sengaja keluar 0: kegagalan API bukan kegagalan build. Berkas lama
-        # tetap dipakai, dan halaman menyaring yang sudah lewat sendiri.
-        print('::warning::Gagal mengambil jadwal (%s). Berkas lama dibiarkan.' % e)
+        print('::warning::Jadwal gagal diambil (%s). Berkas lama dibiarkan.' % e)
         return
 
     if not pertandingan:
-        print('::warning::Tidak ada pertandingan mendatang yang bisa dipakai. '
-              'Berkas lama dibiarkan.')
+        print('::warning::Tidak ada pertandingan mendatang. Berkas lama dibiarkan.')
         return
 
-    baru = json.dumps({'pertandingan': pertandingan}, ensure_ascii=False, indent=2) + '\n'
+    # Klasemen boleh gagal sendiri tanpa menjatuhkan jadwal: kompetisi bisa
+    # sedang jeda, atau paketnya tidak mencakup liga ini.
+    try:
+        klasemen = ambil_klasemen(kunci)
+    except Exception as e:
+        print('::warning::Klasemen gagal diambil (%s). Jadwal tetap diperbarui.' % e)
+        klasemen = []
+
+    isi = {'pertandingan': pertandingan}
+    if klasemen:
+        isi['klasemen'] = klasemen
+
+    baru = json.dumps(isi, ensure_ascii=False, indent=2) + '\n'
     lama = TUJUAN.read_text() if TUJUAN.exists() else ''
     if baru == lama:
-        print('Jadwal tidak berubah.')
+        print('Tidak ada perubahan.')
         return
 
     TUJUAN.write_text(baru)
-    print('Jadwal diperbarui: %d pertandingan.' % len(pertandingan))
-    for p in pertandingan:
-        print('  %s  %s %s  (%s)' % (
-            p['utc'], 'vs' if p['kandang'] else 'di kandang', p['lawan'], p['kompetisi']))
+    print('Diperbarui: %d pertandingan, %d baris klasemen.' % (len(pertandingan), len(klasemen)))
 
 
 if __name__ == '__main__':

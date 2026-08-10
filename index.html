@@ -310,8 +310,43 @@
     padding:2px 7px; border-radius:99px; margin-left:6px;
     background:var(--yellow); color:var(--navy-900);
   }
+  .jd-crest{width:26px; height:26px; object-fit:contain; flex:none;}
+  .jd-tim{display:flex; align-items:center; gap:9px;}
   .jadwal-nb{font-size:12px; color:var(--muted); margin-top:14px;}
   @media (max-width:760px){ .jadwal-list{grid-template-columns:1fr;} }
+
+  /* Klasemen sengaja terlipat: 20 baris tabel akan menenggelamkan lima
+     kartu jadwal di atasnya, padahal jadwal yang lebih sering dicari.
+     Memakai <details> bawaan browser — sama seperti FAQ, tanpa JS. */
+  .kl{margin-top:22px; border:1px solid var(--line); border-radius:14px; background:var(--paper); overflow:hidden;}
+  .kl summary{
+    cursor:pointer; list-style:none; display:flex; align-items:center;
+    justify-content:space-between; gap:16px; padding:15px 18px;
+    font-weight:800; color:var(--navy-900); font-size:14px;
+  }
+  .kl summary::-webkit-details-marker{display:none;}
+  .kl summary::after{content:'+'; font-size:19px; font-weight:400; color:var(--muted); flex:none; transition:transform .2s ease;}
+  .kl[open] summary::after{transform:rotate(45deg);}
+  .kl-tabel{width:100%; border-collapse:collapse; font-size:13.5px;}
+  .kl-tabel th{
+    text-align:left; font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); font-weight:800; padding:10px 8px; border-top:1px solid var(--line);
+  }
+  .kl-tabel td{padding:9px 8px; border-top:1px solid var(--line); color:var(--ink);}
+  .kl-tabel th:first-child,.kl-tabel td:first-child{padding-left:18px;}
+  .kl-tabel th:last-child,.kl-tabel td:last-child{padding-right:18px;}
+  .kl-pos{font-family:var(--font-angka); font-variant-numeric:tabular-nums; color:var(--muted); width:1px; white-space:nowrap;}
+  .kl-nm{display:flex; align-items:center; gap:9px; font-weight:600;}
+  .kl-nm img{width:20px; height:20px; object-fit:contain; flex:none;}
+  .kl-ang{font-family:var(--font-angka); font-variant-numeric:tabular-nums; text-align:right; width:1px; white-space:nowrap;}
+  .kl-poin{font-weight:800; color:var(--navy-900);}
+  /* Baris Barcelona ditandai supaya tidak perlu dicari satu per satu. */
+  .kl-kami{background:rgba(247,195,49,.16);}
+  .kl-kami .kl-nm{font-weight:800; color:var(--navy-900);}
+  @media (max-width:560px){
+    .kl-sempit{display:none;}   /* main & selisih gol disembunyikan; posisi dan poin yang dicari orang */
+    .kl-tabel{font-size:13px;}
+  }
 
   /* ================= KEGIATAN ================= */
   .upcoming .head{margin-bottom:16px;}
@@ -590,6 +625,18 @@
       <h2>Pertandingan Barça Berikutnya</h2>
     </div>
     <div class="jadwal-list" id="jadwal-list"></div>
+    <details class="kl" id="klasemen" hidden>
+      <summary>Klasemen LaLiga</summary>
+      <div style="overflow-x:auto"><table class="kl-tabel">
+        <thead><tr>
+          <th>#</th><th>Tim</th>
+          <th class="kl-ang kl-sempit">M</th>
+          <th class="kl-ang kl-sempit">SG</th>
+          <th class="kl-ang">Poin</th>
+        </tr></thead>
+        <tbody id="klasemen-isi"></tbody>
+      </table></div>
+    </details>
     <p class="jadwal-nb">Waktu Bali (WITA). Jadwal dapat berubah sewaktu-waktu — pengumuman nobar tetap lewat grup WhatsApp.</p>
   </div>
 </section>
@@ -980,14 +1027,36 @@
           var bln = t.toLocaleDateString('id-ID', gabung(WITA, { month: 'short' }));
           var hari = t.toLocaleDateString('id-ID', gabung(WITA, { weekday: 'long' }));
           var jam = t.toLocaleTimeString('id-ID', gabung(WITA, { hour: '2-digit', minute: '2-digit' }));
+          var lambang = p.crest
+            ? '<img class="jd-crest" src="' + aman(p.crest) + '" alt="" loading="lazy">' : '';
           return '<div class="jd">' +
             '<div class="jd-tgl"><b>' + aman(tgl) + '</b><span>' + aman(bln) + '</span></div>' +
-            '<div><div class="jd-nm">Barcelona vs ' + aman(p.lawan) +
-              (p.kandang ? '<span class="jd-kandang">KANDANG</span>' : '') + '</div>' +
+            '<div><div class="jd-tim">' + lambang + '<span class="jd-nm">Barcelona vs ' + aman(p.lawan) +
+              (p.kandang ? '<span class="jd-kandang">KANDANG</span>' : '') + '</span></div>' +
             '<div class="jd-meta">' + aman(hari) + ', ' + aman(jam) + ' WITA · ' + aman(p.kompetisi) + '</div>' +
             '</div></div>';
         }).join('');
         bagian.hidden = false;
+
+        // Klasemen menyusul terpisah: ia boleh kosong (kompetisi sedang jeda,
+        // atau paket API tidak mencakupnya) tanpa menjatuhkan jadwal di atas.
+        var kl = d.klasemen || [];
+        var tabel = document.getElementById('klasemen');
+        var isi = document.getElementById('klasemen-isi');
+        if (kl.length && tabel && isi) {
+          isi.innerHTML = kl.map(function (t) {
+            var lb = t.crest ? '<img src="' + aman(t.crest) + '" alt="" loading="lazy">' : '';
+            var sg = (typeof t.sg === 'number' && t.sg > 0 ? '+' : '') + aman(t.sg);
+            return '<tr' + (t.kami ? ' class="kl-kami"' : '') + '>' +
+              '<td class="kl-pos">' + aman(t.pos) + '</td>' +
+              '<td><span class="kl-nm">' + lb + aman(t.tim) + '</span></td>' +
+              '<td class="kl-ang kl-sempit">' + aman(t.main) + '</td>' +
+              '<td class="kl-ang kl-sempit">' + sg + '</td>' +
+              '<td class="kl-ang kl-poin">' + aman(t.poin) + '</td>' +
+            '</tr>';
+          }).join('');
+          tabel.hidden = false;
+        }
       })
       .catch(function () { /* diam: lebih baik tidak tampil daripada salah */ });
     };
