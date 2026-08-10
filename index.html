@@ -514,9 +514,12 @@ if ('serviceWorker' in navigator) {
   /* Kotak LaLiga lebih lebar dan 3:2 karena hanya bagian atas berkasnya yang
      tampil. Tandanya mengisi 65% lebar berkas, jadi kotak 9,1% lebar kartu
      membuat tandanya jatuh di 5,9% — sama besar dengan lambang tim. */
+  /* Diperkecil dari 9,1cqw: tandanya solid dan tebal, jadi bobot visualnya
+     jauh melebihi kotaknya sendiri dibanding blok jam+babak di kanan yang
+     tipis dan kecil — kotak yang sama lebar pun terasa timpang. */
   .jb-liga[data-liga="PD"]{
-    width:23px; width:clamp(23px,9.1cqw,51px);
-    height:15px; height:clamp(15px,6.06cqw,34px);
+    width:16px; width:clamp(16px,6.4cqw,36px);
+    height:10px; height:clamp(10px,4.18cqw,24px);
   }
   .jb-liga-teks{font-size:10.5px; font-weight:800; color:var(--muted); white-space:nowrap;}
   .jb-tgl{
