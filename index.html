@@ -287,68 +287,125 @@
      gagal diambil, berkasnya basi, atau JS mati — bagian ini tidak pernah
      muncul. Jadwal yang salah lebih merugikan daripada tidak ada jadwal. */
   [hidden]{display:none !important;}
+  /* Terbaca pembaca layar, tak terlihat mata: dipakai untuk nama kompetisi
+     yang sudah tergambar di lambangnya. */
+  .sr{
+    position:absolute; width:1px; height:1px; overflow:hidden;
+    clip-path:inset(50%); white-space:nowrap;
+  }
   .jadwal .eyebrow{font-size:12.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
   .jadwal h2{font-size:clamp(24px,3.4vw,32px); color:var(--navy-900); margin-top:10px;}
   .jadwal-head{margin-bottom:18px;}
-  /* Kartu tegak yang seluruh isinya rata tengah, dengan lambang tim sebagai
-     unsur terbesar. Susunannya dari atas: kompetisi & jornada, lalu kedua
-     lambang berhadapan, lalu hari dan jam. auto-fit membuat jumlah kolomnya
-     mengikuti lebar layar tanpa satu pun titik henti tambahan. */
-  .jadwal-list{display:grid; grid-template-columns:repeat(auto-fit,minmax(196px,1fr)); gap:12px;}
-  /* Kolom flex supaya blok waktu bisa didorong ke dasar: nama tim ada yang
-     satu baris ada yang dua, dan tanpa ini garis pemisah tiap kartu berdiri
-     di ketinggian berbeda-beda sepanjang baris. */
-  .jd{
-    background:var(--paper); border:1px solid var(--line); border-radius:16px;
-    padding:16px 12px 14px; text-align:center;
-    display:flex; flex-direction:column;
+  /* Laga terdekat mendapat satu kartu penuh; empat sisanya jadi baris tipis.
+     Lima kartu setara memakan tinggi layar tanpa memberi tahu mana yang paling
+     dekat — padahal itu satu-satunya yang perlu diingat orang hari ini.
+
+     Susunan kartu utamanya mengikuti tata letak halaman pertandingan situs
+     klub: kompetisi di atas, dua lambang berhadapan, dan satu pil di tengah.
+     Pada laga yang sudah selesai pil itu berisi skor; karena laga di sini
+     belum dimainkan, yang menempatinya hitung mundur. */
+  .jh{
+    background:var(--paper); border:1px solid var(--line); border-radius:20px;
+    padding:24px 20px 20px; text-align:center; margin-bottom:10px;
   }
-  .jd-komp{
-    display:flex; align-items:center; justify-content:center; gap:7px;
-    padding-bottom:14px; margin-bottom:14px; border-bottom:1px solid var(--line);
+  .jh-komp{display:flex; align-items:center; justify-content:center; gap:9px; flex-wrap:wrap;}
+  .jh-komp img{height:24px; width:auto; max-width:74px; object-fit:contain;}
+  .jh-komp span{
+    font-size:11.5px; font-weight:800; color:var(--muted);
+    letter-spacing:.05em; text-transform:uppercase;
   }
-  .jd-komp img{height:18px; width:auto; max-width:58px; object-fit:contain; flex:none;}
-  .jd-komp span{font-size:11px; font-weight:800; color:var(--muted); letter-spacing:.03em;}
-  .jd-laga{display:grid; grid-template-columns:1fr auto 1fr; gap:8px; align-items:start;}
-  .jd-sisi{display:flex; flex-direction:column; align-items:center; gap:8px; min-width:0;}
-  /* Lambangnya sengaja jauh lebih besar dari unsur lain di kartu ini —
-     itu yang paling cepat dikenali mata, jauh sebelum nama terbaca. */
-  .jd-sisi img{width:52px; height:52px; object-fit:contain;}
-  /* break-word, BUKAN anywhere: anywhere memutus di tengah kata sehingga
-     "Valencia" terbaca "Valenci / a". Dengan break-word, pemutusan hanya
-     terjadi di sela kata, dan nama yang tetap tidak muat diperkecil lewat
-     media query di bawah — bukan dipenggal. */
-  .jd-sisi b{
-    font-size:12.5px; font-weight:800; color:var(--ink); line-height:1.3;
+  .jh-tanggal{font-size:13px; color:var(--muted); margin-top:7px;}
+  .jh-laga{
+    display:grid; grid-template-columns:1fr auto 1fr; gap:14px;
+    align-items:start; margin:20px auto 0; max-width:620px;
+  }
+  .jh-sisi{display:flex; flex-direction:column; align-items:center; gap:12px; min-width:0;}
+  /* Lingkaran latar di belakang lambang: lambang klub datang dengan bentuk
+     dan warna latar yang berbeda-beda, dan lingkaran ini menyamakan bobotnya
+     supaya kedua sisi terlihat seimbang. */
+  .jh-lambang{
+    display:grid; place-items:center; width:96px; height:96px; border-radius:50%;
+    background:var(--bg); flex:none;
+  }
+  .jh-lambang img{width:60px; height:60px; object-fit:contain;}
+  .jh-sisi b{
+    font-size:14.5px; font-weight:800; color:var(--ink); line-height:1.25;
     max-width:100%; overflow-wrap:break-word;
   }
-  .jd-sisi.kami b{color:var(--navy-900);}
-  .jd-vs{font-size:11.5px; font-weight:800; color:var(--red-700); padding-top:19px;}
-  .jd-waktu{margin-top:auto; padding-top:12px; border-top:1px solid var(--line); line-height:1.35;}
-  .jd-laga{margin-bottom:14px;}
-  .jd-waktu b{display:block; font-size:12.5px; font-weight:800; color:var(--navy-900); text-transform:uppercase; letter-spacing:.03em;}
-  .jd-waktu span{
-    font-family:var(--font-angka); font-variant-numeric:tabular-nums;
-    font-size:13px; font-weight:600; color:var(--red-700);
+  .jh-tengah{display:flex; flex-direction:column; align-items:center; gap:9px; padding-top:26px;}
+  .jh-mundur{
+    background:var(--navy-900); color:#fff; border-radius:99px;
+    padding:10px 17px; font-size:13px; font-weight:800; white-space:nowrap;
+    font-variant-numeric:tabular-nums;
   }
-  /* Dua kolom di layar sempit menyisakan hanya ~50px per nama tim — cukup
-     untuk memenggal "Valencia" jadi "Valenci / a". Padding, sela, dan huruf
-     dirapatkan supaya nama sepanjang "Valladolid" muat utuh dalam satu baris;
-     nama tim tetap pelengkap, lambangnya yang jadi penanda utama. */
-  @media (max-width:520px){
-    .jadwal-list{grid-template-columns:1fr 1fr; gap:10px;}
-    .jd{padding:14px 8px 12px;}
-    .jd-laga{gap:4px;}
-    .jd-sisi{gap:7px;}
-    .jd-sisi img{width:44px; height:44px;}
-    .jd-sisi b{font-size:10.5px; letter-spacing:-.01em;}
-    .jd-vs{font-size:10px; padding-top:15px;}
-    .jd-komp{gap:5px; padding-bottom:11px; margin-bottom:11px;}
-    .jd-komp img{height:16px; max-width:48px;}
-    .jd-komp span{font-size:10px;}
-    .jd-waktu{margin-top:11px; padding-top:10px;}
-    .jd-waktu b{font-size:11px;}
-    .jd-waktu span{font-size:12px;}
+  .jh-jam{
+    font-family:var(--font-angka); font-variant-numeric:tabular-nums;
+    font-size:13px; font-weight:700; color:var(--red-700); white-space:nowrap;
+  }
+  .jh-tempat{
+    display:flex; align-items:center; justify-content:center; gap:9px; flex-wrap:wrap;
+    margin-top:22px; padding-top:16px; border-top:1px solid var(--line);
+    font-size:12.5px; font-weight:700; color:var(--muted);
+  }
+  .jh-tempat svg{width:17px; height:17px; flex:none; color:var(--red-700);}
+  .jh-tempat b{color:var(--navy-900); letter-spacing:.04em; text-transform:uppercase; font-size:11.5px;}
+
+  /* Baris sisa: sengaja tanpa nama kompetisi tertulis — lambangnya sudah
+     membawa nama itu, dan ruang yang dihemat dipakai nama tim dan jam. */
+  .jadwal-baris{display:grid; gap:8px;}
+  .jb{
+    display:grid; grid-template-columns:auto auto 1fr auto;
+    align-items:center; gap:14px;
+    background:var(--paper); border:1px solid var(--line); border-radius:12px;
+    padding:11px 15px;
+  }
+  .jb-liga{height:21px; width:auto; max-width:46px; object-fit:contain; justify-self:center;}
+  .jb-liga-teks{font-size:10.5px; font-weight:800; color:var(--muted); white-space:nowrap;}
+  .jb-tgl{
+    font-size:11.5px; font-weight:800; color:var(--navy-900);
+    text-transform:uppercase; letter-spacing:.03em; white-space:nowrap;
+    font-variant-numeric:tabular-nums;
+  }
+  .jb-lawan{display:flex; align-items:center; justify-content:center; gap:10px; min-width:0;}
+  .jb-lawan svg{width:16px; height:16px; flex:none; color:var(--muted);}
+  .jb-lawan img{width:26px; height:26px; object-fit:contain; flex:none;}
+  /* Terpotong elipsis, bukan mendorong baris sampai meluber: berkas jadwal
+     lama belum punya tla, jadi nama penuh bisa muncul di layar sempit. */
+  .jb-lawan b{
+    font-size:13.5px; font-weight:800; color:var(--ink); white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis; min-width:0;
+  }
+  .jb-lawan .tla{display:none;}
+  .jb-kanan{text-align:right; line-height:1.3;}
+  .jb-kanan b{
+    display:block; font-family:var(--font-angka); font-variant-numeric:tabular-nums;
+    font-size:13px; font-weight:700; color:var(--red-700); white-space:nowrap;
+  }
+  .jb-kanan span{
+    font-size:9.5px; font-weight:800; color:var(--muted); white-space:nowrap;
+    text-transform:uppercase; letter-spacing:.04em;
+  }
+  @media (max-width:560px){
+    .jh{padding:20px 14px 16px; border-radius:18px;}
+    .jh-laga{gap:8px; margin-top:16px;}
+    .jh-lambang{width:74px; height:74px;}
+    .jh-lambang img{width:46px; height:46px;}
+    .jh-sisi{gap:10px;}
+    .jh-sisi b{font-size:12.5px;}
+    .jh-tengah{padding-top:16px; gap:7px;}
+    .jh-mundur{font-size:11.5px; padding:8px 13px;}
+    .jh-tempat{margin-top:18px; padding-top:14px; gap:7px; font-size:11.5px;}
+    .jb{grid-template-columns:auto auto 1fr auto; gap:9px; padding:10px 11px;}
+    .jb-liga{height:18px; max-width:34px;}
+    .jb-tgl{font-size:10.5px;}
+    .jb-lawan{gap:7px;}
+    .jb-lawan img{width:22px; height:22px;}
+    .jb-lawan svg{width:14px; height:14px;}
+    .jb-lawan b{font-size:12.5px;}
+    .jb-lawan .penuh{display:none;}
+    .jb-lawan .tla{display:inline;}
+    .jb-kanan b{font-size:12px;}
+    .jb-kanan span{font-size:9px;}
   }
   .jadwal-nb{font-size:12px; color:var(--muted); margin-top:14px;}
 
@@ -661,7 +718,7 @@
       <div class="eyebrow">Jadwal Terdekat</div>
       <h2>Pertandingan Barça Berikutnya</h2>
     </div>
-    <div class="jadwal-list" id="jadwal-list"></div>
+    <div id="jadwal-list"></div>
     <details class="kl" id="klasemen" hidden>
       <summary>Klasemen LaLiga</summary>
       <div style="overflow-x:auto"><table class="kl-tabel">
@@ -1052,56 +1109,123 @@
         // Menyaring yang sudah lewat di sisi peramban, bukan hanya saat
         // diambil: dengan begitu berkas yang terlanjur basi mengosongkan
         // diri sendiri alih-alih memajang pertandingan yang sudah usai.
+        // Jendela maaf 2,5 jam: tanpa ini kartu utama menghilang tepat saat
+        // peluit awal, padahal itulah menit ketika halaman paling sering dibuka.
+        var MAAF = 2.5 * 3600e3;
         var daftar = (d.pertandingan || []).filter(function (p) {
           var t = Date.parse(p.utc);
-          return t && t > kini;
+          return t && t > kini - MAAF;
+        }).sort(function (a, b) {
+          return Date.parse(a.utc) - Date.parse(b.utc);
         }).slice(0, 5);
         if (!daftar.length) return;
 
-        wadah.innerHTML = daftar.map(function (p) {
-          var t = new Date(p.utc);
-          var tgl = t.toLocaleDateString('id-ID', gabung(WITA, { day: 'numeric' }));
-          var bln = t.toLocaleDateString('id-ID', gabung(WITA, { month: 'short' }));
-          // Singkat, bukan "Jumat": barisnya memuat tanggal, jam, kompetisi,
-          // dan dua nama tim sekaligus — nama hari penuh memakan ruang yang
-          // dibutuhkan nama tim.
-          var hari = t.toLocaleDateString('id-ID', gabung(WITA, { weekday: 'short' }));
-          var jam = t.toLocaleTimeString('id-ID', gabung(WITA, { hour: '2-digit', minute: '2-digit' }));
-          // Berkas lama belum memuat home/away; selama Actions belum sempat
-          // menulis ulang, bentuk lamanya tetap bisa digambar.
-          var rumah = p.home || (p.kandang ? { nama: 'FC Barcelona', crest: '' } : { nama: p.lawan, crest: p.crest });
-          var tamu = p.away || (p.kandang ? { nama: p.lawan, crest: p.crest } : { nama: 'FC Barcelona', crest: '' });
+        // Lapangan untuk kandang, pesawat untuk tandang — dari sudut pandang
+        // Barça, bukan tuan rumah laga. Ikon sekecil ini tidak boleh jadi
+        // satu-satunya pembawa arti, jadi selalu dipasangi aria-label.
+        var IKON = {
+          kandang: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><rect x="2.6" y="5.4" width="18.8" height="13.2" rx="2.2"/><path d="M12 5.4v13.2"/><circle cx="12" cy="12" r="2.5"/></svg>',
+          tandang: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>'
+        };
 
-          // Nama yang tidak muat di kartu sempit diganti singkatan resminya —
-          // "Real Valladolid" jadi "VLL". Ambangnya sengaja longgar supaya yang
-          // dipendekkan hanya yang benar-benar panjang; nama seperti "Valencia"
-          // atau "Atleti" tetap utuh karena lebih cepat dikenali daripada TLA.
-          // Kalau jadwal.json lama belum punya tla, nama panjangnya dipakai apa
-          // adanya dan CSS yang menanganinya — bukan kartu kosong.
-          var namaSisi = function (t) {
-            var n = t.nama || '';
-            return (n.length > 12 && t.tla) ? t.tla : n;
-          };
-          var sisi = function (t) {
-            var im = t.crest ? '<img src="' + aman(t.crest) + '" alt="" loading="lazy">' : '';
-            var kami = /barcelona|barça|barca/i.test(t.nama || '') ? ' kami' : '';
-            return '<span class="jd-sisi' + kami + '">' + im + '<b>' + aman(namaSisi(t)) + '</b></span>';
-          };
-          // Lambang kompetisi sudah membawa namanya sendiri; menuliskannya lagi
-          // di sebelahnya cuma mengulang. Tanpa lambang, namanya baru dicetak.
-          var liga = p.liga_lambang
-            ? '<img src="' + aman(p.liga_lambang) + '" alt="' + aman(p.kompetisi) + '" loading="lazy">'
-            : '<span>' + aman(p.kompetisi) + '</span>';
+        var tanggalPendek = function (t) {
+          return t.toLocaleDateString('id-ID', gabung(WITA, { weekday: 'short' })).toUpperCase() + ' ' +
+                 t.toLocaleDateString('id-ID', gabung(WITA, { day: 'numeric' })) + ' ' +
+                 t.toLocaleDateString('id-ID', gabung(WITA, { month: 'short' })).toUpperCase();
+        };
+        var jamWita = function (t) {
+          return t.toLocaleTimeString('id-ID', gabung(WITA, { hour: '2-digit', minute: '2-digit' }));
+        };
+        // Berkas lama belum memuat home/away; selama Actions belum sempat
+        // menulis ulang, bentuk lamanya tetap bisa digambar.
+        var duaSisi = function (p) {
+          return [
+            p.home || (p.kandang ? { nama: 'FC Barcelona', crest: '' } : { nama: p.lawan, crest: p.crest }),
+            p.away || (p.kandang ? { nama: p.lawan, crest: p.crest } : { nama: 'FC Barcelona', crest: '' })
+          ];
+        };
+        var babakDari = function (p) {
+          return p.babak || (p.matchday ? 'Jornada ' + p.matchday : '');
+        };
+        var gambar = function (src, kelas) {
+          return src ? '<img' + (kelas ? ' class="' + kelas + '"' : '') +
+            ' src="' + aman(src) + '" alt="" loading="lazy">' : '';
+        };
 
-          return '<article class="jd">' +
-            '<div class="jd-komp">' + liga +
-              (p.matchday ? '<span>Jornada ' + aman(p.matchday) + '</span>' : '') + '</div>' +
-            '<div class="jd-laga">' + sisi(rumah) +
-              '<span class="jd-vs">vs</span>' + sisi(tamu) + '</div>' +
-            '<div class="jd-waktu"><b>' + aman(hari) + ' ' + aman(tgl) + ' ' + aman(bln) + '</b>' +
-              '<span>' + aman(jam) + ' WITA</span></div>' +
-          '</article>';
-        }).join('');
+        // ---- Kartu utama: laga terdekat ----
+        var utama = daftar[0];
+        var tu = new Date(utama.utc);
+        var sisiU = duaSisi(utama);
+        var kartuSisi = function (t) {
+          return '<span class="jh-sisi"><span class="jh-lambang">' + gambar(t.crest) + '</span>' +
+                 '<b>' + aman(t.nama || '') + '</b></span>';
+        };
+        var babakU = babakDari(utama);
+        var arahU = utama.kandang ? 'kandang' : 'tandang';
+        var html = '<article class="jh">' +
+          '<div class="jh-komp">' +
+            (utama.liga_lambang
+              ? gambar(utama.liga_lambang) + '<span class="sr">' + aman(utama.kompetisi) + '</span>'
+              : '<span>' + aman(utama.kompetisi) + '</span>') +
+            (babakU ? '<span>' + aman(babakU) + '</span>' : '') +
+          '</div>' +
+          '<div class="jh-tanggal">' + aman(tu.toLocaleDateString('id-ID',
+            gabung(WITA, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))) + '</div>' +
+          '<div class="jh-laga">' + kartuSisi(sisiU[0]) +
+            '<span class="jh-tengah">' +
+              '<span class="jh-mundur" id="jadwal-mundur">&nbsp;</span>' +
+              '<span class="jh-jam">' + aman(jamWita(tu)) + ' WITA</span>' +
+            '</span>' + kartuSisi(sisiU[1]) + '</div>' +
+          '<div class="jh-tempat">' + IKON[arahU] +
+            '<b>' + arahU.toUpperCase() + '</b>' +
+            (utama.venue ? '<span>· ' + aman(utama.venue) + '</span>' : '') +
+          '</div>' +
+        '</article>';
+
+        // ---- Baris sisa ----
+        if (daftar.length > 1) {
+          html += '<div class="jadwal-baris">' + daftar.slice(1).map(function (p) {
+            var t = new Date(p.utc);
+            var sisi = duaSisi(p);
+            var lawan = p.kandang ? sisi[1] : sisi[0];
+            // Inisial resmi, bukan nama penuh: barisnya harus muat di satu
+            // baris pada layar 390px bersama tanggal, lambang, dan jam.
+            var nama = lawan.tla || lawan.nama || '';
+            var arah = p.kandang ? 'kandang' : 'tandang';
+            var babak = babakDari(p);
+            return '<div class="jb">' +
+              (p.liga_lambang
+                ? '<img class="jb-liga" src="' + aman(p.liga_lambang) + '" alt="' + aman(p.kompetisi) + '" loading="lazy">'
+                : '<span class="jb-liga-teks">' + aman(p.kompetisi) + '</span>') +
+              '<span class="jb-tgl">' + aman(tanggalPendek(t)) + '</span>' +
+              '<span class="jb-lawan"><span role="img" aria-label="' +
+                (p.kandang ? 'Main di kandang' : 'Main tandang') + '" title="' +
+                (p.kandang ? 'Kandang' : 'Tandang') + '">' + IKON[arah] + '</span>' +
+                gambar(lawan.crest) +
+                '<b class="penuh">' + aman(lawan.nama || nama) + '</b>' +
+                '<b class="tla">' + aman(nama) + '</b></span>' +
+              '<span class="jb-kanan"><b>' + aman(jamWita(t)) + '</b>' +
+                (babak ? '<span>' + aman(babak) + '</span>' : '') + '</span>' +
+            '</div>';
+          }).join('') + '</div>';
+        }
+        wadah.innerHTML = html;
+
+        // Hitung mundur berdetak di peramban; tidak ada perjalanan ke server.
+        // Setengah menit sudah cukup halus untuk satuan terkecilnya (menit).
+        var pil = document.getElementById('jadwal-mundur');
+        var mulai = Date.parse(utama.utc);
+        var detak = function () {
+          var sisa = mulai - Date.now();
+          if (sisa <= 0) { pil.textContent = 'SEDANG BERLANGSUNG'; return; }
+          var menit = Math.floor(sisa / 60000), jam = Math.floor(menit / 60), hari = Math.floor(jam / 24);
+          pil.textContent = hari >= 1 ? hari + ' hari ' + (jam % 24) + ' jam lagi'
+                          : jam >= 1  ? jam + ' jam ' + (menit % 60) + ' menit lagi'
+                          : Math.max(1, menit) + ' menit lagi';
+        };
+        detak();
+        setInterval(detak, 30000);
+
         bagian.hidden = false;
 
         // Klasemen menyusul terpisah: ia boleh kosong (kompetisi sedang jeda,

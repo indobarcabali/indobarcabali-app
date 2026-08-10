@@ -50,6 +50,17 @@ NAMA_KOMPETISI = {
     'Supercopa de España': 'Supercopa',
 }
 
+# Nama babak yang dipakai suporter, bukan konstanta API. Sengaja pendek: label
+# ini muncul di baris jadwal yang sempit, di samping jam.
+BABAK_TETAP = {
+    'PRELIMINARY': 'Kualifikasi', 'QUALIFICATION': 'Kualifikasi',
+    'PLAYOFFS': 'Playoff', 'PLAY_OFF_ROUND': 'Playoff', 'PLAYOFF_ROUND_1': 'Playoff',
+    'LAST_32': '32 Besar', 'ROUND_OF_32': '32 Besar',
+    'LAST_16': '16 Besar', 'ROUND_OF_16': '16 Besar',
+    'QUARTER_FINALS': 'Perempat Final', 'SEMI_FINALS': 'Semifinal',
+    'THIRD_PLACE': 'Perebutan Tempat Ketiga', 'FINAL': 'Final',
+}
+
 
 def minta(url: str, kunci: str) -> dict:
     req = urllib.request.Request(url, headers={'X-Auth-Token': kunci})
@@ -79,6 +90,29 @@ def simpan_lambang(url: str, ident, awalan: str = '') -> str:
     except Exception as e:                    # lambang gagal bukan alasan gagal total
         print('  lambang %s gagal: %s' % (ident, e))
         return ''
+
+
+def babak_dari(m: dict) -> str:
+    """Label babak yang siap dicetak: 'Jornada 3', 'Grup C', 'Perempat Final'.
+
+    Dirakit di sini, bukan di halaman, supaya aturan penamaan hidup di satu
+    tempat bersama NAMA_KOMPETISI — dan supaya nama babak kompetisi gugur tidak
+    perlu ditebak dari nomor pekan yang memang tidak ada di sana.
+    """
+    tahap = (m.get('stage') or '').upper()
+    pekan = m.get('matchday')
+    if tahap in ('', 'REGULAR_SEASON'):
+        return 'Jornada %s' % pekan if pekan else ''
+    if tahap == 'LEAGUE_STAGE':                    # format Liga Champions baru
+        return 'Fase Liga %s' % pekan if pekan else 'Fase Liga'
+    if tahap == 'GROUP_STAGE':
+        grup = (m.get('group') or '').replace('GROUP_', '').strip()
+        return ('Grup %s' % grup) if grup else 'Fase Grup'
+    if tahap in BABAK_TETAP:
+        return BABAK_TETAP[tahap]
+    if tahap.startswith('ROUND_'):                 # Copa del Rey: ROUND_1..ROUND_5
+        return 'Babak ' + tahap.rsplit('_', 1)[-1]
+    return tahap.replace('_', ' ').title()
 
 
 def sisi_tim(tim: dict) -> dict:
@@ -130,6 +164,10 @@ def ambil_jadwal(kunci: str) -> list:
             'kandang': kandang,
             'lawan': lawan.get('shortName') or lawan.get('name') or '?',
             'matchday': m.get('matchday'),
+            'babak': babak_dari(m),
+            # Kadang tidak dikirim paket gratis; halaman menyembunyikan
+            # barisnya sendiri kalau kosong, bukan mencetak tempat kosong.
+            'venue': m.get('venue') or '',
             'kompetisi': NAMA_KOMPETISI.get(komp.get('name') or '', komp.get('name') or ''),
             'liga_lambang': simpan_lambang(komp.get('emblem'), komp.get('code') or komp.get('id'), 'liga-'),
         })
@@ -183,6 +221,27 @@ def ambil_klasemen(kunci: str, musim: int) -> list:
     return keluar
 
 
+def uji_babak() -> None:
+    """`python3 alat/ambil-jadwal.py --uji` — tidak menyentuh jaringan."""
+    kasus = [
+        ({'stage': 'REGULAR_SEASON', 'matchday': 3}, 'Jornada 3'),
+        ({'stage': None, 'matchday': 7}, 'Jornada 7'),
+        ({'stage': 'REGULAR_SEASON', 'matchday': None}, ''),
+        ({'stage': 'LEAGUE_STAGE', 'matchday': 1}, 'Fase Liga 1'),
+        ({'stage': 'GROUP_STAGE', 'group': 'GROUP_C', 'matchday': 2}, 'Grup C'),
+        ({'stage': 'GROUP_STAGE', 'matchday': 2}, 'Fase Grup'),
+        ({'stage': 'LAST_16'}, '16 Besar'),
+        ({'stage': 'QUARTER_FINALS'}, 'Perempat Final'),
+        ({'stage': 'FINAL'}, 'Final'),
+        ({'stage': 'ROUND_3'}, 'Babak 3'),
+        ({'stage': 'SOMETHING_NEW'}, 'Something New'),
+    ]
+    for masuk, harap in kasus:
+        keluar = babak_dari(masuk)
+        assert keluar == harap, '%r -> %r, seharusnya %r' % (masuk, keluar, harap)
+    print('uji babak: %d kasus lolos.' % len(kasus))
+
+
 def main() -> None:
     kunci = os.environ.get('FOOTBALL_DATA_KEY', '').strip()
     if not kunci:
@@ -226,4 +285,7 @@ def main() -> None:
 
 
 if __name__ == '__main__':
-    main()
+    if '--uji' in sys.argv:
+        uji_babak()
+    else:
+        main()
