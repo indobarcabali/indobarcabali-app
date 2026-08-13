@@ -300,11 +300,41 @@
 
   function ruangAmanBawah() {
     var n = parseFloat(getComputedStyle(document.getElementById('ukur')).height);
-    return isNaN(n) ? 0 : Math.round(n);
+    n = isNaN(n) ? 0 : Math.round(n);
+
+    /* Safari melaporkan NOL sementara halamannya tetap dilukis sampai dasar
+       layar. Selama wadah aplikasi berhenti jauh di atas dasar, nol itu tidak
+       pernah terasa — ada celah yang kebetulan jadi bantalan. Sejak wadahnya
+       dirapatkan ke dasar, nol berarti ikon navigasi mendarat persis di garis
+       home indicator.
+
+       Perangkat yang punya home indicator selalu menyisakan 34px di posisi
+       tegak. Kalau env() bilang nol di perangkat semacam itu, yang keliru
+       env()-nya, bukan layarnya.
+
+       ponytail: perangkat berhome indicator dikenali dari sisi panjang layar
+       >= 812px — ambang iPhone X, dan tidak ada iPhone berhome indicator di
+       bawahnya. Heuristik, bukan pembacaan. Bila iOS suatu saat memberi cara
+       menanyakannya langsung, ganti baris ini dengan cara itu. */
+    if (n === 0 &&
+        matchMedia('(pointer: coarse)').matches &&
+        Math.max(screen.width, screen.height) >= 812) n = 34;
+    return n;
   }
 
   function kabari() {
-    if (peminta) peminta.postMessage({ ibb: 'inset', bawah: ruangAmanBawah() }, '*');
+    if (!peminta) return;
+    var b = document.getElementById('bingkai');
+    peminta.postMessage({
+      ibb: 'inset',
+      bawah: ruangAmanBawah(),
+      // Sementara, untuk ditampilkan penampil ukuran di aplikasi: dari sini
+      // sajalah selisih wadah-vs-viewport bisa dibaca. Dilepas bersama
+      // penampilnya.
+      wadah: b ? Math.round(b.getBoundingClientRect().height) : -1,
+      luar: window.innerHeight,
+      geser: b ? (b.style.bottom || '0') : '-'
+    }, '*');
   }
 
   /* ---------------------------------------------------------------
