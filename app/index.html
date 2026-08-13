@@ -129,7 +129,12 @@
      pita di belakang home indicator dan bilah status DICAT oleh sistem memakai
      warna latar body. Jadi inilah satu-satunya tuas yang menentukan warna pita
      itu — elemen apa pun yang digambar di atasnya tidak berpengaruh. */
-  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#001138;}
+  /* ponytail: MAGENTA SEMENTARA, bukan warna sungguhan. Latar ini navy
+     (#001138) dan bilah bawah aplikasi juga navy, jadi 48px layar yang berada
+     di luar viewport halaman ini tidak bisa dibedakan dari bilah itu sendiri —
+     angka saja tidak cukup untuk tahu 48px itu di atas atau di bawah. Warna
+     mencolok menjawabnya dalam satu tangkapan layar. KEMBALIKAN ke #001138. */
+  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#ff00aa;}
 
   /* Aplikasi ditempatkan di dalam area aman, bukan memenuhi layar mentah.
      apple-mobile-web-app-capable menghilangkan seluruh bilah Safari, sehingga
