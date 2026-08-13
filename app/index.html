@@ -367,21 +367,32 @@
      Bila suatu saat terbukti berubah, lepas penanda 'rapat' dan hitung ulang
      di setiap kabari().
      --------------------------------------------------------------- */
-  function rapatkanKeDasar(tinggiApp) {
+  function rapatkanKeDasar() {
     var b = document.getElementById('bingkai');
-    if (!b || b.dataset.rapat || !tinggiApp) return;
-    var selisih = Math.round(b.getBoundingClientRect().height - tinggiApp);
+    if (!b || b.dataset.rapat) return;
+
+    /* HANYA di mode aplikasi layar-utama. Di Safari selisih layar-vs-jendela
+       adalah bilah alamat di ATAS, bukan ruang kosong di bawah; menggeser di
+       sana justru mendorong bilah navigasi keluar layar. Mode ini dibaca dari
+       API, bukan ditebak dari ukuran. */
+    if (!(navigator.standalone === true ||
+          matchMedia('(display-mode: standalone)').matches)) return;
+
+    /* Di mode itu halaman dimulai dari piksel teratas layar — ruang aman atas
+       dilukis kanvas, bukan disisakan iOS — jadi SELURUH selisih ini ada di
+       bawah. */
+    var kurang = Math.round(screen.height - window.innerHeight);
     // Nol berarti sudah rapat. Angka besar berarti ada yang tidak kita pahami —
     // lebih baik membiarkan tata letak apa adanya daripada menggesernya jauh.
-    if (selisih <= 0 || selisih > 200) return;
+    if (kurang <= 0 || kurang > 200) return;
     b.dataset.rapat = '1';
-    b.style.bottom = -selisih + 'px';
+    b.style.bottom = -kurang + 'px';
   }
 
   window.addEventListener('message', function (e) {
     if (!e.data || e.data.ibb !== 'minta-inset' || !e.source) return;
     peminta = e.source;
-    rapatkanKeDasar(e.data.tinggi);
+    rapatkanKeDasar();
     kabari();
   });
 
