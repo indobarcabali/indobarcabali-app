@@ -350,18 +350,7 @@
   }
 
   function kabari() {
-    if (!peminta) return;
-    var b = document.getElementById('bingkai');
-    peminta.postMessage({
-      ibb: 'inset',
-      bawah: ruangAmanBawah(),
-      // Sementara, untuk ditampilkan penampil ukuran di aplikasi: dari sini
-      // sajalah selisih wadah-vs-viewport bisa dibaca. Dilepas bersama
-      // penampilnya.
-      wadah: b ? Math.round(b.getBoundingClientRect().height) : -1,
-      luar: window.innerHeight,
-      geser: b ? (b.style.bottom || '0') : '-'
-    }, '*');
+    if (peminta) peminta.postMessage({ ibb: 'inset', bawah: ruangAmanBawah() }, '*');
   }
 
   window.addEventListener('message', function (e) {
