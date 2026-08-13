@@ -307,9 +307,46 @@
     if (peminta) peminta.postMessage({ ibb: 'inset', bawah: ruangAmanBawah() }, '*');
   }
 
+  /* ---------------------------------------------------------------
+     Merapatkan aplikasi ke dasar layar.
+
+     Iframe Apps Script TIDAK setinggi wadahnya. Aplikasi berada di dalam
+     iframe bersarang milik Google, dan rantai itu memakan sebagian tinggi di
+     bawah — 48px pada iPhone yang diukur (wadah 848, viewport aplikasi 800).
+     Sisanya terisi latar navy halaman ini, tepat di bawah bilah navigasi yang
+     juga navy, sehingga terbaca sebagai satu bilah bawah yang jauh terlalu
+     tinggi: 48 + 34 + 49 = 131px, sementara bilah bawah iOS hanya 83px.
+
+     Aplikasi TIDAK bisa memperbaikinya sendiri — dari dalam, ia hanya melihat
+     viewport yang sudah terpotong, dan tidak ada cara membedakan "wadahku
+     memang pendek" dari "aku dipotong". Halaman ini melihat wadah utuhnya
+     tetapi tidak melihat viewport aplikasi. Masing-masing memegang separuh
+     angka, jadi selisihnya baru muncul setelah keduanya dipertemukan.
+
+     Wadahnya lalu dijulurkan ke bawah tepi layar sebanyak selisih itu, supaya
+     bagian yang dimakan jatuh di luar layar dan dasar viewport aplikasi
+     mendarat tepat di dasar layar. Ruang aman tetap dikerjakan aplikasi.
+
+     ponytail: sekali jalan seumur halaman. Selisihnya milik rantai iframe,
+     bukan milik orientasi, jadi tidak dihitung ulang saat perangkat diputar.
+     Bila suatu saat terbukti berubah, lepas penanda 'rapat' dan hitung ulang
+     di setiap kabari().
+     --------------------------------------------------------------- */
+  function rapatkanKeDasar(tinggiApp) {
+    var b = document.getElementById('bingkai');
+    if (!b || b.dataset.rapat || !tinggiApp) return;
+    var selisih = Math.round(b.getBoundingClientRect().height - tinggiApp);
+    // Nol berarti sudah rapat. Angka besar berarti ada yang tidak kita pahami —
+    // lebih baik membiarkan tata letak apa adanya daripada menggesernya jauh.
+    if (selisih <= 0 || selisih > 200) return;
+    b.dataset.rapat = '1';
+    b.style.bottom = -selisih + 'px';
+  }
+
   window.addEventListener('message', function (e) {
     if (!e.data || e.data.ibb !== 'minta-inset' || !e.source) return;
     peminta = e.source;
+    rapatkanKeDasar(e.data.tinggi);
     kabari();
   });
 
