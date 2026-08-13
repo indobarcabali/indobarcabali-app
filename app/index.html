@@ -129,12 +129,14 @@
      pita di belakang home indicator dan bilah status DICAT oleh sistem memakai
      warna latar body. Jadi inilah satu-satunya tuas yang menentukan warna pita
      itu — elemen apa pun yang digambar di atasnya tidak berpengaruh. */
-  /* ponytail: MAGENTA SEMENTARA, bukan warna sungguhan. Latar ini navy
-     (#001138) dan bilah bawah aplikasi juga navy, jadi 48px layar yang berada
-     di luar viewport halaman ini tidak bisa dibedakan dari bilah itu sendiri —
-     angka saja tidak cukup untuk tahu 48px itu di atas atau di bawah. Warna
-     mencolok menjawabnya dalam satu tangkapan layar. KEMBALIKAN ke #001138. */
-  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#ff00aa;}
+  /* Latar ini BUKAN sekadar warna di belakang iframe. Di mode aplikasi
+     layar-utama, iOS melukis kanvas sampai dasar layar (896px) tetapi memangkas
+     isi halaman di 848px — 48px terbawah tidak bisa ditempati elemen apa pun,
+     hanya warna ini. Karena navy yang sama dengan bilah navigasi aplikasi,
+     pita itu terbaca sebagai kelanjutan bilah, dan memang itulah perannya:
+     ia yang menjadi ruang aman di bawah ikon. Menggantinya dengan warna lain
+     akan memunculkan pita asing di bawah bilah. */
+  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#001138;}
 
   /* Aplikasi ditempatkan di dalam area aman, bukan memenuhi layar mentah.
      apple-mobile-web-app-capable menghilangkan seluruh bilah Safari, sehingga
@@ -324,6 +326,26 @@
     if (n === 0 &&
         matchMedia('(pointer: coarse)').matches &&
         Math.max(screen.width, screen.height) >= 812) n = 34;
+
+    /* Di mode aplikasi layar-utama, iOS memangkas isi halaman di 848px
+       sementara kanvasnya tetap dilukis sampai 896px. Pita 48px terbawah itu
+       tidak bisa ditempati elemen apa pun — sudah dicoba menjulurkan wadahnya
+       ke sana, dan yang terjadi tombol navigasinya terpotong separuh.
+
+       Tapi pita itu navy, sewarna bilah navigasi, dan letaknya persis di bawah
+       ikon: ia SUDAH menjadi ruang aman, tanpa diminta. Aplikasi tinggal
+       diberi tahu sisanya saja — kalau pita itu sendiri sudah lebih lebar dari
+       ruang aman yang dibutuhkan, sisanya nol dan aplikasi tidak menambah apa
+       pun.
+
+       Hanya di mode ini. Di Safari selisih layar-vs-jendela adalah bilah
+       alamat di ATAS, bukan pita di bawah, dan menguranginya di sana akan
+       menempelkan ikon ke garis home indicator. */
+    if (navigator.standalone === true ||
+        matchMedia('(display-mode: standalone)').matches) {
+      var kanvas = Math.round(screen.height - window.innerHeight);
+      if (kanvas > 0 && kanvas < 200) n = Math.max(0, n - kanvas);
+    }
     return n;
   }
 
@@ -342,57 +364,9 @@
     }, '*');
   }
 
-  /* ---------------------------------------------------------------
-     Merapatkan aplikasi ke dasar layar.
-
-     Iframe Apps Script TIDAK setinggi wadahnya. Aplikasi berada di dalam
-     iframe bersarang milik Google, dan rantai itu memakan sebagian tinggi di
-     bawah — 48px pada iPhone yang diukur (wadah 848, viewport aplikasi 800).
-     Sisanya terisi latar navy halaman ini, tepat di bawah bilah navigasi yang
-     juga navy, sehingga terbaca sebagai satu bilah bawah yang jauh terlalu
-     tinggi: 48 + 34 + 49 = 131px, sementara bilah bawah iOS hanya 83px.
-
-     Aplikasi TIDAK bisa memperbaikinya sendiri — dari dalam, ia hanya melihat
-     viewport yang sudah terpotong, dan tidak ada cara membedakan "wadahku
-     memang pendek" dari "aku dipotong". Halaman ini melihat wadah utuhnya
-     tetapi tidak melihat viewport aplikasi. Masing-masing memegang separuh
-     angka, jadi selisihnya baru muncul setelah keduanya dipertemukan.
-
-     Wadahnya lalu dijulurkan ke bawah tepi layar sebanyak selisih itu, supaya
-     bagian yang dimakan jatuh di luar layar dan dasar viewport aplikasi
-     mendarat tepat di dasar layar. Ruang aman tetap dikerjakan aplikasi.
-
-     ponytail: sekali jalan seumur halaman. Selisihnya milik rantai iframe,
-     bukan milik orientasi, jadi tidak dihitung ulang saat perangkat diputar.
-     Bila suatu saat terbukti berubah, lepas penanda 'rapat' dan hitung ulang
-     di setiap kabari().
-     --------------------------------------------------------------- */
-  function rapatkanKeDasar() {
-    var b = document.getElementById('bingkai');
-    if (!b || b.dataset.rapat) return;
-
-    /* HANYA di mode aplikasi layar-utama. Di Safari selisih layar-vs-jendela
-       adalah bilah alamat di ATAS, bukan ruang kosong di bawah; menggeser di
-       sana justru mendorong bilah navigasi keluar layar. Mode ini dibaca dari
-       API, bukan ditebak dari ukuran. */
-    if (!(navigator.standalone === true ||
-          matchMedia('(display-mode: standalone)').matches)) return;
-
-    /* Di mode itu halaman dimulai dari piksel teratas layar — ruang aman atas
-       dilukis kanvas, bukan disisakan iOS — jadi SELURUH selisih ini ada di
-       bawah. */
-    var kurang = Math.round(screen.height - window.innerHeight);
-    // Nol berarti sudah rapat. Angka besar berarti ada yang tidak kita pahami —
-    // lebih baik membiarkan tata letak apa adanya daripada menggesernya jauh.
-    if (kurang <= 0 || kurang > 200) return;
-    b.dataset.rapat = '1';
-    b.style.bottom = -kurang + 'px';
-  }
-
   window.addEventListener('message', function (e) {
     if (!e.data || e.data.ibb !== 'minta-inset' || !e.source) return;
     peminta = e.source;
-    rapatkanKeDasar();
     kabari();
   });
 
