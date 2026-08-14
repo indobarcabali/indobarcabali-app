@@ -173,11 +173,32 @@ if ('serviceWorker' in navigator) {
   section[id]{scroll-margin-top:calc(72px + env(safe-area-inset-top,0px));}
   /* Hormati pengaturan sistem: sebagian orang mual oleh gerakan gulir. */
   @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
+
+  /* ================= REVEAL SAAT DIGULIR =================
+     Section lahir sedikit transparan & turun 24px, lalu "muncul" begitu
+     digulir sampai ke sana — dipantau IntersectionObserver di skrip bawah,
+     gaya yang sama dengan minibar. Muncul SEKALI, bukan animasi berulang
+     tiap naik-turun (lihat komentar pengawasMuncul). Hero TIDAK dipasangi:
+     ia hal pertama yang terlihat, menyembunyikannya dulu cuma menunda apa
+     yang pengunjung datang untuk lihat. */
+  .muncul{opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease;}
+  .muncul.tampak{opacity:1; transform:none;}
+  @media (prefers-reduced-motion:reduce){ .muncul{opacity:1; transform:none; transition:none;} }
+  /* Latar body sengaja NAVY, sewarna splash dan hero — bukan warna permukaan
+     section terang di bawahnya. Di mode aplikasi iOS, pita di belakang home
+     indicator (dan area pantulan elastis) dicat sistem memakai warna latar
+     body ini, bukan apa yang sedang terlihat di layar — pola yang sama
+     dengan ui_style.html. Body terang di sini akan terbaca sebagai pita
+     putih yang tidak menyatu dengan splash/hero navy. (Bukan penyebab
+     kedipan putih saat peluncuran — itu soal lain, lihat sw.js dan catatan
+     apple-touch-startup-image di README.) Warna terangnya dipindah ke
+     .permukaan, yang membungkus section-section di bawah hero. */
   body{
-    margin:0; background:var(--bg); color:var(--ink);
+    margin:0; background:var(--navy-900); color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased; overflow-x:hidden;
   }
+  .permukaan{background:var(--bg);}
   img,svg{max-width:100%;}
   .container{max-width:1180px;margin:0 auto;padding-left:32px;padding-right:32px;}
   section{position:relative;}
@@ -400,7 +421,12 @@ if ('serviceWorker' in navigator) {
   .jh{
     background:var(--paper); border:1px solid var(--line); border-radius:20px;
     padding:24px 20px 20px; text-align:center; margin-bottom:10px;
+    transition:border-color .3s ease;
   }
+  /* Kurang dari 24 jam lagi (atau sedang berlangsung): garis kartu ikut
+     memerah, bukan cuma pilnya sendiri — supaya "hari ini" terasa dari
+     kejauhan, sebelum mata sempat membaca pilnya. */
+  .jh.mendesak{border-color:var(--red-700);}
   /* Nama kompetisi ditulis, bukan hanya dilambangkan: di kartu inilah orang
      memutuskan apakah laganya layak ditunggu, dan "LaLiga" tidak sama
      bobotnya dengan "Champions League". */
@@ -453,7 +479,14 @@ if ('serviceWorker' in navigator) {
     background:var(--navy-900); color:#fff; border-radius:99px;
     padding:10px 17px; font-size:13px; font-weight:800; white-space:nowrap;
     font-variant-numeric:tabular-nums;
+    transition:opacity .15s ease, background .3s ease;
   }
+  /* <24 jam lagi: pil berubah merah. Sedang berlangsung: merah paling terang
+     di file ini (var(--red), bukan --red-700) — satu-satunya keadaan yang
+     memang layak paling menonjol dari semua warna di kartu ini. */
+  .jh-mundur.mendesak{background:var(--red-700);}
+  .jh-mundur.langsung{background:var(--red);}
+  @media (prefers-reduced-motion:reduce){ .jh-mundur{transition:background .3s ease;} }
   .jh-jam{
     font-family:var(--font-angka); font-variant-numeric:tabular-nums;
     font-size:13px; font-weight:700; color:var(--red-700); white-space:nowrap;
@@ -876,8 +909,9 @@ if ('serviceWorker' in navigator) {
   </div>
 </section>
 
+<div class="permukaan">
 <!-- ================= TENTANG ================= -->
-<section class="about" id="tentang">
+<section class="about muncul" id="tentang">
   <div class="about-text">
     <div class="eyebrow">Tentang Kami</div>
     <h2>Lebih dari Sekadar Komunitas</h2>
@@ -896,7 +930,7 @@ if ('serviceWorker' in navigator) {
 
 <!-- ================= JADWAL BARCELONA =================
      Lahir hidden; dibuka JS hanya kalau ada pertandingan yang belum lewat. -->
-<section class="jadwal" id="jadwal" hidden>
+<section class="jadwal muncul" id="jadwal" hidden>
   <div class="container">
     <div class="jadwal-head">
       <div class="eyebrow">Jadwal Terdekat</div>
@@ -920,7 +954,7 @@ if ('serviceWorker' in navigator) {
 </section>
 
 <!-- ================= KEGIATAN ================= -->
-<section class="upcoming" id="kegiatan">
+<section class="upcoming muncul" id="kegiatan">
   <div class="container">
     <div class="head">
       <h2>Kegiatan Rutin Kami</h2>
@@ -982,7 +1016,7 @@ if ('serviceWorker' in navigator) {
 </section>
 
 <!-- ================= IB BALI STORE ================= -->
-<section class="store" id="store">
+<section class="store muncul" id="store">
   <div class="container store-grid">
     <div>
       <div class="eyebrow">IB Bali Official Store</div>
@@ -1009,7 +1043,7 @@ if ('serviceWorker' in navigator) {
 </section>
 
 <!-- ================= APLIKASI ANGGOTA ================= -->
-<section class="tawaran" id="aplikasi">
+<section class="tawaran muncul" id="aplikasi">
   <div class="container tawaran-grid">
     <div>
       <div class="eyebrow">Aplikasi Anggota</div>
@@ -1049,7 +1083,7 @@ if ('serviceWorker' in navigator) {
 </section>
 
 <!-- ================= LIGA ================= -->
-<section class="liga" id="liga">
+<section class="liga muncul" id="liga">
   <div class="container">
     <div class="liga-panel">
       <div class="liga-inner">
@@ -1063,7 +1097,7 @@ if ('serviceWorker' in navigator) {
 </section>
 
 <!-- ================= TESTIMONI ================= -->
-<section class="kata">
+<section class="kata muncul">
   <div class="container">
     <span class="kata-mark">“</span>
     <p class="kata-quote">Indobarca Bali adalah salah satu wadah untuk terus bisa bertumbuh bersama, karena menyediakan berbagai event olahraga yang pastinya cocok untuk semua kalangan. Dan tidak kalah serunya, ya Nobar El Clásico bareng IB Bali — nyesel kalau nggak gabung!</p>
@@ -1072,7 +1106,7 @@ if ('serviceWorker' in navigator) {
 </section>
 
 <!-- ================= FAQ ================= -->
-<section class="faq" id="faq">
+<section class="faq muncul" id="faq">
   <div class="container">
     <div class="faq-head">
       <div class="eyebrow">FAQ</div>
@@ -1120,7 +1154,7 @@ if ('serviceWorker' in navigator) {
 </section>
 
 <!-- ================= AJAKAN ================= -->
-<section class="ajak">
+<section class="ajak muncul">
   <div class="container">
     <div class="ajak-photo">
       <div class="ajak-inner">
@@ -1131,6 +1165,7 @@ if ('serviceWorker' in navigator) {
     </div>
   </div>
 </section>
+</div>
 
 <footer>
   <div class="container">
@@ -1416,14 +1451,32 @@ if ('serviceWorker' in navigator) {
         // Hitung mundur berdetak di peramban; tidak ada perjalanan ke server.
         // Setengah menit sudah cukup halus untuk satuan terkecilnya (menit).
         var pil = document.getElementById('jadwal-mundur');
+        var kartu = wadah.querySelector('.jh');
         var mulai = Date.parse(utama.utc);
         var detak = function () {
           var sisa = mulai - Date.now();
-          if (sisa <= 0) { pil.textContent = 'SEDANG BERLANGSUNG'; return; }
-          var menit = Math.floor(sisa / 60000), jam = Math.floor(menit / 60), hari = Math.floor(jam / 24);
-          pil.textContent = hari >= 1 ? hari + ' hari ' + (jam % 24) + ' jam lagi'
-                          : jam >= 1  ? jam + ' jam ' + (menit % 60) + ' menit lagi'
-                          : Math.max(1, menit) + ' menit lagi';
+          var mendesak = sisa > 0 && sisa <= 86400000;   // < 24 jam lagi
+          var langsung = sisa <= 0;
+          if (kartu) kartu.classList.toggle('mendesak', mendesak || langsung);
+          pil.classList.toggle('mendesak', mendesak);
+          pil.classList.toggle('langsung', langsung);
+
+          var teks;
+          if (langsung) {
+            teks = 'SEDANG BERLANGSUNG';
+          } else {
+            var menit = Math.floor(sisa / 60000), jam = Math.floor(menit / 60), hari = Math.floor(jam / 24);
+            teks = hari >= 1 ? hari + ' hari ' + (jam % 24) + ' jam lagi'
+                 : jam >= 1  ? jam + ' jam ' + (menit % 60) + ' menit lagi'
+                 : Math.max(1, menit) + ' menit lagi';
+          }
+          if (teks === pil.textContent) return;
+          // Pudar sekilas lalu balik, bukan teks yang diam-diam berganti —
+          // sama seperti tirai halaman ini pudar sebelum berpindah (lihat
+          // penanganan klik tautan di atas), cuma jaraknya jauh lebih pendek.
+          if (kurangGerak.matches) { pil.textContent = teks; return; }
+          pil.style.opacity = 0;
+          setTimeout(function () { pil.textContent = teks; pil.style.opacity = 1; }, 150);
         };
         detak();
         setInterval(detak, 30000);
@@ -1494,6 +1547,28 @@ if ('serviceWorker' in navigator) {
     new IntersectionObserver(function (masuk) {
       minibar.classList.toggle('on', !masuk[0].isIntersecting);
     }, { rootMargin: '-70px 0px 0px 0px' }).observe(hero);
+  }
+
+  // ============ Section muncul saat digulir ============
+  // threshold rendah (12%) supaya section tinggi seperti Store sudah mulai
+  // muncul begitu ujung atasnya kelihatan — bukan menunggu seluruh tingginya
+  // masuk layar, yang di section panjang berarti menunggu sampai hampir
+  // kelewat. unobserve sesudah tampil: sekali muncul, selesai — scroll naik
+  // lagi tidak menyembunyikannya balik untuk dianimasikan ulang.
+  var muncul = document.querySelectorAll('.muncul');
+  if (muncul.length) {
+    if (!('IntersectionObserver' in window) || kurangGerak.matches) {
+      muncul.forEach(function (s) { s.classList.add('tampak'); });
+    } else {
+      var pengawasMuncul = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('tampak');
+          obs.unobserve(e.target);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+      muncul.forEach(function (s) { pengawasMuncul.observe(s); });
+    }
   }
 
   var rel = document.getElementById('keg-scroll');
