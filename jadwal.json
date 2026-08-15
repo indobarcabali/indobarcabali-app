@@ -99,5 +99,187 @@
       "kompetisi": "LaLiga",
       "liga_lambang": "crest/liga-PD.png"
     }
+  ],
+  "klasemen": [
+    {
+      "pos": 1,
+      "tim": "Alavés",
+      "crest": "crest/263.png",
+      "main": 1,
+      "sg": 3,
+      "poin": 3,
+      "kami": false
+    },
+    {
+      "pos": 2,
+      "tim": "Sevilla FC",
+      "crest": "crest/559.png",
+      "main": 1,
+      "sg": 1,
+      "poin": 3,
+      "kami": false
+    },
+    {
+      "pos": 3,
+      "tim": "Santander",
+      "crest": "crest/5335.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 4,
+      "tim": "Villarreal",
+      "crest": "crest/94.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 5,
+      "tim": "Espanyol",
+      "crest": "crest/80.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 6,
+      "tim": "Levante",
+      "crest": "crest/88.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 7,
+      "tim": "Deportivo",
+      "crest": "crest/560.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 8,
+      "tim": "Elche",
+      "crest": "crest/285.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 9,
+      "tim": "Atleti",
+      "crest": "crest/78.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 10,
+      "tim": "Málaga",
+      "crest": "crest/84.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 11,
+      "tim": "Real Betis",
+      "crest": "crest/90.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 12,
+      "tim": "Real Sociedad",
+      "crest": "crest/92.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 13,
+      "tim": "Athletic",
+      "crest": "crest/77.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 14,
+      "tim": "Valencia",
+      "crest": "crest/95.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 15,
+      "tim": "Celta",
+      "crest": "crest/558.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 16,
+      "tim": "Real Madrid",
+      "crest": "crest/86.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 17,
+      "tim": "Barça",
+      "crest": "crest/81.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": true
+    },
+    {
+      "pos": 18,
+      "tim": "Osasuna",
+      "crest": "crest/79.png",
+      "main": 0,
+      "sg": 0,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 19,
+      "tim": "Rayo Vallecano",
+      "crest": "crest/87.png",
+      "main": 1,
+      "sg": -1,
+      "poin": 0,
+      "kami": false
+    },
+    {
+      "pos": 20,
+      "tim": "Getafe",
+      "crest": "crest/82.png",
+      "main": 1,
+      "sg": -3,
+      "poin": 0,
+      "kami": false
+    }
   ]
 }
