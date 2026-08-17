@@ -1,21 +1,21 @@
 {
   "pertandingan": [
     {
-      "utc": "2026-08-16T14:30:00Z",
+      "utc": "2026-08-19T18:00:00Z",
       "home": {
-        "nama": "Basel",
-        "tla": "",
-        "crest": "crest/tsdb133957.png"
-      },
-      "away": {
         "nama": "Barcelona",
         "tla": "",
         "crest": "crest/tsdb133739.png"
       },
-      "kandang": false,
+      "away": {
+        "nama": "Al Ahly",
+        "tla": "",
+        "crest": "crest/tsdb138995.png"
+      },
+      "kandang": true,
       "matchday": null,
       "babak": "",
-      "venue": "St. Jakob-Park",
+      "venue": "Spotify Camp Nou",
       "kompetisi": "Laga Persahabatan",
       "liga_lambang": "crest/tsdb-liga-4569.png"
     },
@@ -150,18 +150,18 @@
       "pos": 6,
       "tim": "Deportivo",
       "crest": "crest/560.png",
-      "main": 0,
+      "main": 1,
       "sg": 0,
-      "poin": 0,
+      "poin": 1,
       "kami": false
     },
     {
       "pos": 7,
       "tim": "Elche",
       "crest": "crest/285.png",
-      "main": 0,
+      "main": 1,
       "sg": 0,
-      "poin": 0,
+      "poin": 1,
       "kami": false
     },
     {
