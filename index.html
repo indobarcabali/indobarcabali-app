@@ -635,6 +635,11 @@ if ('serviceWorker' in navigator) {
     font-weight:800; color:var(--navy-900); font-size:14px;
   }
   .kl summary::-webkit-details-marker{display:none;}
+  .kl-judul{display:flex; align-items:center; gap:10px; min-width:0;}
+  /* 3:2, sama seperti kotak lambang liga di kartu jadwal: berkas LaLiga
+     memuat tulisan "LALIGA" di bawah tandanya, dan aturan cover-dari-atas
+     di .lambang-liga[data-liga="PD"] cuma menampilkan tandanya. */
+  .kl-liga{width:33px; height:22px;}
   .kl summary::after{content:'+'; font-size:19px; font-weight:400; color:var(--muted); flex:none; transition:transform .2s ease;}
   .kl[open] summary::after{transform:rotate(45deg);}
   .kl-tabel{width:100%; border-collapse:collapse; font-size:13.5px;}
@@ -648,14 +653,33 @@ if ('serviceWorker' in navigator) {
   .kl-pos{font-family:var(--font-angka); font-variant-numeric:tabular-nums; color:var(--muted); width:1px; white-space:nowrap;}
   .kl-nm{display:flex; align-items:center; gap:9px; font-weight:600;}
   .kl-nm img{width:20px; height:20px; object-fit:contain; flex:none;}
-  .kl-ang{font-family:var(--font-angka); font-variant-numeric:tabular-nums; text-align:right; width:1px; white-space:nowrap;}
-  .kl-poin{font-weight:800; color:var(--navy-900);}
+  /* Kolom angka dipatok lebarnya, bukan menciut ke isinya: kalau menciut,
+     G/M/S/K berdempetan di tepi kanan sementara ruang kosong menumpuk di
+     sebelah nama tim. Lebar tetap juga menjaga angka satu & dua digit tetap
+     sejajar antar baris. */
+  /* Ditulis `.kl-tabel .kl-ang`, bukan `.kl-ang` saja: aturan `.kl-tabel th`
+     di atas lebih spesifik, dan kalau kelas ini berdiri sendiri header-nya
+     tetap rata kiri berpadding sementara angkanya rata tengah — huruf dan
+     angkanya jadi meleset beberapa piksel. */
+  .kl-tabel .kl-ang{
+    font-family:var(--font-angka); font-variant-numeric:tabular-nums;
+    text-align:center; width:38px; padding-left:0; padding-right:0; white-space:nowrap;
+  }
+  .kl-tabel th.kl-ang{font-family:inherit;}
+  .kl-tabel .kl-poin{font-weight:800; color:var(--navy-900); width:56px;}
+  .kl-tabel th:last-child,.kl-tabel td:last-child{text-align:right;}
   /* Baris Barcelona ditandai supaya tidak perlu dicari satu per satu. */
   .kl-kami{background:rgba(247,195,49,.16);}
   .kl-kami .kl-nm{font-weight:800; color:var(--navy-900);}
   @media (max-width:560px){
-    .kl-sempit{display:none;}   /* main & selisih gol disembunyikan; posisi dan poin yang dicari orang */
-    .kl-tabel{font-size:13px;}
+    .kl-sempit{display:none;}   /* selisih gol saja yang dilepas; G/M/S/K muat kalau kolom angkanya dirapatkan */
+    .kl-tabel{font-size:12.5px;}
+    .kl-tabel .kl-ang{width:29px;}
+    .kl-tabel .kl-poin{width:46px;}
+    .kl-tabel th:first-child,.kl-tabel td:first-child{padding-left:14px;}
+    .kl-tabel th:last-child,.kl-tabel td:last-child{padding-right:14px;}
+    .kl-nm{gap:6px;}
+    .kl-nm img{width:17px; height:17px;}
   }
 
   /* ================= KEGIATAN ================= */
@@ -938,11 +962,17 @@ if ('serviceWorker' in navigator) {
     </div>
     <div id="jadwal-list"></div>
     <details class="kl" id="klasemen" hidden>
-      <summary>Klasemen LaLiga</summary>
+      <summary><span class="kl-judul">
+        <span class="lambang-liga kl-liga" data-liga="PD"><img src="crest/liga-PD.png" alt="" loading="lazy"></span>
+        <span>Klasemen LaLiga <span id="kl-musim"></span></span>
+      </span></summary>
       <div style="overflow-x:auto"><table class="kl-tabel">
         <thead><tr>
           <th>#</th><th>Tim</th>
-          <th class="kl-ang kl-sempit">M</th>
+          <th class="kl-ang">G</th>
+          <th class="kl-ang">M</th>
+          <th class="kl-ang">S</th>
+          <th class="kl-ang">K</th>
           <th class="kl-ang kl-sempit">SG</th>
           <th class="kl-ang">Poin</th>
         </tr></thead>
@@ -1489,13 +1519,32 @@ if ('serviceWorker' in navigator) {
         var tabel = document.getElementById('klasemen');
         var isi = document.getElementById('klasemen-isi');
         if (kl.length && tabel && isi) {
+          // Musim diturunkan dari laga terdekat, bukan ditulis tangan: musim
+          // Eropa mulai Juli, jadi Januari 2027 masih musim 26/27. Sama
+          // persis dengan cara skrip pengambilnya memilih musim klasemen,
+          // jadi judulnya tidak mungkin beda dari isi tabelnya.
+          var mus = document.getElementById('kl-musim');
+          var t0 = ((d.pertandingan || [])[0] || {}).utc || '';
+          var th0 = +t0.slice(0, 4);
+          if (mus && th0) {
+            var aw = +t0.slice(5, 7) >= 7 ? th0 : th0 - 1;
+            var dua = function (n) { return ('0' + n % 100).slice(-2); };
+            mus.textContent = dua(aw) + '/' + dua(aw + 1);
+          }
+
+          // Berkas jadwal.json yang ditulis SEBELUM menang/seri/kalah ada
+          // tetap tayang: kolomnya jadi strip, bukan "undefined".
+          var ang = function (v) { return v == null ? '–' : aman(v); };
           isi.innerHTML = kl.map(function (t) {
             var lb = t.crest ? '<img src="' + aman(t.crest) + '" alt="" loading="lazy">' : '';
             var sg = (typeof t.sg === 'number' && t.sg > 0 ? '+' : '') + aman(t.sg);
             return '<tr' + (t.kami ? ' class="kl-kami"' : '') + '>' +
               '<td class="kl-pos">' + aman(t.pos) + '</td>' +
               '<td><span class="kl-nm">' + lb + aman(t.tim) + '</span></td>' +
-              '<td class="kl-ang kl-sempit">' + aman(t.main) + '</td>' +
+              '<td class="kl-ang">' + ang(t.main) + '</td>' +
+              '<td class="kl-ang">' + ang(t.menang) + '</td>' +
+              '<td class="kl-ang">' + ang(t.seri) + '</td>' +
+              '<td class="kl-ang">' + ang(t.kalah) + '</td>' +
               '<td class="kl-ang kl-sempit">' + sg + '</td>' +
               '<td class="kl-ang kl-poin">' + aman(t.poin) + '</td>' +
             '</tr>';
