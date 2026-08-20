@@ -151,6 +151,10 @@ if ('serviceWorker' in navigator) {
   :root{
     --navy-900:#071744; --navy:#0A1F62; --navy-700:#12307F;
     --red:#E8253C; --red-700:#C4102A; --yellow:#F7C331;
+    /* Strip zona kualifikasi di klasemen. Biru UCL diambil dari gradasi
+       pita atas halaman ini, oranye UEL warna baru — sengaja jauh dari
+       --red supaya tidak terbaca sebagai zona degradasi. */
+    --ucl:#1A47C2; --uel:#F08A24; --degradasi:#F2708A;
     --bg:#F4F5F8; --paper:#FFFFFF; --off:#F6F7FB; --ink:#0E1330; --muted:#5B6172; --line:#E7E9F2;
     /* Jarak dari tepi layar ke tepi isi — angka yang sama dipakai .container,
        garis pemisah antar-section, dan padding carousel, supaya semuanya
@@ -650,7 +654,26 @@ if ('serviceWorker' in navigator) {
   .kl-tabel td{padding:9px 8px; border-top:1px solid var(--line); color:var(--ink);}
   .kl-tabel th:first-child,.kl-tabel td:first-child{padding-left:18px;}
   .kl-tabel th:last-child,.kl-tabel td:last-child{padding-right:18px;}
-  .kl-pos{font-family:var(--font-angka); font-variant-numeric:tabular-nums; color:var(--muted); width:1px; white-space:nowrap;}
+  /* Semua baris memakai border kiri 3px — yang di luar zona transparan —
+     supaya angka peringkatnya tidak bergeser 3px antara baris bertanda dan
+     tidak. Border, bukan box-shadow: dengan border-collapse:collapse,
+     bayangan pada sel tidak dijamin tergambar. */
+  .kl-pos{
+    font-family:var(--font-angka); font-variant-numeric:tabular-nums; color:var(--muted);
+    width:1px; white-space:nowrap; border-left:3px solid transparent;
+  }
+  .kl-ucl{border-left-color:var(--ucl);}
+  .kl-uel{border-left-color:var(--uel);}
+  .kl-degradasi{border-left-color:var(--degradasi);}
+  .kl-ket{
+    display:flex; flex-wrap:wrap; gap:6px 16px; padding:12px 18px;
+    border-top:1px solid var(--line); font-size:11.5px; color:var(--muted);
+  }
+  .kl-ket span{display:inline-flex; align-items:center; gap:7px;}
+  .kl-ket b{width:3px; height:12px; border-radius:2px; flex:none;}
+  .kl-ket .z-ucl{background:var(--ucl);}
+  .kl-ket .z-uel{background:var(--uel);}
+  .kl-ket .z-degradasi{background:var(--degradasi);}
   .kl-nm{display:flex; align-items:center; gap:9px; font-weight:600;}
   .kl-nm img{width:20px; height:20px; object-fit:contain; flex:none;}
   /* Kolom angka dipatok lebarnya, bukan menciut ke isinya: kalau menciut,
@@ -978,6 +1001,11 @@ if ('serviceWorker' in navigator) {
         </tr></thead>
         <tbody id="klasemen-isi"></tbody>
       </table></div>
+      <p class="kl-ket">
+        <span><b class="z-ucl"></b>Liga Champions</span>
+        <span><b class="z-uel"></b>Liga Europa</span>
+        <span><b class="z-degradasi"></b>Degradasi</span>
+      </p>
     </details>
     <p class="jadwal-nb">Waktu Bali (WITA). Jadwal dapat berubah sewaktu-waktu — pengumuman nobar tetap lewat grup WhatsApp.</p>
   </div>
@@ -1535,11 +1563,21 @@ if ('serviceWorker' in navigator) {
           // Berkas jadwal.json yang ditulis SEBELUM menang/seri/kalah ada
           // tetap tayang: kolomnya jadi strip, bukan "undefined".
           var ang = function (v) { return v == null ? '–' : aman(v); };
+          // Jatah Eropa tidak ikut dikirim API, jadi batasnya dipatok di
+          // sini: 1-5 ke Liga Champions, 6-7 ke Liga Europa. Kalau jatah
+          // Spanyol berubah, dua angka ini saja yang disunting.
+          // Degradasi dihitung dari BAWAH: 3 tim terakhir, berapa pun
+          // jumlah pesertanya.
+          var ZONA = { ucl: 5, uel: 7, degradasi: 3 };
+          var dasar = kl.length - ZONA.degradasi;
           isi.innerHTML = kl.map(function (t) {
             var lb = t.crest ? '<img src="' + aman(t.crest) + '" alt="" loading="lazy">' : '';
             var sg = (typeof t.sg === 'number' && t.sg > 0 ? '+' : '') + aman(t.sg);
+            var zona = t.pos <= ZONA.ucl ? ' kl-ucl'
+              : t.pos <= ZONA.uel ? ' kl-uel'
+              : t.pos > dasar ? ' kl-degradasi' : '';
             return '<tr' + (t.kami ? ' class="kl-kami"' : '') + '>' +
-              '<td class="kl-pos">' + aman(t.pos) + '</td>' +
+              '<td class="kl-pos' + zona + '">' + aman(t.pos) + '</td>' +
               '<td><span class="kl-nm">' + lb + aman(t.tim) + '</span></td>' +
               '<td class="kl-ang">' + ang(t.main) + '</td>' +
               '<td class="kl-ang">' + ang(t.menang) + '</td>' +
