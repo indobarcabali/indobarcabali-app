@@ -214,12 +214,12 @@
       "pos": 10,
       "tim": "Deportivo",
       "crest": "crest/560.png",
-      "main": 1,
+      "main": 2,
       "menang": 0,
-      "seri": 1,
+      "seri": 2,
       "kalah": 0,
       "sg": 0,
-      "poin": 1,
+      "poin": 2,
       "kami": false
     },
     {
@@ -248,6 +248,18 @@
     },
     {
       "pos": 13,
+      "tim": "Osasuna",
+      "crest": "crest/79.png",
+      "main": 1,
+      "menang": 0,
+      "seri": 1,
+      "kalah": 0,
+      "sg": 0,
+      "poin": 1,
+      "kami": false
+    },
+    {
+      "pos": 14,
       "tim": "Rayo Vallecano",
       "crest": "crest/87.png",
       "main": 2,
@@ -259,7 +271,7 @@
       "kami": false
     },
     {
-      "pos": 14,
+      "pos": 15,
       "tim": "Santander",
       "crest": "crest/5335.png",
       "main": 2,
@@ -271,7 +283,31 @@
       "kami": false
     },
     {
-      "pos": 15,
+      "pos": 16,
+      "tim": "Málaga",
+      "crest": "crest/84.png",
+      "main": 2,
+      "menang": 0,
+      "seri": 1,
+      "kalah": 1,
+      "sg": -2,
+      "poin": 1,
+      "kami": false
+    },
+    {
+      "pos": 17,
+      "tim": "Levante",
+      "crest": "crest/88.png",
+      "main": 2,
+      "menang": 0,
+      "seri": 1,
+      "kalah": 1,
+      "sg": -3,
+      "poin": 1,
+      "kami": false
+    },
+    {
+      "pos": 18,
       "tim": "Elche",
       "crest": "crest/285.png",
       "main": 2,
@@ -283,19 +319,7 @@
       "kami": false
     },
     {
-      "pos": 16,
-      "tim": "Osasuna",
-      "crest": "crest/79.png",
-      "main": 0,
-      "menang": 0,
-      "seri": 0,
-      "kalah": 0,
-      "sg": 0,
-      "poin": 0,
-      "kami": false
-    },
-    {
-      "pos": 17,
+      "pos": 19,
       "tim": "Real Sociedad",
       "crest": "crest/92.png",
       "main": 1,
@@ -307,7 +331,7 @@
       "kami": false
     },
     {
-      "pos": 18,
+      "pos": 20,
       "tim": "Athletic",
       "crest": "crest/77.png",
       "main": 1,
@@ -315,30 +339,6 @@
       "seri": 0,
       "kalah": 1,
       "sg": -2,
-      "poin": 0,
-      "kami": false
-    },
-    {
-      "pos": 19,
-      "tim": "Málaga",
-      "crest": "crest/84.png",
-      "main": 1,
-      "menang": 0,
-      "seri": 0,
-      "kalah": 1,
-      "sg": -2,
-      "poin": 0,
-      "kami": false
-    },
-    {
-      "pos": 20,
-      "tim": "Levante",
-      "crest": "crest/88.png",
-      "main": 1,
-      "menang": 0,
-      "seri": 0,
-      "kalah": 1,
-      "sg": -3,
       "poin": 0,
       "kami": false
     }
