@@ -224,6 +224,18 @@
     },
     {
       "pos": 11,
+      "tim": "Real Sociedad",
+      "crest": "crest/92.png",
+      "main": 4,
+      "menang": 1,
+      "seri": 1,
+      "kalah": 2,
+      "sg": -3,
+      "poin": 4,
+      "kami": false
+    },
+    {
+      "pos": 12,
       "tim": "Espanyol",
       "crest": "crest/80.png",
       "main": 3,
@@ -235,7 +247,7 @@
       "kami": false
     },
     {
-      "pos": 12,
+      "pos": 13,
       "tim": "Athletic",
       "crest": "crest/77.png",
       "main": 3,
@@ -243,18 +255,6 @@
       "seri": 0,
       "kalah": 2,
       "sg": -2,
-      "poin": 3,
-      "kami": false
-    },
-    {
-      "pos": 13,
-      "tim": "Real Sociedad",
-      "crest": "crest/92.png",
-      "main": 3,
-      "menang": 1,
-      "seri": 0,
-      "kalah": 2,
-      "sg": -3,
       "poin": 3,
       "kami": false
     },
@@ -284,20 +284,20 @@
     },
     {
       "pos": 16,
-      "tim": "Valencia",
-      "crest": "crest/95.png",
-      "main": 3,
+      "tim": "Celta",
+      "crest": "crest/558.png",
+      "main": 4,
       "menang": 0,
-      "seri": 1,
+      "seri": 2,
       "kalah": 2,
       "sg": -3,
-      "poin": 1,
+      "poin": 2,
       "kami": false
     },
     {
       "pos": 17,
-      "tim": "Celta",
-      "crest": "crest/558.png",
+      "tim": "Valencia",
+      "crest": "crest/95.png",
       "main": 3,
       "menang": 0,
       "seri": 1,
