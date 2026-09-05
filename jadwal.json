@@ -118,16 +118,28 @@
       "pos": 2,
       "tim": "Real Madrid",
       "crest": "crest/86.png",
-      "main": 3,
+      "main": 4,
       "menang": 3,
       "seri": 0,
-      "kalah": 0,
-      "sg": 8,
+      "kalah": 1,
+      "sg": 7,
       "poin": 9,
       "kami": false
     },
     {
       "pos": 3,
+      "tim": "Real Betis",
+      "crest": "crest/90.png",
+      "main": 4,
+      "menang": 3,
+      "seri": 0,
+      "kalah": 1,
+      "sg": 0,
+      "poin": 9,
+      "kami": false
+    },
+    {
+      "pos": 4,
       "tim": "Atleti",
       "crest": "crest/78.png",
       "main": 3,
@@ -139,7 +151,7 @@
       "kami": false
     },
     {
-      "pos": 4,
+      "pos": 5,
       "tim": "Alavés",
       "crest": "crest/263.png",
       "main": 3,
@@ -151,7 +163,7 @@
       "kami": false
     },
     {
-      "pos": 5,
+      "pos": 6,
       "tim": "Osasuna",
       "crest": "crest/79.png",
       "main": 3,
@@ -163,7 +175,7 @@
       "kami": false
     },
     {
-      "pos": 6,
+      "pos": 7,
       "tim": "Sevilla FC",
       "crest": "crest/559.png",
       "main": 3,
@@ -171,18 +183,6 @@
       "seri": 0,
       "kalah": 1,
       "sg": 1,
-      "poin": 6,
-      "kami": false
-    },
-    {
-      "pos": 7,
-      "tim": "Real Betis",
-      "crest": "crest/90.png",
-      "main": 3,
-      "menang": 2,
-      "seri": 0,
-      "kalah": 1,
-      "sg": -1,
       "poin": 6,
       "kami": false
     },
