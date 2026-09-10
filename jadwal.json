@@ -1,26 +1,6 @@
 {
   "pertandingan": [
     {
-      "utc": "2026-09-09T16:45:00Z",
-      "home": {
-        "nama": "Barça",
-        "tla": "FCB",
-        "crest": "crest/81.png"
-      },
-      "away": {
-        "nama": "Feyenoord",
-        "tla": "FEY",
-        "crest": "crest/675.png"
-      },
-      "kandang": true,
-      "lawan": "Feyenoord",
-      "matchday": 1,
-      "babak": "Fase Liga 1",
-      "venue": "",
-      "kompetisi": "Champions League",
-      "liga_lambang": "crest/liga-CL.png"
-    },
-    {
       "utc": "2026-09-13T14:15:00Z",
       "home": {
         "nama": "Levante",
@@ -99,6 +79,26 @@
       "venue": "",
       "kompetisi": "LaLiga",
       "liga_lambang": "crest/liga-PD.png"
+    },
+    {
+      "utc": "2026-10-13T19:00:00Z",
+      "home": {
+        "nama": "Galatasaray",
+        "tla": "GAL",
+        "crest": "crest/610.png"
+      },
+      "away": {
+        "nama": "Barça",
+        "tla": "FCB",
+        "crest": "crest/81.png"
+      },
+      "kandang": false,
+      "lawan": "Galatasaray",
+      "matchday": 2,
+      "babak": "Fase Liga 2",
+      "venue": "",
+      "kompetisi": "Champions League",
+      "liga_lambang": "crest/liga-CL.png"
     }
   ],
   "klasemen": [
