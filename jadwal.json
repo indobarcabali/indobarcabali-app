@@ -1,26 +1,6 @@
 {
   "pertandingan": [
     {
-      "utc": "2026-09-13T14:15:00Z",
-      "home": {
-        "nama": "Levante",
-        "tla": "LEV",
-        "crest": "crest/88.png"
-      },
-      "away": {
-        "nama": "Barça",
-        "tla": "FCB",
-        "crest": "crest/81.png"
-      },
-      "kandang": false,
-      "lawan": "Levante",
-      "matchday": 5,
-      "babak": "Jornada 5",
-      "venue": "",
-      "kompetisi": "LaLiga",
-      "liga_lambang": "crest/liga-PD.png"
-    },
-    {
       "utc": "2026-09-16T19:30:00Z",
       "home": {
         "nama": "Barça",
@@ -99,6 +79,26 @@
       "venue": "",
       "kompetisi": "Champions League",
       "liga_lambang": "crest/liga-CL.png"
+    },
+    {
+      "utc": "2026-10-18T00:00:00Z",
+      "home": {
+        "nama": "Real Betis",
+        "tla": "BET",
+        "crest": "crest/90.png"
+      },
+      "away": {
+        "nama": "Barça",
+        "tla": "FCB",
+        "crest": "crest/81.png"
+      },
+      "kandang": false,
+      "lawan": "Real Betis",
+      "matchday": 9,
+      "babak": "Jornada 9",
+      "venue": "",
+      "kompetisi": "LaLiga",
+      "liga_lambang": "crest/liga-PD.png"
     }
   ],
   "klasemen": [
@@ -106,12 +106,12 @@
       "pos": 1,
       "tim": "Barça",
       "crest": "crest/81.png",
-      "main": 4,
-      "menang": 4,
+      "main": 5,
+      "menang": 5,
       "seri": 0,
       "kalah": 0,
-      "sg": 15,
-      "poin": 12,
+      "sg": 17,
+      "poin": 15,
       "kami": true
     },
     {
@@ -140,6 +140,18 @@
     },
     {
       "pos": 4,
+      "tim": "Atleti",
+      "crest": "crest/78.png",
+      "main": 5,
+      "menang": 3,
+      "seri": 1,
+      "kalah": 1,
+      "sg": 4,
+      "poin": 10,
+      "kami": false
+    },
+    {
+      "pos": 5,
       "tim": "Sevilla FC",
       "crest": "crest/559.png",
       "main": 5,
@@ -151,7 +163,19 @@
       "kami": false
     },
     {
-      "pos": 5,
+      "pos": 6,
+      "tim": "Deportivo",
+      "crest": "crest/560.png",
+      "main": 5,
+      "menang": 2,
+      "seri": 3,
+      "kalah": 0,
+      "sg": 3,
+      "poin": 9,
+      "kami": false
+    },
+    {
+      "pos": 7,
       "tim": "Real Betis",
       "crest": "crest/90.png",
       "main": 4,
@@ -163,19 +187,7 @@
       "kami": false
     },
     {
-      "pos": 6,
-      "tim": "Deportivo",
-      "crest": "crest/560.png",
-      "main": 4,
-      "menang": 2,
-      "seri": 2,
-      "kalah": 0,
-      "sg": 3,
-      "poin": 8,
-      "kami": false
-    },
-    {
-      "pos": 7,
+      "pos": 8,
       "tim": "Espanyol",
       "crest": "crest/80.png",
       "main": 5,
@@ -183,18 +195,6 @@
       "seri": 1,
       "kalah": 2,
       "sg": 3,
-      "poin": 7,
-      "kami": false
-    },
-    {
-      "pos": 8,
-      "tim": "Atleti",
-      "crest": "crest/78.png",
-      "main": 4,
-      "menang": 2,
-      "seri": 1,
-      "kalah": 1,
-      "sg": 1,
       "poin": 7,
       "kami": false
     },
@@ -224,18 +224,6 @@
     },
     {
       "pos": 11,
-      "tim": "Real Sociedad",
-      "crest": "crest/92.png",
-      "main": 5,
-      "menang": 2,
-      "seri": 1,
-      "kalah": 2,
-      "sg": -2,
-      "poin": 7,
-      "kami": false
-    },
-    {
-      "pos": 12,
       "tim": "Osasuna",
       "crest": "crest/79.png",
       "main": 5,
@@ -247,14 +235,26 @@
       "kami": false
     },
     {
+      "pos": 12,
+      "tim": "Real Sociedad",
+      "crest": "crest/92.png",
+      "main": 6,
+      "menang": 2,
+      "seri": 1,
+      "kalah": 3,
+      "sg": -5,
+      "poin": 7,
+      "kami": false
+    },
+    {
       "pos": 13,
       "tim": "Levante",
       "crest": "crest/88.png",
-      "main": 4,
+      "main": 5,
       "menang": 1,
       "seri": 2,
-      "kalah": 1,
-      "sg": 0,
+      "kalah": 2,
+      "sg": -2,
       "poin": 5,
       "kami": false
     },
@@ -262,16 +262,28 @@
       "pos": 14,
       "tim": "Getafe",
       "crest": "crest/82.png",
-      "main": 4,
+      "main": 5,
       "menang": 1,
-      "seri": 1,
+      "seri": 2,
+      "kalah": 2,
+      "sg": -3,
+      "poin": 5,
+      "kami": false
+    },
+    {
+      "pos": 15,
+      "tim": "Celta",
+      "crest": "crest/558.png",
+      "main": 6,
+      "menang": 0,
+      "seri": 4,
       "kalah": 2,
       "sg": -3,
       "poin": 4,
       "kami": false
     },
     {
-      "pos": 15,
+      "pos": 16,
       "tim": "Rayo Vallecano",
       "crest": "crest/87.png",
       "main": 5,
@@ -283,19 +295,19 @@
       "kami": false
     },
     {
-      "pos": 16,
-      "tim": "Celta",
-      "crest": "crest/558.png",
+      "pos": 17,
+      "tim": "Málaga",
+      "crest": "crest/84.png",
       "main": 5,
       "menang": 0,
       "seri": 3,
       "kalah": 2,
-      "sg": -3,
+      "sg": -6,
       "poin": 3,
       "kami": false
     },
     {
-      "pos": 17,
+      "pos": 18,
       "tim": "Villarreal",
       "crest": "crest/94.png",
       "main": 4,
@@ -303,18 +315,6 @@
       "seri": 2,
       "kalah": 2,
       "sg": -2,
-      "poin": 2,
-      "kami": false
-    },
-    {
-      "pos": 18,
-      "tim": "Málaga",
-      "crest": "crest/84.png",
-      "main": 4,
-      "menang": 0,
-      "seri": 2,
-      "kalah": 2,
-      "sg": -6,
       "poin": 2,
       "kami": false
     },
