@@ -118,12 +118,12 @@
       "pos": 2,
       "tim": "Real Madrid",
       "crest": "crest/86.png",
-      "main": 5,
-      "menang": 4,
+      "main": 6,
+      "menang": 5,
       "seri": 0,
       "kalah": 1,
-      "sg": 10,
-      "poin": 12,
+      "sg": 11,
+      "poin": 15,
       "kami": false
     },
     {
@@ -142,11 +142,11 @@
       "pos": 4,
       "tim": "Alavés",
       "crest": "crest/263.png",
-      "main": 5,
+      "main": 6,
       "menang": 3,
       "seri": 1,
-      "kalah": 1,
-      "sg": 6,
+      "kalah": 2,
+      "sg": 5,
       "poin": 10,
       "kami": false
     },
@@ -190,11 +190,11 @@
       "pos": 8,
       "tim": "Espanyol",
       "crest": "crest/80.png",
-      "main": 5,
+      "main": 6,
       "menang": 2,
       "seri": 1,
-      "kalah": 2,
-      "sg": 3,
+      "kalah": 3,
+      "sg": 2,
       "poin": 7,
       "kami": false
     },
@@ -236,6 +236,18 @@
     },
     {
       "pos": 12,
+      "tim": "Rayo Vallecano",
+      "crest": "crest/87.png",
+      "main": 6,
+      "menang": 2,
+      "seri": 1,
+      "kalah": 3,
+      "sg": -5,
+      "poin": 7,
+      "kami": false
+    },
+    {
+      "pos": 13,
       "tim": "Real Sociedad",
       "crest": "crest/92.png",
       "main": 6,
@@ -247,7 +259,7 @@
       "kami": false
     },
     {
-      "pos": 13,
+      "pos": 14,
       "tim": "Levante",
       "crest": "crest/88.png",
       "main": 5,
@@ -259,7 +271,7 @@
       "kami": false
     },
     {
-      "pos": 14,
+      "pos": 15,
       "tim": "Getafe",
       "crest": "crest/82.png",
       "main": 5,
@@ -271,7 +283,7 @@
       "kami": false
     },
     {
-      "pos": 15,
+      "pos": 16,
       "tim": "Celta",
       "crest": "crest/558.png",
       "main": 6,
@@ -283,19 +295,19 @@
       "kami": false
     },
     {
-      "pos": 16,
-      "tim": "Rayo Vallecano",
-      "crest": "crest/87.png",
-      "main": 5,
+      "pos": 17,
+      "tim": "Valencia",
+      "crest": "crest/95.png",
+      "main": 6,
       "menang": 1,
       "seri": 1,
-      "kalah": 3,
-      "sg": -6,
+      "kalah": 4,
+      "sg": -8,
       "poin": 4,
       "kami": false
     },
     {
-      "pos": 17,
+      "pos": 18,
       "tim": "Málaga",
       "crest": "crest/84.png",
       "main": 5,
@@ -307,7 +319,7 @@
       "kami": false
     },
     {
-      "pos": 18,
+      "pos": 19,
       "tim": "Villarreal",
       "crest": "crest/94.png",
       "main": 5,
@@ -319,27 +331,15 @@
       "kami": false
     },
     {
-      "pos": 19,
+      "pos": 20,
       "tim": "Elche",
       "crest": "crest/285.png",
-      "main": 5,
+      "main": 6,
       "menang": 0,
       "seri": 2,
-      "kalah": 3,
-      "sg": -7,
-      "poin": 2,
-      "kami": false
-    },
-    {
-      "pos": 20,
-      "tim": "Valencia",
-      "crest": "crest/95.png",
-      "main": 5,
-      "menang": 0,
-      "seri": 1,
       "kalah": 4,
-      "sg": -9,
-      "poin": 1,
+      "sg": -8,
+      "poin": 2,
       "kami": false
     }
   ]
