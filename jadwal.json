@@ -1,26 +1,6 @@
 {
   "pertandingan": [
     {
-      "utc": "2026-09-16T19:30:00Z",
-      "home": {
-        "nama": "Barça",
-        "tla": "FCB",
-        "crest": "crest/81.png"
-      },
-      "away": {
-        "nama": "Santander",
-        "tla": "SAN",
-        "crest": "crest/5335.png"
-      },
-      "kandang": true,
-      "lawan": "Santander",
-      "matchday": 6,
-      "babak": "Jornada 6",
-      "venue": "",
-      "kompetisi": "LaLiga",
-      "liga_lambang": "crest/liga-PD.png"
-    },
-    {
       "utc": "2026-09-19T19:00:00Z",
       "home": {
         "nama": "Sevilla FC",
@@ -81,7 +61,7 @@
       "liga_lambang": "crest/liga-CL.png"
     },
     {
-      "utc": "2026-10-18T00:00:00Z",
+      "utc": "2026-10-17T16:30:00Z",
       "home": {
         "nama": "Real Betis",
         "tla": "BET",
@@ -99,6 +79,26 @@
       "venue": "",
       "kompetisi": "LaLiga",
       "liga_lambang": "crest/liga-PD.png"
+    },
+    {
+      "utc": "2026-10-20T19:00:00Z",
+      "home": {
+        "nama": "PSG",
+        "tla": "PSG",
+        "crest": "crest/524.png"
+      },
+      "away": {
+        "nama": "Barça",
+        "tla": "FCB",
+        "crest": "crest/81.png"
+      },
+      "kandang": false,
+      "lawan": "PSG",
+      "matchday": 3,
+      "babak": "Fase Liga 3",
+      "venue": "",
+      "kompetisi": "Champions League",
+      "liga_lambang": "crest/liga-CL.png"
     }
   ],
   "klasemen": [
@@ -106,12 +106,12 @@
       "pos": 1,
       "tim": "Barça",
       "crest": "crest/81.png",
-      "main": 5,
-      "menang": 5,
+      "main": 6,
+      "menang": 6,
       "seri": 0,
       "kalah": 0,
-      "sg": 17,
-      "poin": 15,
+      "sg": 22,
+      "poin": 18,
       "kami": true
     },
     {
@@ -128,6 +128,30 @@
     },
     {
       "pos": 3,
+      "tim": "Atleti",
+      "crest": "crest/78.png",
+      "main": 6,
+      "menang": 4,
+      "seri": 1,
+      "kalah": 1,
+      "sg": 8,
+      "poin": 13,
+      "kami": false
+    },
+    {
+      "pos": 4,
+      "tim": "Sevilla FC",
+      "crest": "crest/559.png",
+      "main": 6,
+      "menang": 4,
+      "seri": 1,
+      "kalah": 1,
+      "sg": 3,
+      "poin": 13,
+      "kami": false
+    },
+    {
+      "pos": 5,
       "tim": "Real Betis",
       "crest": "crest/90.png",
       "main": 5,
@@ -139,7 +163,7 @@
       "kami": false
     },
     {
-      "pos": 4,
+      "pos": 6,
       "tim": "Alavés",
       "crest": "crest/263.png",
       "main": 6,
@@ -151,38 +175,14 @@
       "kami": false
     },
     {
-      "pos": 5,
-      "tim": "Atleti",
-      "crest": "crest/78.png",
-      "main": 5,
-      "menang": 3,
-      "seri": 1,
-      "kalah": 1,
-      "sg": 4,
-      "poin": 10,
-      "kami": false
-    },
-    {
-      "pos": 6,
-      "tim": "Sevilla FC",
-      "crest": "crest/559.png",
-      "main": 5,
-      "menang": 3,
-      "seri": 1,
-      "kalah": 1,
-      "sg": 2,
-      "poin": 10,
-      "kami": false
-    },
-    {
       "pos": 7,
       "tim": "Deportivo",
       "crest": "crest/560.png",
-      "main": 5,
+      "main": 6,
       "menang": 2,
       "seri": 3,
-      "kalah": 0,
-      "sg": 3,
+      "kalah": 1,
+      "sg": 2,
       "poin": 9,
       "kami": false
     },
@@ -214,28 +214,16 @@
       "pos": 10,
       "tim": "Santander",
       "crest": "crest/5335.png",
-      "main": 5,
+      "main": 6,
       "menang": 2,
       "seri": 1,
-      "kalah": 2,
-      "sg": 0,
+      "kalah": 3,
+      "sg": -5,
       "poin": 7,
       "kami": false
     },
     {
       "pos": 11,
-      "tim": "Osasuna",
-      "crest": "crest/79.png",
-      "main": 5,
-      "menang": 2,
-      "seri": 1,
-      "kalah": 2,
-      "sg": -3,
-      "poin": 7,
-      "kami": false
-    },
-    {
-      "pos": 12,
       "tim": "Rayo Vallecano",
       "crest": "crest/87.png",
       "main": 6,
@@ -247,7 +235,7 @@
       "kami": false
     },
     {
-      "pos": 13,
+      "pos": 12,
       "tim": "Real Sociedad",
       "crest": "crest/92.png",
       "main": 6,
@@ -255,6 +243,18 @@
       "seri": 1,
       "kalah": 3,
       "sg": -5,
+      "poin": 7,
+      "kami": false
+    },
+    {
+      "pos": 13,
+      "tim": "Osasuna",
+      "crest": "crest/79.png",
+      "main": 6,
+      "menang": 2,
+      "seri": 1,
+      "kalah": 3,
+      "sg": -7,
       "poin": 7,
       "kami": false
     },
