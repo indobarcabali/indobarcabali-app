@@ -128,6 +128,18 @@
     },
     {
       "pos": 3,
+      "tim": "Real Betis",
+      "crest": "crest/90.png",
+      "main": 6,
+      "menang": 5,
+      "seri": 0,
+      "kalah": 1,
+      "sg": 2,
+      "poin": 15,
+      "kami": false
+    },
+    {
+      "pos": 4,
       "tim": "Atleti",
       "crest": "crest/78.png",
       "main": 6,
@@ -139,7 +151,7 @@
       "kami": false
     },
     {
-      "pos": 4,
+      "pos": 5,
       "tim": "Sevilla FC",
       "crest": "crest/559.png",
       "main": 6,
@@ -148,18 +160,6 @@
       "kalah": 1,
       "sg": 3,
       "poin": 13,
-      "kami": false
-    },
-    {
-      "pos": 5,
-      "tim": "Real Betis",
-      "crest": "crest/90.png",
-      "main": 5,
-      "menang": 4,
-      "seri": 0,
-      "kalah": 1,
-      "sg": 1,
-      "poin": 12,
       "kami": false
     },
     {
@@ -260,6 +260,18 @@
     },
     {
       "pos": 14,
+      "tim": "Villarreal",
+      "crest": "crest/94.png",
+      "main": 6,
+      "menang": 1,
+      "seri": 2,
+      "kalah": 3,
+      "sg": -1,
+      "poin": 5,
+      "kami": false
+    },
+    {
+      "pos": 15,
       "tim": "Levante",
       "crest": "crest/88.png",
       "main": 5,
@@ -271,19 +283,19 @@
       "kami": false
     },
     {
-      "pos": 15,
+      "pos": 16,
       "tim": "Getafe",
       "crest": "crest/82.png",
-      "main": 5,
+      "main": 6,
       "menang": 1,
       "seri": 2,
-      "kalah": 2,
-      "sg": -3,
+      "kalah": 3,
+      "sg": -4,
       "poin": 5,
       "kami": false
     },
     {
-      "pos": 16,
+      "pos": 17,
       "tim": "Celta",
       "crest": "crest/558.png",
       "main": 6,
@@ -295,7 +307,7 @@
       "kami": false
     },
     {
-      "pos": 17,
+      "pos": 18,
       "tim": "Valencia",
       "crest": "crest/95.png",
       "main": 6,
@@ -307,27 +319,15 @@
       "kami": false
     },
     {
-      "pos": 18,
+      "pos": 19,
       "tim": "Málaga",
       "crest": "crest/84.png",
-      "main": 5,
+      "main": 6,
       "menang": 0,
       "seri": 3,
-      "kalah": 2,
-      "sg": -6,
-      "poin": 3,
-      "kami": false
-    },
-    {
-      "pos": 19,
-      "tim": "Villarreal",
-      "crest": "crest/94.png",
-      "main": 5,
-      "menang": 0,
-      "seri": 2,
       "kalah": 3,
-      "sg": -3,
-      "poin": 2,
+      "sg": -8,
+      "poin": 3,
       "kami": false
     },
     {
