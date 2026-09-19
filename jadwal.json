@@ -188,18 +188,6 @@
     },
     {
       "pos": 8,
-      "tim": "Espanyol",
-      "crest": "crest/80.png",
-      "main": 6,
-      "menang": 2,
-      "seri": 1,
-      "kalah": 3,
-      "sg": 2,
-      "poin": 7,
-      "kami": false
-    },
-    {
-      "pos": 9,
       "tim": "Athletic",
       "crest": "crest/77.png",
       "main": 5,
@@ -207,6 +195,18 @@
       "seri": 1,
       "kalah": 2,
       "sg": 1,
+      "poin": 7,
+      "kami": false
+    },
+    {
+      "pos": 9,
+      "tim": "Espanyol",
+      "crest": "crest/80.png",
+      "main": 7,
+      "menang": 2,
+      "seri": 1,
+      "kalah": 4,
+      "sg": 0,
       "poin": 7,
       "kami": false
     },
@@ -296,6 +296,18 @@
     },
     {
       "pos": 17,
+      "tim": "Elche",
+      "crest": "crest/285.png",
+      "main": 7,
+      "menang": 1,
+      "seri": 2,
+      "kalah": 4,
+      "sg": -6,
+      "poin": 5,
+      "kami": false
+    },
+    {
+      "pos": 18,
       "tim": "Celta",
       "crest": "crest/558.png",
       "main": 6,
@@ -307,7 +319,7 @@
       "kami": false
     },
     {
-      "pos": 18,
+      "pos": 19,
       "tim": "Valencia",
       "crest": "crest/95.png",
       "main": 6,
@@ -319,7 +331,7 @@
       "kami": false
     },
     {
-      "pos": 19,
+      "pos": 20,
       "tim": "Málaga",
       "crest": "crest/84.png",
       "main": 6,
@@ -328,18 +340,6 @@
       "kalah": 3,
       "sg": -8,
       "poin": 3,
-      "kami": false
-    },
-    {
-      "pos": 20,
-      "tim": "Elche",
-      "crest": "crest/285.png",
-      "main": 6,
-      "menang": 0,
-      "seri": 2,
-      "kalah": 4,
-      "sg": -8,
-      "poin": 2,
       "kami": false
     }
   ]
