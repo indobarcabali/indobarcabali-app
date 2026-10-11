@@ -1,26 +1,6 @@
 {
   "pertandingan": [
     {
-      "utc": "2026-10-10T16:30:00Z",
-      "home": {
-        "nama": "Barça",
-        "tla": "FCB",
-        "crest": "crest/81.png"
-      },
-      "away": {
-        "nama": "Getafe",
-        "tla": "GET",
-        "crest": "crest/82.png"
-      },
-      "kandang": true,
-      "lawan": "Getafe",
-      "matchday": 8,
-      "babak": "Jornada 8",
-      "venue": "",
-      "kompetisi": "LaLiga",
-      "liga_lambang": "crest/liga-PD.png"
-    },
-    {
       "utc": "2026-10-13T19:00:00Z",
       "home": {
         "nama": "Galatasaray",
@@ -99,6 +79,26 @@
       "venue": "",
       "kompetisi": "LaLiga",
       "liga_lambang": "crest/liga-PD.png"
+    },
+    {
+      "utc": "2026-10-31T20:00:00Z",
+      "home": {
+        "nama": "Barça",
+        "tla": "FCB",
+        "crest": "crest/81.png"
+      },
+      "away": {
+        "nama": "Alavés",
+        "tla": "ALA",
+        "crest": "crest/263.png"
+      },
+      "kandang": true,
+      "lawan": "Alavés",
+      "matchday": 11,
+      "babak": "Jornada 11",
+      "venue": "",
+      "kompetisi": "LaLiga",
+      "liga_lambang": "crest/liga-PD.png"
     }
   ],
   "klasemen": [
@@ -106,28 +106,40 @@
       "pos": 1,
       "tim": "Barça",
       "crest": "crest/81.png",
-      "main": 7,
-      "menang": 7,
+      "main": 8,
+      "menang": 8,
       "seri": 0,
       "kalah": 0,
-      "sg": 24,
-      "poin": 21,
+      "sg": 27,
+      "poin": 24,
       "kami": true
     },
     {
       "pos": 2,
       "tim": "Atleti",
       "crest": "crest/78.png",
-      "main": 7,
-      "menang": 5,
+      "main": 8,
+      "menang": 6,
       "seri": 1,
       "kalah": 1,
-      "sg": 9,
-      "poin": 16,
+      "sg": 10,
+      "poin": 19,
       "kami": false
     },
     {
       "pos": 3,
+      "tim": "Real Madrid",
+      "crest": "crest/86.png",
+      "main": 8,
+      "menang": 6,
+      "seri": 0,
+      "kalah": 2,
+      "sg": 11,
+      "poin": 18,
+      "kami": false
+    },
+    {
+      "pos": 4,
       "tim": "Real Betis",
       "crest": "crest/90.png",
       "main": 7,
@@ -136,18 +148,6 @@
       "kalah": 1,
       "sg": 2,
       "poin": 16,
-      "kami": false
-    },
-    {
-      "pos": 4,
-      "tim": "Real Madrid",
-      "crest": "crest/86.png",
-      "main": 7,
-      "menang": 5,
-      "seri": 0,
-      "kalah": 2,
-      "sg": 10,
-      "poin": 15,
       "kami": false
     },
     {
@@ -166,11 +166,11 @@
       "pos": 6,
       "tim": "Alavés",
       "crest": "crest/263.png",
-      "main": 7,
+      "main": 8,
       "menang": 3,
       "seri": 2,
-      "kalah": 2,
-      "sg": 5,
+      "kalah": 3,
+      "sg": 4,
       "poin": 11,
       "kami": false
     },
@@ -200,18 +200,6 @@
     },
     {
       "pos": 9,
-      "tim": "Villarreal",
-      "crest": "crest/94.png",
-      "main": 7,
-      "menang": 2,
-      "seri": 2,
-      "kalah": 3,
-      "sg": 1,
-      "poin": 8,
-      "kami": false
-    },
-    {
-      "pos": 10,
       "tim": "Athletic",
       "crest": "crest/77.png",
       "main": 6,
@@ -219,6 +207,18 @@
       "seri": 2,
       "kalah": 2,
       "sg": 1,
+      "poin": 8,
+      "kami": false
+    },
+    {
+      "pos": 10,
+      "tim": "Villarreal",
+      "crest": "crest/94.png",
+      "main": 8,
+      "menang": 2,
+      "seri": 2,
+      "kalah": 4,
+      "sg": 0,
       "poin": 8,
       "kami": false
     },
@@ -236,18 +236,6 @@
     },
     {
       "pos": 12,
-      "tim": "Getafe",
-      "crest": "crest/82.png",
-      "main": 7,
-      "menang": 2,
-      "seri": 2,
-      "kalah": 3,
-      "sg": -3,
-      "poin": 8,
-      "kami": false
-    },
-    {
-      "pos": 13,
       "tim": "Rayo Vallecano",
       "crest": "crest/87.png",
       "main": 7,
@@ -255,6 +243,18 @@
       "seri": 2,
       "kalah": 3,
       "sg": -5,
+      "poin": 8,
+      "kami": false
+    },
+    {
+      "pos": 13,
+      "tim": "Getafe",
+      "crest": "crest/82.png",
+      "main": 8,
+      "menang": 2,
+      "seri": 2,
+      "kalah": 4,
+      "sg": -6,
       "poin": 8,
       "kami": false
     },
