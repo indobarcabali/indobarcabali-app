@@ -1,26 +1,6 @@
 {
   "pertandingan": [
     {
-      "utc": "2026-10-13T19:00:00Z",
-      "home": {
-        "nama": "Galatasaray",
-        "tla": "GAL",
-        "crest": "crest/610.png"
-      },
-      "away": {
-        "nama": "Barça",
-        "tla": "FCB",
-        "crest": "crest/81.png"
-      },
-      "kandang": false,
-      "lawan": "Galatasaray",
-      "matchday": 2,
-      "babak": "Fase Liga 2",
-      "venue": "",
-      "kompetisi": "Champions League",
-      "liga_lambang": "crest/liga-CL.png"
-    },
-    {
       "utc": "2026-10-17T16:30:00Z",
       "home": {
         "nama": "Real Betis",
@@ -99,6 +79,26 @@
       "venue": "",
       "kompetisi": "LaLiga",
       "liga_lambang": "crest/liga-PD.png"
+    },
+    {
+      "utc": "2026-11-03T20:00:00Z",
+      "home": {
+        "nama": "Barça",
+        "tla": "FCB",
+        "crest": "crest/81.png"
+      },
+      "away": {
+        "nama": "Aston Villa",
+        "tla": "AVL",
+        "crest": "crest/58.png"
+      },
+      "kandang": true,
+      "lawan": "Aston Villa",
+      "matchday": 4,
+      "babak": "Fase Liga 4",
+      "venue": "",
+      "kompetisi": "Champions League",
+      "liga_lambang": "crest/liga-CL.png"
     }
   ],
   "klasemen": [
