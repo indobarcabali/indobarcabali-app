@@ -190,12 +190,12 @@
       "pos": 8,
       "tim": "Deportivo",
       "crest": "crest/560.png",
-      "main": 8,
+      "main": 9,
       "menang": 2,
-      "seri": 4,
+      "seri": 5,
       "kalah": 2,
       "sg": 1,
-      "poin": 10,
+      "poin": 11,
       "kami": false
     },
     {
@@ -298,12 +298,12 @@
       "pos": 17,
       "tim": "Levante",
       "crest": "crest/88.png",
-      "main": 7,
+      "main": 8,
       "menang": 1,
-      "seri": 3,
+      "seri": 4,
       "kalah": 3,
       "sg": -4,
-      "poin": 6,
+      "poin": 7,
       "kami": false
     },
     {
