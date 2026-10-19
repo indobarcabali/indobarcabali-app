@@ -128,6 +128,18 @@
     },
     {
       "pos": 3,
+      "tim": "Real Madrid",
+      "crest": "crest/86.png",
+      "main": 9,
+      "menang": 7,
+      "seri": 0,
+      "kalah": 2,
+      "sg": 14,
+      "poin": 21,
+      "kami": false
+    },
+    {
+      "pos": 4,
       "tim": "Real Betis",
       "crest": "crest/90.png",
       "main": 9,
@@ -139,55 +151,55 @@
       "kami": false
     },
     {
-      "pos": 4,
-      "tim": "Real Madrid",
-      "crest": "crest/86.png",
-      "main": 8,
-      "menang": 6,
-      "seri": 0,
-      "kalah": 2,
-      "sg": 11,
-      "poin": 18,
-      "kami": false
-    },
-    {
       "pos": 5,
-      "tim": "Sevilla FC",
-      "crest": "crest/559.png",
-      "main": 8,
-      "menang": 4,
-      "seri": 2,
-      "kalah": 2,
-      "sg": 1,
-      "poin": 14,
+      "tim": "Real Sociedad",
+      "crest": "crest/92.png",
+      "main": 9,
+      "menang": 5,
+      "seri": 1,
+      "kalah": 3,
+      "sg": 0,
+      "poin": 16,
       "kami": false
     },
     {
       "pos": 6,
-      "tim": "Real Sociedad",
-      "crest": "crest/92.png",
-      "main": 8,
+      "tim": "Sevilla FC",
+      "crest": "crest/559.png",
+      "main": 9,
       "menang": 4,
-      "seri": 1,
+      "seri": 2,
       "kalah": 3,
-      "sg": -3,
-      "poin": 13,
+      "sg": -2,
+      "poin": 14,
       "kami": false
     },
     {
       "pos": 7,
       "tim": "Alavés",
       "crest": "crest/263.png",
-      "main": 8,
+      "main": 9,
       "menang": 3,
       "seri": 2,
-      "kalah": 3,
-      "sg": 4,
+      "kalah": 4,
+      "sg": 3,
       "poin": 11,
       "kami": false
     },
     {
       "pos": 8,
+      "tim": "Celta",
+      "crest": "crest/558.png",
+      "main": 9,
+      "menang": 2,
+      "seri": 5,
+      "kalah": 2,
+      "sg": 3,
+      "poin": 11,
+      "kami": false
+    },
+    {
+      "pos": 9,
       "tim": "Deportivo",
       "crest": "crest/560.png",
       "main": 9,
@@ -199,7 +211,19 @@
       "kami": false
     },
     {
-      "pos": 9,
+      "pos": 10,
+      "tim": "Osasuna",
+      "crest": "crest/79.png",
+      "main": 9,
+      "menang": 3,
+      "seri": 2,
+      "kalah": 4,
+      "sg": -8,
+      "poin": 11,
+      "kami": false
+    },
+    {
+      "pos": 11,
       "tim": "Athletic",
       "crest": "crest/77.png",
       "main": 7,
@@ -211,7 +235,7 @@
       "kami": false
     },
     {
-      "pos": 10,
+      "pos": 12,
       "tim": "Villarreal",
       "crest": "crest/94.png",
       "main": 9,
@@ -223,19 +247,7 @@
       "kami": false
     },
     {
-      "pos": 11,
-      "tim": "Celta",
-      "crest": "crest/558.png",
-      "main": 8,
-      "menang": 1,
-      "seri": 5,
-      "kalah": 2,
-      "sg": 2,
-      "poin": 8,
-      "kami": false
-    },
-    {
-      "pos": 12,
+      "pos": 13,
       "tim": "Espanyol",
       "crest": "crest/80.png",
       "main": 9,
@@ -247,7 +259,7 @@
       "kami": false
     },
     {
-      "pos": 13,
+      "pos": 14,
       "tim": "Rayo Vallecano",
       "crest": "crest/87.png",
       "main": 7,
@@ -259,7 +271,7 @@
       "kami": false
     },
     {
-      "pos": 14,
+      "pos": 15,
       "tim": "Getafe",
       "crest": "crest/82.png",
       "main": 8,
@@ -271,26 +283,14 @@
       "kami": false
     },
     {
-      "pos": 15,
+      "pos": 16,
       "tim": "Santander",
       "crest": "crest/5335.png",
-      "main": 8,
+      "main": 9,
       "menang": 2,
       "seri": 2,
-      "kalah": 4,
-      "sg": -10,
-      "poin": 8,
-      "kami": false
-    },
-    {
-      "pos": 16,
-      "tim": "Osasuna",
-      "crest": "crest/79.png",
-      "main": 8,
-      "menang": 2,
-      "seri": 2,
-      "kalah": 4,
-      "sg": -10,
+      "kalah": 5,
+      "sg": -12,
       "poin": 8,
       "kami": false
     },
@@ -334,11 +334,11 @@
       "pos": 20,
       "tim": "Málaga",
       "crest": "crest/84.png",
-      "main": 8,
+      "main": 9,
       "menang": 0,
       "seri": 4,
-      "kalah": 4,
-      "sg": -9,
+      "kalah": 5,
+      "sg": -12,
       "poin": 4,
       "kami": false
     }
