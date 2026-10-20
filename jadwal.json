@@ -248,6 +248,30 @@
     },
     {
       "pos": 13,
+      "tim": "Rayo Vallecano",
+      "crest": "crest/87.png",
+      "main": 8,
+      "menang": 2,
+      "seri": 3,
+      "kalah": 3,
+      "sg": -5,
+      "poin": 9,
+      "kami": false
+    },
+    {
+      "pos": 14,
+      "tim": "Getafe",
+      "crest": "crest/82.png",
+      "main": 9,
+      "menang": 2,
+      "seri": 3,
+      "kalah": 4,
+      "sg": -6,
+      "poin": 9,
+      "kami": false
+    },
+    {
+      "pos": 15,
       "tim": "Espanyol",
       "crest": "crest/80.png",
       "main": 9,
@@ -255,30 +279,6 @@
       "seri": 2,
       "kalah": 5,
       "sg": -1,
-      "poin": 8,
-      "kami": false
-    },
-    {
-      "pos": 14,
-      "tim": "Rayo Vallecano",
-      "crest": "crest/87.png",
-      "main": 7,
-      "menang": 2,
-      "seri": 2,
-      "kalah": 3,
-      "sg": -5,
-      "poin": 8,
-      "kami": false
-    },
-    {
-      "pos": 15,
-      "tim": "Getafe",
-      "crest": "crest/82.png",
-      "main": 8,
-      "menang": 2,
-      "seri": 2,
-      "kalah": 4,
-      "sg": -6,
       "poin": 8,
       "kami": false
     },
