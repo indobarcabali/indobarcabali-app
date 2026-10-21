@@ -1,26 +1,6 @@
 {
   "pertandingan": [
     {
-      "utc": "2026-10-20T19:00:00Z",
-      "home": {
-        "nama": "PSG",
-        "tla": "PSG",
-        "crest": "crest/524.png"
-      },
-      "away": {
-        "nama": "Barça",
-        "tla": "FCB",
-        "crest": "crest/81.png"
-      },
-      "kandang": false,
-      "lawan": "PSG",
-      "matchday": 3,
-      "babak": "Fase Liga 3",
-      "venue": "",
-      "kompetisi": "Champions League",
-      "liga_lambang": "crest/liga-CL.png"
-    },
-    {
       "utc": "2026-10-25T20:00:00Z",
       "home": {
         "nama": "Barça",
@@ -96,6 +76,26 @@
       "lawan": "Atleti",
       "matchday": 12,
       "babak": "Jornada 12",
+      "venue": "",
+      "kompetisi": "LaLiga",
+      "liga_lambang": "crest/liga-PD.png"
+    },
+    {
+      "utc": "2026-11-22T00:00:00Z",
+      "home": {
+        "nama": "Barça",
+        "tla": "FCB",
+        "crest": "crest/81.png"
+      },
+      "away": {
+        "nama": "Villarreal",
+        "tla": "VIL",
+        "crest": "crest/94.png"
+      },
+      "kandang": true,
+      "lawan": "Villarreal",
+      "matchday": 13,
+      "babak": "Jornada 13",
       "venue": "",
       "kompetisi": "LaLiga",
       "liga_lambang": "crest/liga-PD.png"
