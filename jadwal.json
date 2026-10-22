@@ -224,14 +224,14 @@
     },
     {
       "pos": 11,
-      "tim": "Athletic",
-      "crest": "crest/77.png",
-      "main": 7,
+      "tim": "Levante",
+      "crest": "crest/88.png",
+      "main": 9,
       "menang": 2,
-      "seri": 3,
-      "kalah": 2,
-      "sg": 1,
-      "poin": 9,
+      "seri": 4,
+      "kalah": 3,
+      "sg": -2,
+      "poin": 10,
       "kami": false
     },
     {
@@ -248,6 +248,18 @@
     },
     {
       "pos": 13,
+      "tim": "Athletic",
+      "crest": "crest/77.png",
+      "main": 8,
+      "menang": 2,
+      "seri": 3,
+      "kalah": 3,
+      "sg": -1,
+      "poin": 9,
+      "kami": false
+    },
+    {
+      "pos": 14,
       "tim": "Rayo Vallecano",
       "crest": "crest/87.png",
       "main": 8,
@@ -259,7 +271,7 @@
       "kami": false
     },
     {
-      "pos": 14,
+      "pos": 15,
       "tim": "Getafe",
       "crest": "crest/82.png",
       "main": 9,
@@ -271,7 +283,7 @@
       "kami": false
     },
     {
-      "pos": 15,
+      "pos": 16,
       "tim": "Espanyol",
       "crest": "crest/80.png",
       "main": 9,
@@ -283,7 +295,7 @@
       "kami": false
     },
     {
-      "pos": 16,
+      "pos": 17,
       "tim": "Santander",
       "crest": "crest/5335.png",
       "main": 9,
@@ -292,18 +304,6 @@
       "kalah": 5,
       "sg": -12,
       "poin": 8,
-      "kami": false
-    },
-    {
-      "pos": 17,
-      "tim": "Levante",
-      "crest": "crest/88.png",
-      "main": 8,
-      "menang": 1,
-      "seri": 4,
-      "kalah": 3,
-      "sg": -4,
-      "poin": 7,
       "kami": false
     },
     {
