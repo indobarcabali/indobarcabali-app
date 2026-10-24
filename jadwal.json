@@ -178,12 +178,12 @@
       "pos": 7,
       "tim": "Alavés",
       "crest": "crest/263.png",
-      "main": 9,
+      "main": 10,
       "menang": 3,
-      "seri": 2,
+      "seri": 3,
       "kalah": 4,
       "sg": 3,
-      "poin": 11,
+      "poin": 12,
       "kami": false
     },
     {
@@ -334,12 +334,12 @@
       "pos": 20,
       "tim": "Málaga",
       "crest": "crest/84.png",
-      "main": 9,
+      "main": 10,
       "menang": 0,
-      "seri": 4,
+      "seri": 5,
       "kalah": 5,
       "sg": -12,
-      "poin": 4,
+      "poin": 5,
       "kami": false
     }
   ]
