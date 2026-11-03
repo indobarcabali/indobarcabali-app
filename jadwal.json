@@ -188,6 +188,18 @@
     },
     {
       "pos": 8,
+      "tim": "Deportivo",
+      "crest": "crest/560.png",
+      "main": 11,
+      "menang": 3,
+      "seri": 5,
+      "kalah": 3,
+      "sg": 1,
+      "poin": 14,
+      "kami": false
+    },
+    {
+      "pos": 9,
       "tim": "Villarreal",
       "crest": "crest/94.png",
       "main": 11,
@@ -199,7 +211,7 @@
       "kami": false
     },
     {
-      "pos": 9,
+      "pos": 10,
       "tim": "Celta",
       "crest": "crest/558.png",
       "main": 11,
@@ -211,7 +223,7 @@
       "kami": false
     },
     {
-      "pos": 10,
+      "pos": 11,
       "tim": "Alavés",
       "crest": "crest/263.png",
       "main": 11,
@@ -223,7 +235,7 @@
       "kami": false
     },
     {
-      "pos": 11,
+      "pos": 12,
       "tim": "Rayo Vallecano",
       "crest": "crest/87.png",
       "main": 10,
@@ -235,7 +247,7 @@
       "kami": false
     },
     {
-      "pos": 12,
+      "pos": 13,
       "tim": "Getafe",
       "crest": "crest/82.png",
       "main": 11,
@@ -244,18 +256,6 @@
       "kalah": 5,
       "sg": -8,
       "poin": 12,
-      "kami": false
-    },
-    {
-      "pos": 13,
-      "tim": "Deportivo",
-      "crest": "crest/560.png",
-      "main": 10,
-      "menang": 2,
-      "seri": 5,
-      "kalah": 3,
-      "sg": 0,
-      "poin": 11,
       "kami": false
     },
     {
@@ -274,11 +274,11 @@
       "pos": 15,
       "tim": "Osasuna",
       "crest": "crest/79.png",
-      "main": 10,
+      "main": 11,
       "menang": 3,
       "seri": 2,
-      "kalah": 5,
-      "sg": -10,
+      "kalah": 6,
+      "sg": -11,
       "poin": 11,
       "kami": false
     },
