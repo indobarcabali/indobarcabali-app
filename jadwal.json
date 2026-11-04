@@ -1,26 +1,6 @@
 {
   "pertandingan": [
     {
-      "utc": "2026-11-03T20:00:00Z",
-      "home": {
-        "nama": "Barça",
-        "tla": "FCB",
-        "crest": "crest/81.png"
-      },
-      "away": {
-        "nama": "Aston Villa",
-        "tla": "AVL",
-        "crest": "crest/58.png"
-      },
-      "kandang": true,
-      "lawan": "Aston Villa",
-      "matchday": 4,
-      "babak": "Fase Liga 4",
-      "venue": "",
-      "kompetisi": "Champions League",
-      "liga_lambang": "crest/liga-CL.png"
-    },
-    {
       "utc": "2026-11-08T20:00:00Z",
       "home": {
         "nama": "Atleti",
@@ -96,6 +76,26 @@
       "lawan": "Deportivo",
       "matchday": 14,
       "babak": "Jornada 14",
+      "venue": "",
+      "kompetisi": "LaLiga",
+      "liga_lambang": "crest/liga-PD.png"
+    },
+    {
+      "utc": "2026-12-06T00:00:00Z",
+      "home": {
+        "nama": "Barça",
+        "tla": "FCB",
+        "crest": "crest/81.png"
+      },
+      "away": {
+        "nama": "Celta",
+        "tla": "CEL",
+        "crest": "crest/558.png"
+      },
+      "kandang": true,
+      "lawan": "Celta",
+      "matchday": 15,
+      "babak": "Jornada 15",
       "venue": "",
       "kompetisi": "LaLiga",
       "liga_lambang": "crest/liga-PD.png"
