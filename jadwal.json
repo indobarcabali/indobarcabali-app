@@ -61,7 +61,7 @@
       "liga_lambang": "crest/liga-CL.png"
     },
     {
-      "utc": "2026-11-29T00:00:00Z",
+      "utc": "2026-11-29T15:15:00Z",
       "home": {
         "nama": "Deportivo",
         "tla": "DEP",
@@ -166,12 +166,12 @@
       "pos": 6,
       "tim": "Sevilla FC",
       "crest": "crest/559.png",
-      "main": 11,
+      "main": 12,
       "menang": 5,
-      "seri": 2,
+      "seri": 3,
       "kalah": 4,
       "sg": -2,
-      "poin": 17,
+      "poin": 18,
       "kami": false
     },
     {
@@ -200,6 +200,18 @@
     },
     {
       "pos": 9,
+      "tim": "Alavés",
+      "crest": "crest/263.png",
+      "main": 12,
+      "menang": 3,
+      "seri": 4,
+      "kalah": 5,
+      "sg": -2,
+      "poin": 13,
+      "kami": false
+    },
+    {
+      "pos": 10,
       "tim": "Villarreal",
       "crest": "crest/94.png",
       "main": 11,
@@ -211,7 +223,7 @@
       "kami": false
     },
     {
-      "pos": 10,
+      "pos": 11,
       "tim": "Celta",
       "crest": "crest/558.png",
       "main": 11,
@@ -219,18 +231,6 @@
       "seri": 6,
       "kalah": 3,
       "sg": 0,
-      "poin": 12,
-      "kami": false
-    },
-    {
-      "pos": 11,
-      "tim": "Alavés",
-      "crest": "crest/263.png",
-      "main": 11,
-      "menang": 3,
-      "seri": 3,
-      "kalah": 5,
-      "sg": -2,
       "poin": 12,
       "kami": false
     },
