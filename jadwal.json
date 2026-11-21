@@ -178,11 +178,11 @@
       "pos": 7,
       "tim": "Athletic",
       "crest": "crest/77.png",
-      "main": 11,
+      "main": 12,
       "menang": 4,
       "seri": 4,
-      "kalah": 3,
-      "sg": 4,
+      "kalah": 4,
+      "sg": 3,
       "poin": 16,
       "kami": false
     },
@@ -212,6 +212,18 @@
     },
     {
       "pos": 10,
+      "tim": "Espanyol",
+      "crest": "crest/80.png",
+      "main": 13,
+      "menang": 4,
+      "seri": 3,
+      "kalah": 6,
+      "sg": 0,
+      "poin": 15,
+      "kami": false
+    },
+    {
+      "pos": 11,
       "tim": "Santander",
       "crest": "crest/5335.png",
       "main": 12,
@@ -223,7 +235,7 @@
       "kami": false
     },
     {
-      "pos": 11,
+      "pos": 12,
       "tim": "Celta",
       "crest": "crest/558.png",
       "main": 12,
@@ -235,7 +247,7 @@
       "kami": false
     },
     {
-      "pos": 12,
+      "pos": 13,
       "tim": "Alavés",
       "crest": "crest/263.png",
       "main": 12,
@@ -244,18 +256,6 @@
       "kalah": 5,
       "sg": -2,
       "poin": 13,
-      "kami": false
-    },
-    {
-      "pos": 13,
-      "tim": "Espanyol",
-      "crest": "crest/80.png",
-      "main": 12,
-      "menang": 3,
-      "seri": 3,
-      "kalah": 6,
-      "sg": -1,
-      "poin": 12,
       "kami": false
     },
     {
