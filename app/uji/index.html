@@ -342,7 +342,10 @@
        >= 812px — ambang iPhone X, dan tidak ada iPhone berhome indicator di
        bawahnya. Heuristik, bukan pembacaan. Bila iOS suatu saat memberi cara
        menanyakannya langsung, ganti baris ini dengan cara itu. */
-    if (n === 0 &&
+    // Hanya iOS ('standalone' in navigator): Android melaporkan nol dengan
+    // jujur bila bilah navigasinya di luar halaman, dan 34 di sana mengangkat
+    // isi tanpa alasan.
+    if (n === 0 && 'standalone' in navigator &&
         matchMedia('(pointer: coarse)').matches &&
         Math.max(screen.width, screen.height) >= 812) n = 34;
 
