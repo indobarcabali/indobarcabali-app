@@ -173,9 +173,9 @@
      ditempati". Hanya 100lvh yang melaporkan tinggi layar penuh, jadi html,
      body, dan wadah aplikasi diberi tinggi itu secara eksplisit; top/bottom
      wadah fixed masih mengacu ke blok induk yang pendek, karena itu bottom
-     dilepas. Android dan tab Safari: 100lvh = tinggi jendela, tidak berubah.
-     Kelas .layar-utama dipasang skrip di bawah — navigator.standalone juga
-     menjangkau iOS lama yang tidak mencocokkan display-mode. */
+     dilepas. Kelas .layar-utama dipasang skrip di bawah, HANYA di iOS — di
+     aplikasi Android terpasang 100lvh bisa melebihi area terlihat (R11 sempat
+     menenggelamkan pil navigasi ke bawah layar). */
   html.layar-utama,html.layar-utama body{height:100lvh;}
   html.layar-utama #bingkai{bottom:auto;height:calc(100lvh - env(safe-area-inset-top, 0px));}
 
@@ -218,7 +218,7 @@
     <!-- Penanda versi halaman pembungkus. Naikkan angkanya setiap kali berkas
          ini diubah: menjawab "yang tampil ini versi baru atau cache lama?".
          Diberi label dan diletakkan di bawah supaya anggota tidak bingung. -->
-    <div class="versi">versi halaman R11</div>
+    <div class="versi">versi halaman R12</div>
   </div>
 </div>
 
@@ -239,7 +239,10 @@
 </div>
 
 <script>
-  if (navigator.standalone === true || matchMedia('(display-mode: standalone)').matches) {
+  // HANYA iOS: navigator.standalone cuma ada di Safari iOS. R11 juga memakai
+  // display-mode: standalone, yang cocok di Android — di sana 100lvh bisa lebih
+  // tinggi dari area terlihat dan pil navigasi terdorong ke bawah layar.
+  if (navigator.standalone === true) {
     document.documentElement.classList.add('layar-utama');
   }
   var memuat = document.getElementById('memuat');
