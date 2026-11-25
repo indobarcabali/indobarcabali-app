@@ -132,10 +132,10 @@
   /* Latar ini BUKAN sekadar warna di belakang iframe. Di mode aplikasi
      layar-utama, iOS melukis kanvas sampai dasar layar (896px) tetapi memangkas
      isi halaman di 848px — 48px terbawah tidak bisa ditempati elemen apa pun,
-     hanya warna ini. Karena navy yang sama dengan bilah navigasi aplikasi,
-     pita itu terbaca sebagai kelanjutan bilah, dan memang itulah perannya:
-     ia yang menjadi ruang aman di bawah ikon. Menggantinya dengan warna lain
-     akan memunculkan pita asing di bawah bilah. */
+     hanya warna ini. Sejak bilah navigasi aplikasi menjadi pil melayang (R10),
+     pita itu tampak DI BAWAH pil, berbatasan dengan isi halaman — jadi setelah
+     aplikasi siap, warnanya diganti latar halaman (lihat kabar 'siap'). Navy di
+     sini tinggal untuk layar pemuatan. */
   html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#001138;}
 
   /* Aplikasi ditempatkan di dalam area aman, bukan memenuhi layar mentah.
@@ -172,6 +172,11 @@
     height:env(safe-area-inset-bottom, 0px);
   }
   #bingkai iframe{width:100%;height:100%;border:0;display:block;}
+
+  /* Penutup bilah status. Biasanya sewarna body sehingga tak terlihat; baru
+     bekerja di mode layar-utama, saat body berganti warna latar aplikasi
+     (lihat kabar 'siap') — jam dan baterai yang putih tetap duduk di navy. */
+  #atas{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top, 0px);background:#001138;}
 
   /* Layar pemuatan, tampil di depan iframe sampai aplikasi selesai dimuat. */
   #memuat{
@@ -212,7 +217,7 @@
     <!-- Penanda versi halaman pembungkus. Naikkan angkanya setiap kali berkas
          ini diubah: menjawab "yang tampil ini versi baru atau cache lama?".
          Diberi label dan diletakkan di bawah supaya anggota tidak bingung. -->
-    <div class="versi">versi halaman R9</div>
+    <div class="versi">versi halaman R10</div>
   </div>
 </div>
 
@@ -223,6 +228,7 @@
 
 <div id="ukur" aria-hidden="true"></div>
 
+<div id="atas"></div>
 <div id="bingkai">
   <iframe
     id="aplikasi"
@@ -271,6 +277,15 @@
     if (/^#[0-9A-Fa-f]{6}$/.test(String(e.data.navy || ''))) {
       try { localStorage.setItem('ibb_navy', e.data.navy); } catch (err) { /* mode privat */ }
     }
+    /* Mode layar-utama: pita kanvas di bawah viewport tampak di bawah pil
+       navigasi aplikasi yang melayang. Navy di sana terbaca sebagai pita asing,
+       jadi diwarnai seperti latar halaman. Baru setelah 'siap', TIDAK disimpan:
+       sebelum itu layar pemuatan yang navy masih di depan dan pitanya harus
+       ikut navy. */
+    if (modeLayarUtama() && /^#[0-9A-Fa-f]{6}$/.test(String(e.data.latar || ''))) {
+      document.documentElement.style.background = e.data.latar;
+      document.body.style.background = e.data.latar;
+    }
   });
 
   /* Dipasang sedini mungkin — sebelum apa pun sempat tergambar dengan warna
@@ -285,6 +300,7 @@
     if (m) m.setAttribute('content', w);
     var d = document.getElementById('darurat');
     if (d) d.style.background = w;
+    document.getElementById('atas').style.background = w;
   })();
 
   /* Jaring pengaman: versi aplikasi lama tidak mengirim kabar 'siap'. Delapan
@@ -351,16 +367,25 @@
        Hanya di mode ini. Di Safari selisih layar-vs-jendela adalah bilah
        alamat di ATAS, bukan pita di bawah, dan menguranginya di sana akan
        menempelkan ikon ke garis home indicator. */
-    if (navigator.standalone === true ||
-        matchMedia('(display-mode: standalone)').matches) {
-      var kanvas = Math.round(screen.height - window.innerHeight);
-      if (kanvas > 0 && kanvas < 200) n = Math.max(0, n - kanvas);
-    }
+    var kanvas = pitaKanvas();
+    if (kanvas) n = Math.max(0, n - kanvas);
     return n;
   }
 
+  function modeLayarUtama() {
+    return navigator.standalone === true ||
+      matchMedia('(display-mode: standalone)').matches;
+  }
+
+  // Tinggi pita yang dilukis tapi tak bisa ditempati; 0 di luar mode layar-utama.
+  function pitaKanvas() {
+    if (!modeLayarUtama()) return 0;
+    var k = Math.round(screen.height - window.innerHeight);
+    return k > 0 && k < 200 ? k : 0;
+  }
+
   function kabari() {
-    if (peminta) peminta.postMessage({ ibb: 'inset', bawah: ruangAmanBawah() }, '*');
+    if (peminta) peminta.postMessage({ ibb: 'inset', bawah: ruangAmanBawah(), pita: pitaKanvas() > 0 }, '*');
   }
 
   window.addEventListener('message', function (e) {
