@@ -225,7 +225,7 @@ if ('serviceWorker' in navigator) {
   }
   h1,h2,h3{margin:0; text-wrap:balance;}
   p{margin:0; line-height:1.65; letter-spacing:-.02em;}
-  a:focus-visible,button:focus-visible{outline:2.5px solid var(--red); outline-offset:3px; border-radius:4px;}
+  a:focus-visible,button:focus-visible,summary:focus-visible{outline:2.5px solid var(--red); outline-offset:3px; border-radius:4px;}
 
   /* Ukuran tunggal untuk SEMUA tombol. Border transparan dipasang di sini,
      bukan cuma di varian outline — tanpa itu tombol outline jadi 3px lebih
@@ -858,8 +858,11 @@ if ('serviceWorker' in navigator) {
   .faq-item:last-child{border-bottom:none;}
   .faq-item summary{
     cursor:pointer; list-style:none; display:flex; align-items:center;
-    justify-content:space-between; gap:16px; padding:19px 2px;
-    font-weight:700; color:var(--navy-900); font-size:15.5px;
+    justify-content:space-between; gap:16px; padding:13px 2px;
+    font-weight:700; color:var(--navy-900); font-size:14.5px; line-height:1.4;
+    /* Tanpa ini peramban HP menyorot seluruh baris dengan blok biru muda
+       setiap kali diketuk. Fokus papan ketik tetap ditandai :focus-visible. */
+    -webkit-tap-highlight-color:transparent;
   }
   .faq-item summary::-webkit-details-marker{display:none;}
   .faq-item summary::after{
@@ -867,7 +870,13 @@ if ('serviceWorker' in navigator) {
     flex:none; transition:transform .2s ease;
   }
   .faq-item[open] summary::after{transform:rotate(45deg);}
-  .faq-item p{margin:-4px 0 20px; padding-right:34px; color:var(--muted); font-size:14.5px; line-height:1.7;}
+  .faq-item p{margin:-2px 0 14px; padding-right:34px; color:var(--muted); font-size:14px; line-height:1.6;}
+  /* Di layar lebar judul FAQ pindah ke kiri: daftar tidak lagi menunggu di
+     bawah judul, jadi tinggi section tinggal tinggi daftarnya. */
+  @media (min-width:900px){
+    .faq .container{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:48px; align-items:start;}
+    .faq-head{margin-bottom:0;}
+  }
   @media (prefers-reduced-motion:reduce){ .faq-item summary::after{transition:none;} }
 
   /* ================= AJAKAN ================= */
