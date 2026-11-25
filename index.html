@@ -814,6 +814,31 @@ if ('serviceWorker' in navigator) {
   .liga p{color:rgba(255,255,255,.78); font-size:14.5px; margin-top:12px; line-height:1.7;}
   .liga-cta{margin-top:24px;}
   @media (max-width:640px){ .liga-panel{padding:34px 24px;} }
+  /* ================= AGENDA TERDEKAT =================
+     Memakai panel navy bekas IFL: satu blok gelap di tengah halaman tetap
+     jadi jeda ritme. Isinya lebih lebar daripada teks IFL dulu. */
+  .agenda-inner{max-width:none; width:100%;}
+  .agenda-list{margin-top:22px; display:flex; flex-direction:column; gap:10px;}
+  .agenda-item{display:flex; align-items:center; gap:16px; padding:14px 16px; border-radius:14px;
+    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12);}
+  .agenda-tgl{flex:none; width:52px; text-align:center; color:#fff; line-height:1.05;}
+  .agenda-tgl b{display:block; font-size:24px; font-family:var(--font-angka);}
+  .agenda-tgl span{font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--yellow);}
+  .agenda-isi{flex:1; min-width:0;}
+  .agenda-judul{color:#fff; font-weight:700; font-size:15.5px; line-height:1.3;}
+  .liga .agenda-meta{margin-top:3px; font-size:13px; line-height:1.5; color:rgba(255,255,255,.72);}
+  .agenda-slot{flex:none; font-size:12px; font-weight:700; padding:5px 10px; border-radius:99px;
+    background:var(--yellow); color:var(--navy-900); white-space:nowrap;}
+  .agenda-slot.penuh{background:rgba(255,255,255,.14); color:#fff;}
+  .liga .agenda-kosong{margin-top:0;}
+  .liga .agenda-nb{font-size:12.5px; margin-top:14px; color:rgba(255,255,255,.7);}
+  .agenda-nb a,.agenda-kosong a{color:var(--yellow); text-decoration:underline; text-underline-offset:2px;}
+  @media (max-width:640px){
+    .agenda-item{flex-wrap:wrap; gap:4px 12px; padding:12px 14px;}
+    .agenda-tgl{width:44px;}
+    .agenda-isi{flex-basis:calc(100% - 56px);}
+    .agenda-slot{margin-left:56px;}
+  }
 
   /* ================= TESTIMONI ================= */
   .kata{text-align:center;}
@@ -924,7 +949,7 @@ if ('serviceWorker' in navigator) {
           <a href="#tentang">Tentang</a>
           <a href="#kegiatan">Kegiatan</a>
           <a href="#store">Store</a>
-          <a href="#liga">Turnamen</a>
+          <a href="#agenda">Agenda</a>
         </div>
         <div class="nav-aksi">
         <button type="button" class="segarkan" data-segarkan aria-label="Muat ulang halaman">
@@ -1080,7 +1105,7 @@ if ('serviceWorker' in navigator) {
       <div class="eyebrow">IB Bali Official Store</div>
       <h2>Lebih dari sebuah Identitas</h2>
       <p>Koleksi merchandise resmi IB Bali Store hadir sebagai bagian dari identitas dan kebanggaan kita terhadap komunitas yang kita cintai seperti Jersey, T-shirt, syal, hingga jaket resmi Indobarca Bali.</p>
-      <p>Cek semua catalognya melalui Instagram resmi IB Bali / IB Bali Store. Koleksi sekarang, kenakan identitasmu, dan tunjukkan bahwa kita lebih dari sebuah Komunitas.</p>
+      <p>Cek semua katalognya melalui Instagram resmi IB Bali / IB Bali Store. Koleksi sekarang, kenakan identitasmu, dan tunjukkan bahwa kita lebih dari sebuah Komunitas.</p>
     </div>
     <div>
       <div class="store-feed">
@@ -1141,14 +1166,19 @@ if ('serviceWorker' in navigator) {
 </section>
 
 <!-- ================= LIGA ================= -->
-<section class="liga muncul" id="liga">
+<section class="liga muncul" id="agenda">
   <div class="container">
     <div class="liga-panel">
-      <div class="liga-inner">
-        <div class="eyebrow">Internal Futsal League (IFL)</div>
-        <h2>Bukan Cuma Nonton, Kami Juga Bertanding</h2>
-        <p>Liga futsal internal kami sendiri — format liga penuh dan babak gugur antar tim, digelar tiap 4–5 bulan sekali. Musim ke-3 sedang berjalan sekarang.</p>
-        <div class="liga-cta"><a class="btn btn-primary" href="https://indobarcabali.id/app">Lihat Klasemen &amp; Jadwal</a></div>
+      <div class="liga-inner agenda-inner">
+        <div class="eyebrow">Agenda Terdekat</div>
+        <h2>Kumpul Berikutnya Bareng IB Bali</h2>
+        <!-- Diisi dari agenda.json, yang diambil GitHub Actions dari aplikasi tiap 3 jam.
+             Teks di bawah adalah keadaan memuat; kosong dan gagal punya pesannya sendiri. -->
+        <div class="agenda-list" id="agenda-list" aria-live="polite">
+          <p class="agenda-kosong">Memuat agenda…</p>
+        </div>
+        <div class="liga-cta"><a class="btn btn-kuning" href="https://indobarcabali.id/app">Daftar lewat Aplikasi</a></div>
+        <p class="agenda-nb">Pendaftaran khusus anggota. Belum jadi anggota? <a href="https://wa.me/6289683532476">Chat Divisi Membership</a>.<span id="agenda-waktu"></span></p>
       </div>
     </div>
   </div>
@@ -1159,7 +1189,7 @@ if ('serviceWorker' in navigator) {
   <div class="container">
     <span class="kata-mark">“</span>
     <p class="kata-quote">Indobarca Bali adalah salah satu wadah untuk terus bisa bertumbuh bersama, karena menyediakan berbagai event olahraga yang pastinya cocok untuk semua kalangan. Dan tidak kalah serunya, ya Nobar El Clásico bareng IB Bali — nyesel kalau nggak gabung!</p>
-    <div class="kata-who"><b>Iniesta</b> — anggota sejak 2010</div>
+    <div class="kata-who"><b>Iniesta</b> — anggota sejak 2012</div>
   </div>
 </section>
 
@@ -1173,7 +1203,7 @@ if ('serviceWorker' in navigator) {
     <div class="faq-list">
       <details class="faq-item">
         <summary>Bagaimana cara gabung jadi anggota Indobarca Bali?</summary>
-        <p>Hubungi kami lewat tombol Contact Admin di halaman ini — kami bantu prosesnya dari awal sampai jadi anggota bahkan member resmi Penya Indobarca.</p>
+        <p>Tekan tombol Gabung Jadi Anggota di halaman ini untuk chat Divisi Membership lewat WhatsApp. Kami bantu dari awal sampai jadi anggota, bahkan member resmi Penya Indobarca.</p>
       </details>
       <details class="faq-item">
         <summary>Apakah harus sudah lama jadi Culer untuk bisa gabung?</summary>
@@ -1189,15 +1219,15 @@ if ('serviceWorker' in navigator) {
       </details>
       <details class="faq-item">
         <summary>Apa bedanya jadi anggota biasa dengan punya Kartu Penya?</summary>
-        <p>Anggota yang bergabung harus masuk ke Official WA Group IB Bali. Membership merupakan program Penya Indobarca (Pusat), bisa dibeli lewat IB Bali, dan setahun akan dibuka pendaftaran 2x.</p>
+        <p>Anggota biasa gratis: cukup masuk Official WA Group IB Bali dan bisa ikut semua kegiatan. Kartu Penya adalah keanggotaan resmi Penya Indobarca pusat yang berbayar, dibeli lewat IB Bali, dan pendaftarannya dibuka 2x setahun.</p>
       </details>
       <details class="faq-item">
         <summary>Kegiatan apa saja yang rutin diadakan?</summary>
-        <p>Ada lima: Fun Futsal rutin setiap Selasa, Minisoccer, Nobar, Fun Football, dan Kopdar santai di luar jadwal olahraga. Detail lengkapnya ada di bagian Kegiatan Rutin Kami di atas.</p>
+        <p>Ada lima: Fun Futsal rutin setiap Selasa, Minisoccer, Nobar, Football, dan Kopdar santai di luar jadwal olahraga. Detail lengkapnya ada di bagian Kegiatan Rutin Kami di atas.</p>
       </details>
       <details class="faq-item">
         <summary>Apa itu Internal Futsal League (IFL)?</summary>
-        <p>Liga futsal internal kami sendiri, digelar tiap 4–5 bulan sekali dengan format liga penuh dan babak gugur antar tim. Musim ke-3 sedang berjalan sekarang.</p>
+        <p>Liga futsal internal kami sendiri, digelar tiap 4–5 bulan sekali dengan format liga penuh dan babak gugur antar tim.</p>
       </details>
       <details class="faq-item">
         <summary>Bagaimana cara pesan merchandise IB Bali Store?</summary>
@@ -1249,7 +1279,7 @@ if ('serviceWorker' in navigator) {
           <a href="#tentang">Tentang</a>
           <a href="#kegiatan">Kegiatan</a>
           <a href="#store">Store</a>
-          <a href="#liga">Turnamen</a>
+          <a href="#agenda">Agenda</a>
         </div>
       </div>
       <div>
@@ -1689,6 +1719,63 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('resize', segarkan);
     segarkan();
   }
+})();
+
+/* ================= AGENDA TERDEKAT =================
+   agenda.json ditulis GitHub Actions dari feed publik aplikasi. Isinya hanya
+   kolom yang aman untuk umum (lihat agendaPublik_ di 05_Events.js). */
+(function () {
+  var wadah = document.getElementById('agenda-list');
+  if (!wadah) return;
+  var HARI = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+  var BULAN = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+  var aman = function (s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  };
+  var pesan = function (teks) { wadah.innerHTML = '<p class="agenda-kosong">' + teks + '</p>'; };
+  var KOSONG = 'Belum ada agenda terjadwal. Pengumuman kegiatan berikutnya selalu masuk grup WhatsApp ' +
+    'dan Instagram <a href="https://www.instagram.com/indobarca_bali" target="_blank" rel="noopener">@indobarca_bali</a>.';
+
+  fetch('/agenda.json', { cache: 'no-cache' })
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+    .then(function (d) {
+      var hariIni = new Date(); hariIni.setHours(0, 0, 0, 0);
+      // Disaring lagi di sini: berkasnya bisa berumur beberapa jam.
+      var daftar = (d.agenda || []).filter(function (a) {
+        if (!a.tanggal) return true;
+        var p = a.tanggal.split('-');
+        return new Date(+p[0], p[1] - 1, +p[2]) >= hariIni;
+      });
+      if (!daftar.length) { pesan(KOSONG); return; }
+      wadah.innerHTML = daftar.map(function (a) {
+        var tgl = '<b>?</b><span>Segera</span>', hari = '';
+        if (a.tanggal) {
+          var p = a.tanggal.split('-'), t = new Date(+p[0], p[1] - 1, +p[2]);
+          tgl = '<b>' + t.getDate() + '</b><span>' + BULAN[t.getMonth()] + '</span>';
+          hari = HARI[t.getDay()];
+        }
+        var jam = a.jamMulai ? a.jamMulai + (a.jamSelesai ? '–' + a.jamSelesai : '') + ' WITA' : '';
+        var meta = [a.kategori, [hari, jam].filter(Boolean).join(' · '), a.lokasi,
+          a.biaya > 0 ? 'Rp ' + Number(a.biaya).toLocaleString('id-ID') : '']
+          .filter(Boolean).map(aman).join(' · ');
+        var slot = '';
+        if (a.status === 'Coming Soon') slot = '<span class="agenda-slot penuh">Segera dibuka</span>';
+        else if (a.sisaKuota === 0) slot = '<span class="agenda-slot penuh">Penuh · waiting list</span>';
+        else if (a.sisaKuota > 0) slot = '<span class="agenda-slot">Sisa ' + a.sisaKuota + ' slot</span>';
+        else if (a.terdaftar > 0) slot = '<span class="agenda-slot penuh">' + a.terdaftar + ' terdaftar</span>';
+        return '<div class="agenda-item"><div class="agenda-tgl">' + tgl + '</div>' +
+          '<div class="agenda-isi"><div class="agenda-judul">' + aman(a.judul) + '</div>' +
+          '<div class="agenda-meta">' + meta + '</div></div>' + slot + '</div>';
+      }).join('');
+      if (d.diperbarui) {
+        var w = d.diperbarui.split('T'), tg = w[0].split('-');
+        document.getElementById('agenda-waktu').textContent =
+          ' Diperbarui ' + (+tg[2]) + ' ' + BULAN[tg[1] - 1] + ', ' + (w[1] || '').slice(0, 5) + ' WITA.';
+      }
+    })
+    .catch(function () { pesan(KOSONG); });
 })();
 </script>
 </body>
