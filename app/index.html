@@ -129,13 +129,6 @@
      pita di belakang home indicator dan bilah status DICAT oleh sistem memakai
      warna latar body. Jadi inilah satu-satunya tuas yang menentukan warna pita
      itu — elemen apa pun yang digambar di atasnya tidak berpengaruh. */
-  /* Latar ini BUKAN sekadar warna di belakang iframe. Di mode aplikasi
-     layar-utama, iOS melukis kanvas sampai dasar layar (896px) tetapi memangkas
-     isi halaman di 848px — 48px terbawah tidak bisa ditempati elemen apa pun,
-     hanya warna ini. Sejak bilah navigasi aplikasi menjadi pil melayang (R10),
-     pita itu tampak DI BAWAH pil, berbatasan dengan isi halaman — jadi setelah
-     aplikasi siap, warnanya diganti latar halaman (lihat kabar 'siap'). Navy di
-     sini tinggal untuk layar pemuatan. */
   html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#001138;}
 
   /* Aplikasi ditempatkan di dalam area aman, bukan memenuhi layar mentah.
@@ -173,10 +166,18 @@
   }
   #bingkai iframe{width:100%;height:100%;border:0;display:block;}
 
-  /* Penutup bilah status. Biasanya sewarna body sehingga tak terlihat; baru
-     bekerja di mode layar-utama, saat body berganti warna latar aplikasi
-     (lihat kabar 'siap') — jam dan baterai yang putih tetap duduk di navy. */
-  #atas{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top, 0px);background:#001138;}
+  /* Bug WebKit 301108: di mode layar-utama iOS (viewport-fit=cover +
+     black-translucent), 100%, 100dvh, innerHeight — dan karena itu juga semua
+     elemen fixed — berhenti SETINGGI BILAH STATUS sebelum dasar layar (XR 48px,
+     iPhone berpulau dinamis ±62px). Pita di bawahnya dulu dikira "tak bisa
+     ditempati". Hanya 100lvh yang melaporkan tinggi layar penuh, jadi html,
+     body, dan wadah aplikasi diberi tinggi itu secara eksplisit; top/bottom
+     wadah fixed masih mengacu ke blok induk yang pendek, karena itu bottom
+     dilepas. Android dan tab Safari: 100lvh = tinggi jendela, tidak berubah.
+     Kelas .layar-utama dipasang skrip di bawah — navigator.standalone juga
+     menjangkau iOS lama yang tidak mencocokkan display-mode. */
+  html.layar-utama,html.layar-utama body{height:100lvh;}
+  html.layar-utama #bingkai{bottom:auto;height:calc(100lvh - env(safe-area-inset-top, 0px));}
 
   /* Layar pemuatan, tampil di depan iframe sampai aplikasi selesai dimuat. */
   #memuat{
@@ -217,7 +218,7 @@
     <!-- Penanda versi halaman pembungkus. Naikkan angkanya setiap kali berkas
          ini diubah: menjawab "yang tampil ini versi baru atau cache lama?".
          Diberi label dan diletakkan di bawah supaya anggota tidak bingung. -->
-    <div class="versi">versi halaman R10</div>
+    <div class="versi">versi halaman R11</div>
   </div>
 </div>
 
@@ -228,7 +229,6 @@
 
 <div id="ukur" aria-hidden="true"></div>
 
-<div id="atas"></div>
 <div id="bingkai">
   <iframe
     id="aplikasi"
@@ -239,6 +239,9 @@
 </div>
 
 <script>
+  if (navigator.standalone === true || matchMedia('(display-mode: standalone)').matches) {
+    document.documentElement.classList.add('layar-utama');
+  }
   var memuat = document.getElementById('memuat');
   var sudahDitutup = false;
 
@@ -277,15 +280,6 @@
     if (/^#[0-9A-Fa-f]{6}$/.test(String(e.data.navy || ''))) {
       try { localStorage.setItem('ibb_navy', e.data.navy); } catch (err) { /* mode privat */ }
     }
-    /* Mode layar-utama: pita kanvas di bawah viewport tampak di bawah pil
-       navigasi aplikasi yang melayang. Navy di sana terbaca sebagai pita asing,
-       jadi diwarnai seperti latar halaman. Baru setelah 'siap', TIDAK disimpan:
-       sebelum itu layar pemuatan yang navy masih di depan dan pitanya harus
-       ikut navy. */
-    if (modeLayarUtama() && /^#[0-9A-Fa-f]{6}$/.test(String(e.data.latar || ''))) {
-      document.documentElement.style.background = e.data.latar;
-      document.body.style.background = e.data.latar;
-    }
   });
 
   /* Dipasang sedini mungkin — sebelum apa pun sempat tergambar dengan warna
@@ -300,7 +294,6 @@
     if (m) m.setAttribute('content', w);
     var d = document.getElementById('darurat');
     if (d) d.style.background = w;
-    document.getElementById('atas').style.background = w;
   })();
 
   /* Jaring pengaman: versi aplikasi lama tidak mengirim kabar 'siap'. Delapan
@@ -349,43 +342,18 @@
        >= 812px — ambang iPhone X, dan tidak ada iPhone berhome indicator di
        bawahnya. Heuristik, bukan pembacaan. Bila iOS suatu saat memberi cara
        menanyakannya langsung, ganti baris ini dengan cara itu. */
-    if (n === 0 &&
+    // Hanya iOS ('standalone' in navigator): Android melaporkan nol dengan
+    // jujur bila bilah navigasinya di luar halaman, dan 34 di sana mengangkat
+    // isi tanpa alasan.
+    if (n === 0 && 'standalone' in navigator &&
         matchMedia('(pointer: coarse)').matches &&
         Math.max(screen.width, screen.height) >= 812) n = 34;
 
-    /* Di mode aplikasi layar-utama, iOS memangkas isi halaman di 848px
-       sementara kanvasnya tetap dilukis sampai 896px. Pita 48px terbawah itu
-       tidak bisa ditempati elemen apa pun — sudah dicoba menjulurkan wadahnya
-       ke sana, dan yang terjadi tombol navigasinya terpotong separuh.
-
-       Tapi pita itu navy, sewarna bilah navigasi, dan letaknya persis di bawah
-       ikon: ia SUDAH menjadi ruang aman, tanpa diminta. Aplikasi tinggal
-       diberi tahu sisanya saja — kalau pita itu sendiri sudah lebih lebar dari
-       ruang aman yang dibutuhkan, sisanya nol dan aplikasi tidak menambah apa
-       pun.
-
-       Hanya di mode ini. Di Safari selisih layar-vs-jendela adalah bilah
-       alamat di ATAS, bukan pita di bawah, dan menguranginya di sana akan
-       menempelkan ikon ke garis home indicator. */
-    var kanvas = pitaKanvas();
-    if (kanvas) n = Math.max(0, n - kanvas);
     return n;
   }
 
-  function modeLayarUtama() {
-    return navigator.standalone === true ||
-      matchMedia('(display-mode: standalone)').matches;
-  }
-
-  // Tinggi pita yang dilukis tapi tak bisa ditempati; 0 di luar mode layar-utama.
-  function pitaKanvas() {
-    if (!modeLayarUtama()) return 0;
-    var k = Math.round(screen.height - window.innerHeight);
-    return k > 0 && k < 200 ? k : 0;
-  }
-
   function kabari() {
-    if (peminta) peminta.postMessage({ ibb: 'inset', bawah: ruangAmanBawah(), pita: pitaKanvas() > 0 }, '*');
+    if (peminta) peminta.postMessage({ ibb: 'inset', bawah: ruangAmanBawah() }, '*');
   }
 
   window.addEventListener('message', function (e) {
