@@ -1,5 +1,5 @@
 {
- "diperbarui": "2026-11-26T05:34:55",
+ "diperbarui": "2026-11-26T16:00:26",
  "agenda": [
   {
    "judul": "Minisoccer Internal November",
@@ -12,6 +12,19 @@
    "biaya": 0,
    "kuota": 0,
    "terdaftar": 22,
+   "sisaKuota": null
+  },
+  {
+   "judul": "Internal Fun Futsal",
+   "kategori": "Futsal",
+   "status": "Open",
+   "tanggal": "2026-12-01",
+   "jamMulai": "18:45",
+   "jamSelesai": "21:00",
+   "lokasi": "My Stadium Futsal Arena",
+   "biaya": 0,
+   "kuota": 0,
+   "terdaftar": 0,
    "sisaKuota": null
   }
  ]
