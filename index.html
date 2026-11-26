@@ -308,6 +308,21 @@ if ('serviceWorker' in navigator) {
     opacity:0; pointer-events:none; transition:opacity .24s ease;
   }
   .tirai.on{opacity:1; pointer-events:auto;}
+
+  /* Ikon tarik-untuk-muat-ulang (pengganti tombol muat ulang). Lahir
+     tersembunyi di atas layar; skrip menurunkannya mengikuti tarikan di
+     puncak halaman, paling jauh sampai tepat di bawah bilah status —
+     tidak tertutup poni, dan masih di atas baris logo yang ikut turun. */
+  .tarik{
+    position:fixed; left:50%; top:calc(env(safe-area-inset-top,0px) - 46px); z-index:60;
+    width:38px; height:38px; margin-left:-19px; border-radius:50%;
+    display:grid; place-items:center; color:#fff; opacity:0; pointer-events:none;
+    background:rgba(10,14,34,.6); border:1.5px solid rgba(255,255,255,.35);
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .tarik.siap{color:var(--yellow); border-color:var(--yellow);}
+  .tarik.muter svg{animation:putar .7s linear infinite;}
+  @keyframes putar{to{transform:rotate(360deg);}}
   @media (prefers-reduced-motion:reduce){ .tirai{transition:none;} }
 
   /* ================= TOPNAV — duduk transparan DI ATAS foto hero ======= */
@@ -939,6 +954,9 @@ if ('serviceWorker' in navigator) {
 
 <div class="selubung" aria-hidden="true"></div>
 <div class="tirai" id="tirai" aria-hidden="true"></div>
+<div class="tarik" id="tarik" aria-hidden="true">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+</div>
 
 <!-- Bar tipis yang menggantikan nav hero setelah tergulung habis. -->
 <div class="minibar" id="minibar">
@@ -1675,30 +1693,43 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('pageshow', function () { tirai.classList.remove('on'); });
   }
 
-  // ============ Pantulan di ujung atas & bawah ============
-  // Safari iOS sudah memantul sendiri — dibiarkan. Chrome Android tidak:
-  // di sana tarikan melewati ujung halaman cuma memunculkan pendar. Untuk
-  // perangkat sentuh selain iOS, isi halaman digeser mengikuti jari dengan
+  // ============ Pantulan & tarik untuk muat ulang ============
+  // Safari iOS sudah memantul sendiri — dibiarkan, isi tidak digeser.
+  // Chrome Android tidak: di sana tarikan melewati ujung halaman cuma
+  // memunculkan pendar, jadi isi halaman digeser mengikuti jari dengan
   // redaman ala iOS lalu dilepas balik. -webkit-touch-callout hanya dikenal
   // WebKit iOS, jadi itu pembeda yang tidak bergantung pada user agent.
-  // Ponsel itu sendiri yang dilayani: overscroll-behavior:none ikut
-  // mematikan tarik-untuk-muat-ulang Chrome di tab biasa — muat ulang masih
-  // ada di menu Chrome.
+  // overscroll-behavior:none mematikan tarik-untuk-muat-ulang bawaan Chrome;
+  // penggantinya ada di sini, berlaku di iOS juga (yang tidak punya sama
+  // sekali saat dibuka dari layar utama).
   (function () {
+    if (!('ontouchstart' in window)) return;
     var ios = window.CSS && CSS.supports && CSS.supports('-webkit-touch-callout', 'none');
-    if (ios || !('ontouchstart' in window) || kurangGerak.matches) return;
-    akar.style.overscrollBehaviorY = 'none';
+    var geserIsi = !ios && !kurangGerak.matches;
+    if (!ios) akar.style.overscrollBehaviorY = 'none';
     var isi = document.querySelectorAll('.hero, .permukaan, footer');
-    var y0 = null, jarak = 0;
+    var ikon = document.getElementById('tarik');
+    var svg = ikon && ikon.querySelector('svg');
+    var AMBANG = 70, TURUN = 56;   // px tarikan untuk memicu; px turun maksimal ikon
+    var y0 = null, jarak = 0, memuat = false;
     var geser = function (px, lepas) {
       jarak = px;
-      isi.forEach(function (el) {
-        el.style.transition = lepas ? 'transform .5s cubic-bezier(.2,.9,.3,1)' : 'none';
+      var halus = lepas ? 'transform .5s cubic-bezier(.2,.9,.3,1)' : 'none';
+      if (geserIsi) isi.forEach(function (el) {
+        el.style.transition = halus;
         el.style.transform = px ? 'translateY(' + px + 'px)' : '';
       });
+      if (!ikon) return;
+      // Ikon hanya untuk ujung atas; tarikan di ujung bawah menyembunyikannya.
+      var t = Math.max(0, Math.min(px, TURUN));
+      ikon.style.transition = lepas ? halus + ', opacity .3s ease' : 'none';
+      ikon.style.transform = 'translateY(' + t + 'px)';
+      ikon.style.opacity = Math.min(1, t / 36);
+      ikon.classList.toggle('siap', px >= AMBANG);
+      svg.style.transform = 'rotate(' + Math.round(Math.max(0, px) * 3) + 'deg)';
     };
     window.addEventListener('touchstart', function (e) {
-      y0 = e.touches.length === 1 ? e.touches[0].clientY : null;
+      y0 = !memuat && e.touches.length === 1 ? e.touches[0].clientY : null;
     }, { passive: true });
     window.addEventListener('touchmove', function (e) {
       if (y0 == null || e.touches.length !== 1) return;
@@ -1706,7 +1737,8 @@ if ('serviceWorker' in navigator) {
       var atas = window.scrollY <= 0;
       var bawah = window.scrollY + window.innerHeight >= akar.scrollHeight - 1;
       if ((atas && dy > 0) || (bawah && dy < 0)) {
-        // Rumus redaman karet iOS: makin jauh ditarik, makin berat.
+        // Rumus redaman karet iOS: makin jauh ditarik, makin berat. Sama
+        // dengan pantulan asli iOS, jadi ikon di sana ikut seiring isi.
         var h = window.innerHeight, a = Math.abs(dy);
         geser((dy > 0 ? 1 : -1) * (1 - 1 / (a * 0.55 / h + 1)) * h);
       } else {
@@ -1716,7 +1748,21 @@ if ('serviceWorker' in navigator) {
         if (jarak) geser(0);
       }
     }, { passive: true });
-    var lepas = function () { y0 = null; if (jarak) geser(0, true); };
+    var lepas = function () {
+      y0 = null;
+      if (memuat) return;
+      if (jarak >= AMBANG && ikon) {
+        // Ikon (dan di Android, isinya) ditahan terbuka selagi memuat, dan
+        // putarannya dibiarkan terlihat sebentar sebelum halaman berganti.
+        memuat = true;
+        geser(TURUN, true);
+        ikon.classList.remove('siap');
+        ikon.classList.add('muter');
+        setTimeout(function () { window.location.reload(); }, 350);
+      } else if (jarak) {
+        geser(0, true);
+      }
+    };
     window.addEventListener('touchend', lepas, { passive: true });
     window.addEventListener('touchcancel', lepas, { passive: true });
   })();
