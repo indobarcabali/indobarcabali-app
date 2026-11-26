@@ -483,9 +483,10 @@ if ('serviceWorker' in navigator) {
        menyusut di layar sempit supaya tiga logo tetap sebaris di 320px. */
     /* Ukuran ikut lebar layar: baris atas (rasio PRIMA+J&T+KHARMA = 9,07×
        tinggi) ditambah dua jarak 5vw mengisi lebar isi (100vw - 64px), jadi
-       tinggi = (90vw - 64px) / 9,07 ≈ 9,9vw - 7px. Dibatasi 36px di HP besar. */
-    .sponsor{--t:min(36px, calc(9.9vw - 7px));}
-    .sponsor-baris{flex-direction:row; flex-wrap:wrap; justify-content:center; align-items:center; gap:0 min(24px,5vw);}
+       tinggi = (90vw - 64px) / 9,07 ≈ 9,9vw - 7px. Dibatasi 36px di HP besar.
+       Lalu semuanya ×0,9 (pilihan pemilik): ada sedikit napas di kiri-kanan. */
+    .sponsor{--t:calc(min(36px, calc(9.9vw - 7px)) * .9);}
+    .sponsor-baris{flex-direction:row; flex-wrap:wrap; justify-content:center; align-items:center; gap:0 calc(min(24px,5vw) * .9);}
     .sponsor-grup,.sponsor-logo{display:contents;}
     .sponsor-grup:first-child .sponsor-label{order:0; flex-basis:100%; text-align:center; margin-bottom:14px;}
     .sponsor-logo a:nth-child(1){order:1;}   /* PRIMA */
