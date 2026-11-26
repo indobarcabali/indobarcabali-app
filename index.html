@@ -451,7 +451,12 @@ if ('serviceWorker' in navigator) {
   /* Abu-abu redup seperti deretan sponsor di situs Barça: putih .55 di
      atas --latar jadi ±#91939C — terbaca, tapi tidak bersaing dengan foto
      dan judul. Tinggi ikut lebar layar, 44px di desktop lebar sampai 34px. */
-  .sponsor-logo img{display:block; height:clamp(34px,3.4vw,44px); width:auto; opacity:.55;}
+  .sponsor-logo img{display:block; height:clamp(34px,3.4vw,44px); width:auto; opacity:.55; transition:opacity .2s ease;}
+  /* Tiap logo menuju Instagram sponsornya. Menyala saat disorot atau
+     difokus papan ketik, jadi terasa bisa diketuk tanpa mengubah tata letak. */
+  .sponsor-logo a{display:block; border-radius:4px;}
+  .sponsor-logo a:hover img,.sponsor-logo a:focus-visible img{opacity:.95;}
+  .sponsor-logo a:focus-visible{outline:2px solid var(--yellow); outline-offset:6px;}
   /* Di bawah ~1000px dua kelompok tidak muat sebaris: ditumpuk, garis
      pemisahnya pindah ke atas. Di HP empat logo utama jadi 2×2. */
   @media (max-width:1000px){
@@ -1087,16 +1092,16 @@ if ('serviceWorker' in navigator) {
            alih-alih menumpuk di kolom kanan. Logo baru: jaga pola ini. -->
       <div class="sponsor-label">Main Partner</div>
       <div class="sponsor-logo">
-        <img src="aset/sponsor/prima.png" width="394" height="124" alt="Prima — Architecture, Interior, Lighting" loading="lazy">
-        <img src="aset/sponsor/jnt.png" width="364" height="126" alt="J&amp;T Cargo Kuta Bali" loading="lazy">
-        <img src="aset/sponsor/grow.png" width="396" height="119" alt="Grow Physiotherapy" loading="lazy">
-        <img src="aset/sponsor/kharma.png" width="399" height="133" alt="Kharma Coffee Bali" loading="lazy">
+        <a href="https://www.instagram.com/primadesign.co/" target="_blank" rel="noopener"><img src="aset/sponsor/prima.png" width="394" height="124" alt="Prima — Architecture, Interior, Lighting" loading="lazy"></a>
+        <a href="https://www.instagram.com/jntcargokuta/" target="_blank" rel="noopener"><img src="aset/sponsor/jnt.png" width="364" height="126" alt="J&amp;T Cargo Kuta Bali" loading="lazy"></a>
+        <a href="https://www.instagram.com/u.growphysio/" target="_blank" rel="noopener"><img src="aset/sponsor/grow.png" width="396" height="119" alt="Grow Physiotherapy" loading="lazy"></a>
+        <a href="https://www.instagram.com/kharma_coffee/" target="_blank" rel="noopener"><img src="aset/sponsor/kharma.png" width="399" height="133" alt="Kharma Coffee Bali" loading="lazy"></a>
       </div>
     </div>
     <div class="sponsor-grup">
       <div class="sponsor-label">Teamwear Apparel</div>
       <div class="sponsor-logo">
-        <img src="aset/sponsor/emje.png" width="312" height="133" alt="EMJE" loading="lazy">
+        <a href="https://www.instagram.com/balijersey.co/" target="_blank" rel="noopener"><img src="aset/sponsor/emje.png" width="312" height="133" alt="EMJE" loading="lazy"></a>
       </div>
     </div>
   </div>
