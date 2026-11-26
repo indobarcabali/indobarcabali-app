@@ -4,7 +4,7 @@
      paling awal yang digambar peramban sudah navy. Tanpa ini <html>
      tidak punya latar sama sekali dan bingkai itu putih bawaan — persis
      kedipan yang terlihat antara layar peluncur dan halaman. -->
-<html lang="id" style="background:#071744">
+<html lang="id" style="background:#0A0E22">
 <head>
 <meta charset="utf-8">
 <!-- viewport-fit=cover wajib berpasangan dengan status-bar black-translucent
@@ -141,7 +141,7 @@ if ('serviceWorker' in navigator) {
       media="(device-width:320px) and (device-height:568px) and (-webkit-device-pixel-ratio:2) and (orientation:landscape)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#071744">
+<meta name="theme-color" content="#0A0E22">
 <meta name="description" content="Komunitas resmi penggemar FC Barcelona di Bali. Fun Futsal tiap Selasa, minisoccer bulanan, nobar El Clásico, dan liga internal sendiri: Internal Futsal League (IFL).">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Indobarca Bali">
@@ -165,7 +165,10 @@ if ('serviceWorker' in navigator) {
   }
 
   :root{
-    --navy-900:#071744; --navy:#0A1F62; --navy-700:#12307F;
+    /* --latar: navy tua footer, dipakai juga untuk latar halaman, bilah
+       status (theme-color) dan manifest — supaya saat halaman ditarik
+       melewati ujungnya, warna yang tersingkap sama dengan poni & bilah bawah. */
+    --latar:#0A0E22; --navy-900:#071744; --navy:#0A1F62; --navy-700:#12307F;
     --red:#E8253C; --red-700:#C4102A; --yellow:#F7C331;
     /* Strip zona kualifikasi di klasemen. Biru UCL diambil dari gradasi
        pita atas halaman ini, oranye UEL warna baru — sengaja jauh dari
@@ -183,7 +186,7 @@ if ('serviceWorker' in navigator) {
     --font-angka:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box;}
-  html{color-scheme:light; scroll-behavior:smooth; background:var(--navy-900);}
+  html{color-scheme:light; scroll-behavior:smooth; background:var(--latar);}
   /* Sasaran tautan menu adalah BATAS SECTION — strip biru/merah di
      pangkalnya — supaya pengunjung melihat sectionnya utuh dari awal,
      bukan mendarat di tengah-tengah isinya.
@@ -214,7 +217,7 @@ if ('serviceWorker' in navigator) {
      apple-touch-startup-image di README.) Warna terangnya dipindah ke
      .permukaan, yang membungkus section-section di bawah hero. */
   body{
-    margin:0; background:var(--navy-900); color:var(--ink);
+    margin:0; background:var(--latar); color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased; overflow-x:hidden;
   }
@@ -293,7 +296,7 @@ if ('serviceWorker' in navigator) {
      halaman yang tak pernah muncul jauh lebih buruk daripada transisi
      yang kurang mulus. */
   .selubung{
-    position:fixed; inset:0; z-index:200; background:var(--navy-900);
+    position:fixed; inset:0; z-index:200; background:var(--latar);
     pointer-events:none; opacity:0; visibility:hidden;
     transition:opacity .55s ease, visibility 0s linear .55s;
   }
@@ -353,7 +356,7 @@ if ('serviceWorker' in navigator) {
        .72 menghasilkan rgb(73,85,119) — biru batu yang jauh dari navy
        aplikasi. .90 menghasilkan rgb(30,45,86), pekat tapi masih menyisakan
        efek kaca; di 1.0 transparansinya hilang sama sekali. */
-    background:rgba(7,23,68,.9);
+    background:rgba(10,14,34,.9);   /* --latar, tembus pandang */
     -webkit-backdrop-filter:blur(14px) saturate(160%);
     backdrop-filter:blur(14px) saturate(160%);
     border-bottom:1px solid rgba(255,255,255,.12);
@@ -369,7 +372,7 @@ if ('serviceWorker' in navigator) {
   /* Tanpa dukungan backdrop-filter, yang tersisa cuma lapisan tembus pandang
      tanpa blur — teks navy langsung bertumpuk di atas foto. */
   @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-    .minibar{background:rgba(7,23,68,.97);}
+    .minibar{background:rgba(10,14,34,.97);}
   }
 
   /* ================= HERO — penuh sisi kiri-kanan ================= */
@@ -905,7 +908,7 @@ if ('serviceWorker' in navigator) {
   .ajak-inner .btn{margin-top:24px;}
 
   /* ================= FOOTER ================= */
-  footer{background:#0A0E22; padding:56px 0 32px;}
+  footer{background:var(--latar); padding:56px 0 32px;}
   .foot-cols{display:grid; grid-template-columns:1.3fr 1fr 1fr 1.3fr; gap:32px; padding-bottom:36px;}
   .foot-brand{display:flex; align-items:center; gap:9px; color:#fff; font-weight:900; font-size:16px; margin-bottom:12px;}
   .foot-logo{width:26px; height:26px; border-radius:50%; flex:none; display:block;}
