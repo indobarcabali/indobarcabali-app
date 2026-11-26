@@ -218,7 +218,7 @@
     <!-- Penanda versi halaman pembungkus. Naikkan angkanya setiap kali berkas
          ini diubah: menjawab "yang tampil ini versi baru atau cache lama?".
          Diberi label dan diletakkan di bawah supaya anggota tidak bingung. -->
-    <div class="versi">versi halaman R12</div>
+    <div class="versi">versi halaman R13</div>
   </div>
 </div>
 
@@ -233,12 +233,23 @@
   <iframe
     id="aplikasi"
     title="INDOBARCA BALI — Community App"
-    src="https://script.google.com/macros/s/AKfycbwYa13TLyaJ3moyHeQn7d4vH4F3P1T3oX9a7Vcb10kCofT8Mq9Sq2dThOAf5nigq_PL/exec"
+    data-src="https://script.google.com/macros/s/AKfycbwYa13TLyaJ3moyHeQn7d4vH4F3P1T3oX9a7Vcb10kCofT8Mq9Sq2dThOAf5nigq_PL/exec"
     allow="clipboard-write *; fullscreen *"
     referrerpolicy="no-referrer-when-downgrade"></iframe>
 </div>
 
 <script>
+  /* Alamat aplikasi dipasang di sini, bukan sebagai src statis, supaya tautan
+     ?kegiatan=ID (dari teks WA, R13) bisa diteruskan ke dalam iframe TANPA
+     memuat aplikasinya dua kali. Aplikasi membacanya lewat google.script.url
+     dan langsung membuka kartu kegiatan itu. Selain kegiatan, parameter lain
+     tidak diteruskan; ID-nya divalidasi ketat (bentuknya EVT-XXXXX-XXX). */
+  (function () {
+    var f = document.getElementById('aplikasi');
+    var id = (location.search.match(/[?&]kegiatan=([A-Za-z0-9-]{1,40})(?:&|$)/) || [])[1];
+    f.src = f.getAttribute('data-src') + (id ? '?kegiatan=' + id : '');
+  })();
+
   // HANYA iOS: navigator.standalone cuma ada di Safari iOS. R11 juga memakai
   // display-mode: standalone, yang cocok di Android — di sana 100lvh bisa lebih
   // tinggi dari area terlihat dan pil navigasi terdorong ke bawah layar.
