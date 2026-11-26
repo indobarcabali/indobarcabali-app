@@ -218,7 +218,7 @@
     <!-- Penanda versi halaman pembungkus. Naikkan angkanya setiap kali berkas
          ini diubah: menjawab "yang tampil ini versi baru atau cache lama?".
          Diberi label dan diletakkan di bawah supaya anggota tidak bingung. -->
-    <div class="versi">versi halaman R13</div>
+    <div class="versi">versi halaman R14</div>
   </div>
 </div>
 
@@ -379,6 +379,44 @@
   // Nilainya berubah saat perangkat diputar.
   window.addEventListener('resize', kabari);
   window.addEventListener('orientationchange', function () { setTimeout(kabari, 300); });
+
+  /* ---------------------------------------------------------------
+     R14: layar tetap menyala selama time keeper Match Maker berjalan.
+
+     Aplikasi tidak bisa memintanya sendiri — iframe Apps Script tidak punya
+     izin screen-wake-lock — jadi ia mengirim {ibb:'jaga-layar', nyala} dan
+     halaman inilah yang meminta ke peramban (jagaLayar di ui_core.html).
+
+     Peramban melepas kunci layar setiap kali halaman tersembunyi (HP dikunci,
+     pindah aplikasi). Selama aplikasi masih memintanya, kunci diminta ulang
+     begitu halaman tampil lagi. Kabar 'siap' berarti aplikasi baru dimuat
+     ulang — time keeper-nya ikut mulai dari nol, jadi kuncinya dilepas.
+     iOS: Safari 16.4+, dari layar utama andal sejak 18.4.
+     --------------------------------------------------------------- */
+  var jaga = { mau: false, kunci: null };
+
+  function mintaKunci() {
+    if (!jaga.mau || jaga.kunci || document.hidden || !navigator.wakeLock) return;
+    navigator.wakeLock.request('screen').then(function (k) {
+      if (!jaga.mau) { k.release(); return; }   // sempat dibatalkan selagi menunggu
+      jaga.kunci = k;
+      k.addEventListener('release', function () { jaga.kunci = null; });
+    }, function () { /* ditolak (mis. mode hemat daya): layar padam seperti biasa */ });
+  }
+
+  function aturJaga(mau) {
+    jaga.mau = mau;
+    if (mau) return mintaKunci();
+    if (jaga.kunci) { jaga.kunci.release(); jaga.kunci = null; }
+  }
+
+  window.addEventListener('message', function (e) {
+    if (!e.data) return;
+    if (e.data.ibb === 'jaga-layar') aturJaga(!!e.data.nyala);
+    else if (e.data.ibb === 'siap') aturJaga(false);
+  });
+  document.addEventListener('visibilitychange', mintaKunci);
+  /* akhir jaga layar */
 </script>
 
 </body>
