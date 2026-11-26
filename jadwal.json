@@ -1,26 +1,6 @@
 {
   "pertandingan": [
     {
-      "utc": "2026-11-25T17:45:00Z",
-      "home": {
-        "nama": "Sabah FK",
-        "tla": "SAB",
-        "crest": "crest/10233.png"
-      },
-      "away": {
-        "nama": "Barça",
-        "tla": "FCB",
-        "crest": "crest/81.png"
-      },
-      "kandang": false,
-      "lawan": "Sabah FK",
-      "matchday": 5,
-      "babak": "Fase Liga 5",
-      "venue": "",
-      "kompetisi": "Champions League",
-      "liga_lambang": "crest/liga-CL.png"
-    },
-    {
       "utc": "2026-11-29T15:15:00Z",
       "home": {
         "nama": "Deportivo",
@@ -99,6 +79,26 @@
       "venue": "",
       "kompetisi": "Champions League",
       "liga_lambang": "crest/liga-CL.png"
+    },
+    {
+      "utc": "2026-12-12T17:30:00Z",
+      "home": {
+        "nama": "Málaga",
+        "tla": "MAL",
+        "crest": "crest/84.png"
+      },
+      "away": {
+        "nama": "Barça",
+        "tla": "FCB",
+        "crest": "crest/81.png"
+      },
+      "kandang": false,
+      "lawan": "Málaga",
+      "matchday": 16,
+      "babak": "Jornada 16",
+      "venue": "",
+      "kompetisi": "LaLiga",
+      "liga_lambang": "crest/liga-PD.png"
     }
   ],
   "klasemen": [
