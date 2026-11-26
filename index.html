@@ -453,7 +453,10 @@ if ('serviceWorker' in navigator) {
   /* Abu-abu redup seperti deretan sponsor di situs Barça: putih .65 di
      atas --latar jadi ±#A6A8AF — terbaca, tapi tidak bersaing dengan foto
      dan judul. Tinggi ikut lebar layar, 44px di desktop lebar sampai 34px. */
-  .sponsor-logo img{display:block; height:clamp(34px,3.4vw,44px); width:auto; opacity:.65; transition:opacity .2s ease;}
+  .sponsor{--t:clamp(34px,3.4vw,44px);}   /* tinggi logo, disetel ulang di HP */
+  .sponsor-logo img{display:block; height:var(--t); width:auto; opacity:.65; transition:opacity .2s ease;}
+  /* GROW paling tebal dan lebar — tanpa ini ia yang paling menonjol. */
+  .sponsor-logo img[src$="grow.png"]{height:calc(var(--t) * .85);}
   /* Tiap logo menuju Instagram sponsornya. Menyala saat disorot atau
      difokus papan ketik, jadi terasa bisa diketuk tanpa mengubah tata letak. */
   .sponsor-logo a{display:block; border-radius:4px;}
@@ -478,7 +481,11 @@ if ('serviceWorker' in navigator) {
     /* row-gap 0: baris pemutus (::before) sendiri yang jadi jarak antarbaris —
        dengan row-gap, baris kosong itu menggandakan jaraknya. Jarak kolom
        menyusut di layar sempit supaya tiga logo tetap sebaris di 320px. */
-    .sponsor-baris{flex-direction:row; flex-wrap:wrap; justify-content:center; align-items:center; gap:0 min(18px,3.5vw);}
+    /* Ukuran ikut lebar layar: baris atas (rasio PRIMA+J&T+KHARMA = 9,07×
+       tinggi) ditambah dua jarak 5vw mengisi lebar isi (100vw - 64px), jadi
+       tinggi = (90vw - 64px) / 9,07 ≈ 9,9vw - 7px. Dibatasi 36px di HP besar. */
+    .sponsor{--t:min(36px, calc(9.9vw - 7px));}
+    .sponsor-baris{flex-direction:row; flex-wrap:wrap; justify-content:center; align-items:center; gap:0 min(24px,5vw);}
     .sponsor-grup,.sponsor-logo{display:contents;}
     .sponsor-grup:first-child .sponsor-label{order:0; flex-basis:100%; text-align:center; margin-bottom:14px;}
     .sponsor-logo a:nth-child(1){order:1;}   /* PRIMA */
@@ -489,7 +496,6 @@ if ('serviceWorker' in navigator) {
     .sponsor-baris::after{content:''; order:6; width:1px; align-self:stretch; background:rgba(255,255,255,.15);}
     .sponsor-grup:last-child .sponsor-label{order:7; margin-right:-8px; max-width:6.5em; line-height:1.15;}
     .sponsor-grup:last-child a{order:8;}
-    .sponsor-logo img{height:min(28px,7.8vw);}
   }
   .about .eyebrow{font-size:12.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
   .about h2{font-size:clamp(24px,3.4vw,32px); color:var(--navy-900); margin-top:10px;}
