@@ -430,6 +430,40 @@ if ('serviceWorker' in navigator) {
   .about-p1{background-image:url(foto/tentang1.jpg);}
   .about-p2{background-image:url(foto/tentang2.jpg);}
   .about-p3{background-image:url(foto/tentang3.jpg);}
+
+  /* ================= SPONSOR — pita navy yang menyambung dari tiga foto
+     Tentang. Sepertiga bawah foto dilarutkan ke --latar dengan beberapa
+     titik henti (bukan dua): gradasi linier polos dua titik menyisakan
+     garis "pinggang" yang terlihat di atas foto gelap. Ujung gradasinya
+     tepat sewarna pita, jadi batas foto dan pita tidak terlihat. */
+  .about-stack{position:relative;}
+  .about-stack::after{
+    content:''; position:absolute; left:0; right:0; bottom:0; height:42%; pointer-events:none;
+    background:linear-gradient(to bottom, rgba(10,14,34,0) 0%, rgba(10,14,34,.22) 28%,
+      rgba(10,14,34,.6) 58%, rgba(10,14,34,.88) 82%, var(--latar) 100%);
+  }
+  .sponsor{background:var(--latar); padding:10px 0 44px;}
+  .sponsor-baris{display:flex; justify-content:center; align-items:flex-end; gap:28px 56px;}
+  .sponsor-grup{display:flex; flex-direction:column; align-items:center; gap:18px;}
+  .sponsor-grup + .sponsor-grup{padding-left:56px; border-left:1px solid rgba(255,255,255,.12);}
+  .sponsor-label{font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.5);}
+  .sponsor-logo{display:flex; justify-content:center; align-items:center; gap:22px 44px;}
+  /* Tinggi ikut lebar layar: 56px di desktop lebar (46px tenggelam di
+     samping foto selebar layar), turun ke 40px supaya lima logo plus
+     pemisah tetap muat sebaris sampai ~1000px. */
+  .sponsor-logo img{display:block; height:clamp(40px,4.4vw,56px); width:auto; opacity:.92;}
+  /* Di bawah ~1000px dua kelompok tidak muat sebaris: ditumpuk, garis
+     pemisahnya pindah ke atas. Di HP empat logo utama jadi 2×2. */
+  @media (max-width:1000px){
+    .sponsor-baris{flex-direction:column; align-items:center;}
+    .sponsor-grup + .sponsor-grup{padding:26px 0 0; border-left:0; border-top:1px solid rgba(255,255,255,.12); align-self:stretch;}
+  }
+  @media (max-width:700px){
+    .sponsor-logo{display:grid; grid-template-columns:repeat(2,auto); gap:24px 30px;}
+    /* 40px: di 34px tulisan kecil PRIMA dan KHARMA tak terbaca. 11vw
+       menyusutkannya di bawah 360px supaya dua kolom tetap muat. */
+    .sponsor-logo img{height:min(40px,11vw);}
+  }
   .about .eyebrow{font-size:12.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
   .about h2{font-size:clamp(24px,3.4vw,32px); color:var(--navy-900); margin-top:10px;}
   .about-body{margin-top:16px;}
@@ -1037,6 +1071,29 @@ if ('serviceWorker' in navigator) {
     <div class="about-photo about-p1" role="img" aria-label="Anggota Indobarca Bali berfoto bersama membawa bendera klub" data-en-label="Indobarca Bali members posing together with the club flag"></div>
     <div class="about-photo about-p2" role="img" aria-label="Tim Indobarca Bali berkumpul di lapangan" data-en-label="The Indobarca Bali team gathered on the pitch"></div>
     <div class="about-photo about-p3" role="img" aria-label="Anggota berkumpul di dalam ruangan bersama spanduk komunitas" data-en-label="Members gathered indoors with the community banner"></div>
+  </div>
+</section>
+
+<!-- ================= SPONSOR =================
+     Label kelompok berbahasa Inggris di kedua bahasa, seperti di gambar
+     sponsor aslinya. Logonya potongan dari satu gambar (aset/sponsor/). -->
+<section class="sponsor" aria-label="Sponsor Indobarca Bali" data-en-label="Indobarca Bali sponsors">
+  <div class="container sponsor-baris">
+    <div class="sponsor-grup">
+      <div class="sponsor-label">Main Partner</div>
+      <div class="sponsor-logo">
+        <img src="aset/sponsor/prima.png" width="394" height="124" alt="Prima — Architecture, Interior, Lighting" loading="lazy">
+        <img src="aset/sponsor/jnt.png" width="364" height="126" alt="J&amp;T Cargo Kuta Bali" loading="lazy">
+        <img src="aset/sponsor/kharma.png" width="399" height="133" alt="Kharma Coffee Bali" loading="lazy">
+        <img src="aset/sponsor/grow.png" width="396" height="119" alt="Grow Physiotherapy" loading="lazy">
+      </div>
+    </div>
+    <div class="sponsor-grup">
+      <div class="sponsor-label">Teamwear Apparel</div>
+      <div class="sponsor-logo">
+        <img src="aset/sponsor/emje.png" width="312" height="133" alt="EMJE" loading="lazy">
+      </div>
+    </div>
   </div>
 </section>
 
