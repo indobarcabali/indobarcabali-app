@@ -51,6 +51,22 @@
   Promise.all(tunggu).then(tampil);
 })();
 
+/* Bahasa diputuskan di sini, sebelum isi tergambar. Pilihan pengunjung
+   (tombol bola dunia) menang; tanpa itu ikut bahasa ponsel — Indonesia
+   ('in' = kode lama di Android tua) dapat ID, selain itu EN. Perayap
+   mesin pencari selalu dapat ID: Googlebot memakai en-US, dan tanpa
+   pengecualian ini Google mengindeks versi Inggris. Teksnya sendiri
+   ditukar oleh skrip di akhir <body>, masih di bawah selubung. */
+(function () {
+  var b;
+  try { b = localStorage.getItem('ib-bahasa'); } catch (e) {}
+  if (b !== 'id' && b !== 'en') {
+    var l = ((navigator.languages && navigator.languages[0]) || navigator.language || '').toLowerCase();
+    b = /^(id|in)\b/.test(l) || /bot|crawl|spider/i.test(navigator.userAgent) ? 'id' : 'en';
+  }
+  document.documentElement.lang = b;
+})();
+
 /* Didaftarkan setelah event load supaya tidak berebut jaringan dengan cat
    pertama halaman. Kegagalannya sengaja didiamkan: service worker itu
    percepatan, bukan syarat — halaman harus tetap jalan tanpanya. */
@@ -317,6 +333,25 @@ if ('serviceWorker' in navigator) {
   .segarkan.muter{transform:rotate(360deg);}
   .minibar .segarkan{border-color:rgba(255,255,255,.3);}
   @media (display-mode: standalone){ .segarkan{display:grid;} }
+  /* Tombol bahasa: bola dunia + kode bahasa yang sedang tampil. Lahir
+     hidden dan baru dibuka skrip — tanpa JS ia tidak bisa berbuat apa-apa.
+     [hidden] harus ditulis ulang karena display di bawah mengalahkannya. */
+  .bahasa{
+    display:inline-flex; align-items:center; gap:5px; height:35px; padding:0 11px; flex:none;
+    border-radius:99px; border:1.5px solid rgba(255,255,255,.35); background:transparent; color:#fff;
+    font-family:inherit; font-size:12px; font-weight:800; letter-spacing:.04em; cursor:pointer;
+    transition:background .15s ease;
+  }
+  .bahasa[hidden]{display:none;}
+  .bahasa:hover{background:rgba(255,255,255,.14);}
+  .minibar .bahasa{border-color:rgba(255,255,255,.3);}
+  /* Di HP cukup bola dunianya, selebar tombol muat ulang: bersama tombol
+     itu (mode layar utama) kode EN/ID mendorong Login keluar layar di
+     390px. Bahasa yang aktif toh sudah terbaca dari isi halaman. */
+  @media (max-width:520px){
+    .bahasa{width:38px; height:38px; padding:0; justify-content:center;}
+    .bahasa span{display:none;}
+  }
   .navlinks{display:flex; gap:30px; font-size:13.5px; font-weight:700; color:rgba(255,255,255,.75);}
   .navlinks a{color:inherit; text-decoration:none;}
   .navlinks a:hover{color:#fff;}
@@ -931,9 +966,10 @@ if ('serviceWorker' in navigator) {
       <div class="brand-name">Indobarca Bali</div>
     </div>
     <div class="nav-aksi">
-      <button type="button" class="segarkan" data-segarkan aria-label="Muat ulang halaman">
+      <button type="button" class="segarkan" data-segarkan aria-label="Muat ulang halaman" data-en-label="Reload page">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
         </button>
+      <button type="button" class="bahasa" data-bahasa hidden><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>ID</span></button>
       <a class="btn btn-primary" href="https://indobarcabali.id/app">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 19 7a4 4 0 0 1-3 3.87"/></svg>
       Login
@@ -948,23 +984,24 @@ if ('serviceWorker' in navigator) {
     <nav class="topnav">
       <div class="container row">
         <div class="brand">
-          <div class="brand-logo ib-logo" role="img" aria-label="Lambang Indobarca Bali"></div>
+          <div class="brand-logo ib-logo" role="img" aria-label="Lambang Indobarca Bali" data-en-label="Indobarca Bali crest"></div>
           <div>
             <div class="brand-name">Indobarca Bali</div>
-            <div class="brand-tag">Komunitas Resmi FC Barcelona</div>
+            <div class="brand-tag" data-en="Official FC Barcelona Community">Komunitas Resmi FC Barcelona</div>
           </div>
         </div>
         <div class="navlinks">
-          <a href="#tentang">Tentang</a>
-          <a href="#kegiatan">Kegiatan</a>
+          <a href="#tentang" data-en="About">Tentang</a>
+          <a href="#kegiatan" data-en="Activities">Kegiatan</a>
           <a href="#store">Store</a>
           <a href="#agenda">Agenda</a>
         </div>
         <div class="nav-aksi">
-        <button type="button" class="segarkan" data-segarkan aria-label="Muat ulang halaman">
+        <button type="button" class="segarkan" data-segarkan aria-label="Muat ulang halaman" data-en-label="Reload page">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
         </button>
-        <a class="btn btn-primary" href="https://indobarcabali.id/app">
+        <button type="button" class="bahasa" data-bahasa hidden><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>ID</span></button>
+      <a class="btn btn-primary" href="https://indobarcabali.id/app">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 19 7a4 4 0 0 1-3 3.87"/></svg>
           Login
         </a>
@@ -974,13 +1011,13 @@ if ('serviceWorker' in navigator) {
     <div class="hero-inner">
       <div class="hero-text">
         <h1>BIENVENIDOS CULÉS!</h1>
-        <p>Hola semeton! Ayo bergabung bersama komunitas resmi Penya Indobarça chapter Bali — berdiri sejak 2012, dan diakui oleh Barca Penyes (Supporter resmi FC Barcelona).</p>
+        <p data-en="Hola semeton! Join the official Penya Indobarça Bali chapter — founded in 2012 and recognised by Barça Penyes (FC Barcelona's official supporters' clubs).">Hola semeton! Ayo bergabung bersama komunitas resmi Penya Indobarça chapter Bali — berdiri sejak 2012, dan diakui oleh Barca Penyes (Supporter resmi FC Barcelona).</p>
         <div class="hero-cta">
-          <a class="btn btn-kuning" href="https://wa.me/6289683532476">Gabung Jadi Anggota</a>
+          <a class="btn btn-kuning" href="https://wa.me/6289683532476" data-en="Become a Member">Gabung Jadi Anggota</a>
         </div>
       </div>
       <div class="hero-stats">
-        <div class="st"><b>400+</b><span>ANGGOTA</span></div>
+        <div class="st"><b>400+</b><span data-en="MEMBERS">ANGGOTA</span></div>
         <div class="div"></div>
         <div class="st"><b>5+</b><span>EVENTS</span></div>
         <div class="div"></div>
@@ -994,18 +1031,18 @@ if ('serviceWorker' in navigator) {
 <!-- ================= TENTANG ================= -->
 <section class="about muncul" id="tentang">
   <div class="about-text">
-    <div class="eyebrow">Tentang Kami</div>
-    <h2>Lebih dari Sekedar Komunitas</h2>
+    <div class="eyebrow" data-en="About Us">Tentang Kami</div>
+    <h2 data-en="More Than Just a Community">Lebih dari Sekedar Komunitas</h2>
     <div class="about-body">
-      <p><strong>Indobarca Bali</strong> adalah komunitas resmi penggemar FC Barcelona yang berbasis di Bali. Kami percaya jadi Culer bukan cuma soal nonton pertandingan — tapi kebersamaan yang terbawa sampai ke lapangan futsal, layar nobar, dan turnamen sendiri yang kami jalankan setiap musim.</p>
-      <p>Apa pun latar belakangnya, selama Blaugrana mengalir di darah, di sinilah rumahnya.</p>
+      <p data-en="<strong>Indobarca Bali</strong> is the official FC Barcelona supporters' community based in Bali. We believe being a Culer isn't just about watching matches — it's the togetherness we carry onto the futsal court, to the watch-party screen, and into the tournaments we run ourselves every season."><strong>Indobarca Bali</strong> adalah komunitas resmi penggemar FC Barcelona yang berbasis di Bali. Kami percaya jadi Culer bukan cuma soal nonton pertandingan — tapi kebersamaan yang terbawa sampai ke lapangan futsal, layar nobar, dan turnamen sendiri yang kami jalankan setiap musim.</p>
+      <p data-en="Whatever your background, as long as Blaugrana runs in your blood, this is your home.">Apa pun latar belakangnya, selama Blaugrana mengalir di darah, di sinilah rumahnya.</p>
     </div>
-    <a class="learn" href="#aplikasi">Lihat aplikasi anggotanya →</a>
+    <a class="learn" href="#aplikasi" data-en="See the members' app →">Lihat aplikasi anggotanya →</a>
   </div>
   <div class="about-stack">
-    <div class="about-photo about-p1" role="img" aria-label="Anggota Indobarca Bali berfoto bersama membawa bendera klub"></div>
-    <div class="about-photo about-p2" role="img" aria-label="Tim Indobarca Bali berkumpul di lapangan"></div>
-    <div class="about-photo about-p3" role="img" aria-label="Anggota berkumpul di dalam ruangan bersama spanduk komunitas"></div>
+    <div class="about-photo about-p1" role="img" aria-label="Anggota Indobarca Bali berfoto bersama membawa bendera klub" data-en-label="Indobarca Bali members posing together with the club flag"></div>
+    <div class="about-photo about-p2" role="img" aria-label="Tim Indobarca Bali berkumpul di lapangan" data-en-label="The Indobarca Bali team gathered on the pitch"></div>
+    <div class="about-photo about-p3" role="img" aria-label="Anggota berkumpul di dalam ruangan bersama spanduk komunitas" data-en-label="Members gathered indoors with the community banner"></div>
   </div>
 </section>
 
@@ -1014,34 +1051,34 @@ if ('serviceWorker' in navigator) {
 <section class="jadwal muncul" id="jadwal" hidden>
   <div class="container">
     <div class="jadwal-head">
-      <div class="eyebrow">Jadwal Terdekat</div>
-      <h2>Pertandingan Barça Berikutnya</h2>
+      <div class="eyebrow" data-en="Upcoming Fixtures">Jadwal Terdekat</div>
+      <h2 data-en="Barça's Next Matches">Pertandingan Barça Berikutnya</h2>
     </div>
     <div id="jadwal-list"></div>
     <details class="kl" id="klasemen" hidden>
       <summary><span class="kl-judul">
         <span class="lambang-liga kl-liga" data-liga="PD"><img src="crest/liga-PD.png" alt="" loading="lazy"></span>
-        <span>Klasemen LaLiga <span id="kl-musim"></span></span>
+        <span><span data-en="LaLiga Standings">Klasemen LaLiga</span> <span id="kl-musim"></span></span>
       </span></summary>
       <div style="overflow-x:auto"><table class="kl-tabel">
         <thead><tr>
-          <th>#</th><th>Tim</th>
-          <th class="kl-ang">G</th>
-          <th class="kl-ang">M</th>
-          <th class="kl-ang">S</th>
-          <th class="kl-ang">K</th>
-          <th class="kl-ang kl-sempit">SG</th>
-          <th class="kl-ang">Poin</th>
+          <th>#</th><th data-en="Team">Tim</th>
+          <th class="kl-ang" data-en="P">G</th>
+          <th class="kl-ang" data-en="W">M</th>
+          <th class="kl-ang" data-en="D">S</th>
+          <th class="kl-ang" data-en="L">K</th>
+          <th class="kl-ang kl-sempit" data-en="GD">SG</th>
+          <th class="kl-ang" data-en="Pts">Poin</th>
         </tr></thead>
         <tbody id="klasemen-isi"></tbody>
       </table></div>
       <p class="kl-ket">
-        <span><b class="z-ucl"></b>Liga Champions</span>
-        <span><b class="z-uel"></b>Liga Europa</span>
-        <span><b class="z-degradasi"></b>Degradasi</span>
+        <span data-en="<b class='z-ucl'></b>Champions League"><b class="z-ucl"></b>Liga Champions</span>
+        <span data-en="<b class='z-uel'></b>Europa League"><b class="z-uel"></b>Liga Europa</span>
+        <span data-en="<b class='z-degradasi'></b>Relegation"><b class="z-degradasi"></b>Degradasi</span>
       </p>
     </details>
-    <p class="jadwal-nb">Waktu Bali (WITA). Jadwal dapat berubah sewaktu-waktu — pengumuman nobar tetap lewat grup WhatsApp.</p>
+    <p class="jadwal-nb" data-en="Bali time (WITA). Fixtures are subject to change — watch-party announcements are still shared in the WhatsApp group.">Waktu Bali (WITA). Jadwal dapat berubah sewaktu-waktu — pengumuman nobar tetap lewat grup WhatsApp.</p>
   </div>
 </section>
 
@@ -1049,57 +1086,57 @@ if ('serviceWorker' in navigator) {
 <section class="upcoming muncul" id="kegiatan">
   <div class="container">
     <div class="head">
-      <h2>Kegiatan Rutin Kami</h2>
-      <p>Lima kegiatan yang menghidupkan komunitas ini — ada yang rutin tiap pekan, ada yang menunggu momen besar.</p>
+      <h2 data-en="Our Regular Activities">Kegiatan Rutin Kami</h2>
+      <p data-en="Five activities that bring this community to life — some happen every week, others wait for the big moments.">Lima kegiatan yang menghidupkan komunitas ini — ada yang rutin tiap pekan, ada yang menunggu momen besar.</p>
     </div>
   </div>
   <div class="keg-wrap">
     <div class="keg-scroll" id="keg-scroll">
       <div class="keg-card">
-        <div class="keg-foto k1" role="img" aria-label="Pemain futsal Indobarca Bali menguasai bola"><span class="arrow-circ">↗</span></div>
+        <div class="keg-foto k1" role="img" aria-label="Pemain futsal Indobarca Bali menguasai bola" data-en-label="Indobarca Bali futsal player on the ball"><span class="arrow-circ">↗</span></div>
         <div class="keg-pill">
           <div class="nm">Fun Futsal</div>
-          <div class="meta">Rutin tiap Selasa · My Stadium Futsal Arena</div>
+          <div class="meta" data-en="Every Tuesday · My Stadium Futsal Arena">Rutin tiap Selasa · My Stadium Futsal Arena</div>
         </div>
       </div>
       <div class="keg-card">
-        <div class="keg-foto k2" role="img" aria-label="Pertandingan minisoccer Indobarca Bali"><span class="arrow-circ">↗</span></div>
+        <div class="keg-foto k2" role="img" aria-label="Pertandingan minisoccer Indobarca Bali" data-en-label="Indobarca Bali minisoccer match"><span class="arrow-circ">↗</span></div>
         <div class="keg-pill">
           <div class="nm">Minisoccer</div>
-          <div class="meta">Sebulan sekali · Bali Sepak Bumi 1.0</div>
+          <div class="meta" data-en="Once a month · Bali Sepak Bumi 1.0">Sebulan sekali · Bali Sepak Bumi 1.0</div>
         </div>
       </div>
       <div class="keg-card">
-        <div class="keg-foto k3" role="img" aria-label="Anggota berkumpul saat nonton bareng"><span class="arrow-circ">↗</span></div>
+        <div class="keg-foto k3" role="img" aria-label="Anggota berkumpul saat nonton bareng" data-en-label="Members gathered at a watch party"><span class="arrow-circ">↗</span></div>
         <div class="keg-pill">
-          <div class="nm">Nobar</div>
-          <div class="meta">Big Match &amp; El Clásico · Venue menyusul</div>
+          <div class="nm" data-en="Watch Party">Nobar</div>
+          <div class="meta" data-en="Big matches &amp; El Clásico · Venue TBA">Big Match &amp; El Clásico · Venue menyusul</div>
         </div>
       </div>
       <div class="keg-card">
-        <div class="keg-foto k4" role="img" aria-label="Pertandingan sepak bola Indobarca Bali"><span class="arrow-circ">↗</span></div>
+        <div class="keg-foto k4" role="img" aria-label="Pertandingan sepak bola Indobarca Bali" data-en-label="Indobarca Bali football match"><span class="arrow-circ">↗</span></div>
         <div class="keg-pill">
           <div class="nm">Football</div>
-          <div class="meta">Sebulan sekali · Menyesuaikan kesempatan</div>
+          <div class="meta" data-en="Once a month · When schedules allow">Sebulan sekali · Menyesuaikan kesempatan</div>
         </div>
       </div>
       <div class="keg-card">
-        <div class="keg-foto k5" role="img" aria-label="Anggota berkumpul santai saat kopdar"><span class="arrow-circ">↗</span></div>
+        <div class="keg-foto k5" role="img" aria-label="Anggota berkumpul santai saat kopdar" data-en-label="Members hanging out at a meetup"><span class="arrow-circ">↗</span></div>
         <div class="keg-pill">
-          <div class="nm">Kopdar</div>
-          <div class="meta">Menyesuaikan kesempatan · Sekitar Denpasar</div>
+          <div class="nm" data-en="Meetup">Kopdar</div>
+          <div class="meta" data-en="When schedules allow · Around Denpasar">Menyesuaikan kesempatan · Sekitar Denpasar</div>
         </div>
       </div>
     </div>
   </div>
   <div class="container">
     <div class="keg-foot">
-      <a class="btn btn-outline view-all" href="https://www.instagram.com/indobarca_bali" target="_blank" rel="noopener">Lihat Semua Kegiatan</a>
+      <a class="btn btn-outline view-all" href="https://www.instagram.com/indobarca_bali" target="_blank" rel="noopener" data-en="See All Activities">Lihat Semua Kegiatan</a>
       <div class="keg-nav">
-        <button type="button" id="keg-prev" aria-label="Kegiatan sebelumnya" aria-controls="keg-scroll">
+        <button type="button" id="keg-prev" aria-label="Kegiatan sebelumnya" data-en-label="Previous activity" aria-controls="keg-scroll">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         </button>
-        <button type="button" id="keg-next" aria-label="Kegiatan selanjutnya" aria-controls="keg-scroll">
+        <button type="button" id="keg-next" aria-label="Kegiatan selanjutnya" data-en-label="Next activity" aria-controls="keg-scroll">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
       </div>
@@ -1112,18 +1149,18 @@ if ('serviceWorker' in navigator) {
   <div class="container store-grid">
     <div>
       <div class="eyebrow">IB Bali Official Store</div>
-      <h2>Lebih dari sebuah Identitas</h2>
-      <p>Koleksi merchandise resmi IB Bali Store hadir sebagai bagian dari identitas dan kebanggaan kita terhadap komunitas yang kita cintai seperti Jersey, T-shirt, syal, hingga jaket resmi Indobarca Bali.</p>
-      <p>Cek semua katalognya melalui Instagram resmi IB Bali / IB Bali Store. Koleksi sekarang, kenakan identitasmu, dan tunjukkan bahwa kita lebih dari sebuah Komunitas.</p>
+      <h2 data-en="More Than an Identity">Lebih dari sebuah Identitas</h2>
+      <p data-en="The official IB Bali Store merchandise collection is part of our identity and pride in the community we love — jerseys, T-shirts, scarves, and official Indobarca Bali jackets.">Koleksi merchandise resmi IB Bali Store hadir sebagai bagian dari identitas dan kebanggaan kita terhadap komunitas yang kita cintai seperti Jersey, T-shirt, syal, hingga jaket resmi Indobarca Bali.</p>
+      <p data-en="Browse the full catalogue on the official IB Bali / IB Bali Store Instagram. Grab yours now, wear your identity, and show that we're more than a community.">Cek semua katalognya melalui Instagram resmi IB Bali / IB Bali Store. Koleksi sekarang, kenakan identitasmu, dan tunjukkan bahwa kita lebih dari sebuah Komunitas.</p>
     </div>
     <div>
       <div class="store-feed">
-        <div class="store-foto s1" role="img" aria-label="Merchandise resmi IB Bali Store"></div>
-        <div class="store-foto s2" role="img" aria-label="Merchandise resmi IB Bali Store"></div>
-        <div class="store-foto s3" role="img" aria-label="Merchandise resmi IB Bali Store"></div>
-        <div class="store-foto s4" role="img" aria-label="Merchandise resmi IB Bali Store"></div>
-        <div class="store-foto s5" role="img" aria-label="Merchandise resmi IB Bali Store"></div>
-        <div class="store-foto s6" role="img" aria-label="Merchandise resmi IB Bali Store"></div>
+        <div class="store-foto s1" role="img" aria-label="Merchandise resmi IB Bali Store" data-en-label="Official IB Bali Store merchandise"></div>
+        <div class="store-foto s2" role="img" aria-label="Merchandise resmi IB Bali Store" data-en-label="Official IB Bali Store merchandise"></div>
+        <div class="store-foto s3" role="img" aria-label="Merchandise resmi IB Bali Store" data-en-label="Official IB Bali Store merchandise"></div>
+        <div class="store-foto s4" role="img" aria-label="Merchandise resmi IB Bali Store" data-en-label="Official IB Bali Store merchandise"></div>
+        <div class="store-foto s5" role="img" aria-label="Merchandise resmi IB Bali Store" data-en-label="Official IB Bali Store merchandise"></div>
+        <div class="store-foto s6" role="img" aria-label="Merchandise resmi IB Bali Store" data-en-label="Official IB Bali Store merchandise"></div>
       </div>
       <a class="btn btn-primary store-cta" href="https://www.instagram.com/ibbali.store"
          target="_blank" rel="noopener" aria-label="Instagram IB Bali Store, @ibbali.store">
@@ -1138,36 +1175,36 @@ if ('serviceWorker' in navigator) {
 <section class="tawaran muncul" id="aplikasi">
   <div class="container tawaran-grid">
     <div>
-      <div class="eyebrow">Aplikasi Anggota</div>
-      <h2>Kenalkan, Indobarça Bali<br>— Community Hub</h2>
+      <div class="eyebrow" data-en="Members' App">Aplikasi Anggota</div>
+      <h2 data-en="Meet Indobarça Bali<br>— Community Hub">Kenalkan, Indobarça Bali<br>— Community Hub</h2>
     </div>
     <div class="tawaran-list">
       <div class="tw-item">
         <div class="tw-no">01</div>
         <div>
-          <div class="tw-nm">Kartu Membership Penya</div>
-          <div class="tw-meta">Informasi No. Kartu Penya Indobarca milik member tersimpan di ponsel — tidak perlu dibawa untuk validasi di event tertentu.</div>
+          <div class="tw-nm" data-en="Penya Membership Card">Kartu Membership Penya</div>
+          <div class="tw-meta" data-en="Each member's Penya Indobarca card number is stored on their phone — no need to carry the card for validation at certain events.">Informasi No. Kartu Penya Indobarca milik member tersimpan di ponsel — tidak perlu dibawa untuk validasi di event tertentu.</div>
         </div>
       </div>
       <div class="tw-item">
         <div class="tw-no">02</div>
         <div>
-          <div class="tw-nm">Kehadiran Tercatat Sendiri</div>
-          <div class="tw-meta">Setiap kali ikut kegiatan futsal, nobar, atau kopdar, kehadiran anggota tercatat rapi di aplikasi.</div>
+          <div class="tw-nm" data-en="Attendance, Recorded Automatically">Kehadiran Tercatat Sendiri</div>
+          <div class="tw-meta" data-en="Every time members join futsal, a watch party, or a meetup, their attendance is neatly recorded in the app.">Setiap kali ikut kegiatan futsal, nobar, atau kopdar, kehadiran anggota tercatat rapi di aplikasi.</div>
         </div>
       </div>
       <div class="tw-item">
         <div class="tw-no">03</div>
         <div>
-          <div class="tw-nm">Jadwal &amp; Klasemen Turnamen</div>
-          <div class="tw-meta">Pantau hasil pertandingan, klasemen, dan bagan gugur liga / kompetisi internal IB Bali yang sedang berjalan secara langsung.</div>
+          <div class="tw-nm" data-en="Tournament Fixtures &amp; Standings">Jadwal &amp; Klasemen Turnamen</div>
+          <div class="tw-meta" data-en="Follow live results, standings, and knockout brackets of IB Bali's ongoing internal leagues and competitions.">Pantau hasil pertandingan, klasemen, dan bagan gugur liga / kompetisi internal IB Bali yang sedang berjalan secara langsung.</div>
         </div>
       </div>
       <div class="tw-item">
         <div class="tw-no">04</div>
         <div>
-          <div class="tw-nm">Registrasi Event</div>
-          <div class="tw-meta">Memudahkan para anggota untuk memantau &amp; mendaftar kegiatan terdekat IB Bali yang akan datang.</div>
+          <div class="tw-nm" data-en="Event Registration">Registrasi Event</div>
+          <div class="tw-meta" data-en="Makes it easy for members to keep track of and sign up for IB Bali's upcoming events.">Memudahkan para anggota untuk memantau &amp; mendaftar kegiatan terdekat IB Bali yang akan datang.</div>
         </div>
       </div>
     </div>
@@ -1179,15 +1216,15 @@ if ('serviceWorker' in navigator) {
   <div class="container">
     <div class="liga-panel">
       <div class="liga-inner agenda-inner">
-        <div class="eyebrow">Agenda Terdekat</div>
-        <h2>Kumpul Berikutnya Bareng IB Bali</h2>
+        <div class="eyebrow" data-en="Upcoming Events">Agenda Terdekat</div>
+        <h2 data-en="Next Meetups with IB Bali">Kumpul Berikutnya Bareng IB Bali</h2>
         <!-- Diisi dari agenda.json, yang diambil GitHub Actions dari aplikasi tiap 3 jam.
              Teks di bawah adalah keadaan memuat; kosong dan gagal punya pesannya sendiri. -->
         <div class="agenda-list" id="agenda-list" aria-live="polite">
-          <p class="agenda-kosong">Memuat agenda…</p>
+          <p class="agenda-kosong" data-en="Loading events…">Memuat agenda…</p>
         </div>
-        <div class="liga-cta"><a class="btn btn-kuning" href="https://indobarcabali.id/app">Daftar lewat Aplikasi</a></div>
-        <p class="agenda-nb">Pendaftaran khusus anggota. Belum jadi anggota? <a href="https://wa.me/6289683532476">Chat Divisi Membership</a>.<span id="agenda-waktu"></span></p>
+        <div class="liga-cta"><a class="btn btn-kuning" href="https://indobarcabali.id/app" data-en="Register via the App">Daftar lewat Aplikasi</a></div>
+        <p class="agenda-nb"><span data-en="Registration is for members only. Not a member yet? <a href='https://wa.me/6289683532476'>Chat with our Membership team</a>.">Pendaftaran khusus anggota. Belum jadi anggota? <a href="https://wa.me/6289683532476">Chat Divisi Membership</a>.</span><span id="agenda-waktu"></span></p>
       </div>
     </div>
   </div>
@@ -1197,7 +1234,7 @@ if ('serviceWorker' in navigator) {
 <section class="kata muncul">
   <div class="container">
     <span class="kata-mark">“</span>
-    <p class="kata-quote">Indobarca Bali adalah salah satu wadah untuk terus bisa bertumbuh bersama, karena menyediakan berbagai event olahraga yang pastinya cocok untuk semua kalangan. Dan tidak kalah serunya, ya Nobar El Clásico bareng IB Bali — nyesel kalau nggak gabung!</p>
+    <p class="kata-quote" data-en="Indobarca Bali is a place where we keep growing together, with plenty of sports events that suit everyone. And just as fun — the El Clásico watch party with IB Bali. You'll regret not joining!">Indobarca Bali adalah salah satu wadah untuk terus bisa bertumbuh bersama, karena menyediakan berbagai event olahraga yang pastinya cocok untuk semua kalangan. Dan tidak kalah serunya, ya Nobar El Clásico bareng IB Bali — nyesel kalau nggak gabung!</p>
     <div class="kata-who"><b>Usam</b> — Founder Indobarca Bali</div>
   </div>
 </section>
@@ -1207,44 +1244,44 @@ if ('serviceWorker' in navigator) {
   <div class="container">
     <div class="faq-head">
       <div class="eyebrow">FAQ</div>
-      <h2>Masih Ada yang Ingin Ditanyakan?</h2>
+      <h2 data-en="Still Have Questions?">Masih Ada yang Ingin Ditanyakan?</h2>
     </div>
     <div class="faq-list">
       <details class="faq-item">
-        <summary>Bagaimana cara gabung jadi anggota Indobarca Bali?</summary>
-        <p>Tekan tombol Gabung Jadi Anggota di halaman ini untuk chat Divisi Membership lewat WhatsApp. Kami bantu dari awal sampai jadi anggota, bahkan member resmi Penya Indobarca.</p>
+        <summary data-en="How do I become a member of Indobarca Bali?">Bagaimana cara gabung jadi anggota Indobarca Bali?</summary>
+        <p data-en="Tap the Become a Member button on this page to chat with our Membership team on WhatsApp. We'll guide you all the way — even to becoming an official Penya Indobarca member.">Tekan tombol Gabung Jadi Anggota di halaman ini untuk chat Divisi Membership lewat WhatsApp. Kami bantu dari awal sampai jadi anggota, bahkan member resmi Penya Indobarca.</p>
       </details>
       <details class="faq-item">
-        <summary>Apakah harus sudah lama jadi Culer untuk bisa gabung?</summary>
-        <p>Tidak. Apa pun latar belakangnya, selama Blaugrana mengalir di darah, Indobarca Bali adalah rumahnya.</p>
+        <summary data-en="Do I need to have been a Culer for a long time to join?">Apakah harus sudah lama jadi Culer untuk bisa gabung?</summary>
+        <p data-en="No. Whatever your background, as long as Blaugrana runs in your blood, Indobarca Bali is your home.">Tidak. Apa pun latar belakangnya, selama Blaugrana mengalir di darah, Indobarca Bali adalah rumahnya.</p>
       </details>
       <details class="faq-item">
-        <summary>Apa saja syarat untuk gabung?</summary>
-        <p>Merupakan fans dari FC Barcelona, berdomisili di Bali, dan terbuka untuk siapa pun.</p>
+        <summary data-en="What are the requirements to join?">Apa saja syarat untuk gabung?</summary>
+        <p data-en="Be an FC Barcelona fan living in Bali — it's open to everyone.">Merupakan fans dari FC Barcelona, berdomisili di Bali, dan terbuka untuk siapa pun.</p>
       </details>
       <details class="faq-item">
-        <summary>Apa itu Kartu Penya?</summary>
-        <p>Kartu keanggotaan resmi yang dikeluarkan oleh Penya Indobarca pusat. Informasinya tersimpan otomatis di aplikasi (profil) jika sudah diinput anggota dan terverifikasi admin — tidak perlu dibawa fisik untuk validasi di event tertentu IB Bali.</p>
+        <summary data-en="What is the Penya Card?">Apa itu Kartu Penya?</summary>
+        <p data-en="The official membership card issued by Penya Indobarca's national office. Once entered by the member and verified by an admin, its details are stored automatically in the app (profile) — no need to carry the physical card for validation at certain IB Bali events.">Kartu keanggotaan resmi yang dikeluarkan oleh Penya Indobarca pusat. Informasinya tersimpan otomatis di aplikasi (profil) jika sudah diinput anggota dan terverifikasi admin — tidak perlu dibawa fisik untuk validasi di event tertentu IB Bali.</p>
       </details>
       <details class="faq-item">
-        <summary>Apa bedanya jadi anggota biasa dengan punya Kartu Penya?</summary>
-        <p>Anggota biasa gratis: cukup masuk Official WA Group IB Bali dan bisa ikut semua kegiatan. Kartu Penya adalah keanggotaan resmi Penya Indobarca pusat yang berbayar, dibeli lewat IB Bali, dan pendaftarannya dibuka 2x setahun.</p>
+        <summary data-en="What's the difference between a regular member and a Penya Card holder?">Apa bedanya jadi anggota biasa dengan punya Kartu Penya?</summary>
+        <p data-en="Regular membership is free: just join the Official IB Bali WhatsApp Group and you can take part in every activity. The Penya Card is a paid official membership of Penya Indobarca's national office, purchased through IB Bali, with registration open twice a year.">Anggota biasa gratis: cukup masuk Official WA Group IB Bali dan bisa ikut semua kegiatan. Kartu Penya adalah keanggotaan resmi Penya Indobarca pusat yang berbayar, dibeli lewat IB Bali, dan pendaftarannya dibuka 2x setahun.</p>
       </details>
       <details class="faq-item">
-        <summary>Kegiatan apa saja yang rutin diadakan?</summary>
-        <p>Ada lima: Fun Futsal rutin setiap Selasa, Minisoccer, Nobar, Football, dan Kopdar santai di luar jadwal olahraga. Detail lengkapnya ada di bagian Kegiatan Rutin Kami di atas.</p>
+        <summary data-en="What activities are held regularly?">Kegiatan apa saja yang rutin diadakan?</summary>
+        <p data-en="There are five: Fun Futsal every Tuesday, Minisoccer, Watch Parties (Nobar), Football, and casual Meetups (Kopdar) outside the sports schedule. Full details are in the Our Regular Activities section above.">Ada lima: Fun Futsal rutin setiap Selasa, Minisoccer, Nobar, Football, dan Kopdar santai di luar jadwal olahraga. Detail lengkapnya ada di bagian Kegiatan Rutin Kami di atas.</p>
       </details>
       <details class="faq-item">
-        <summary>Apa itu Internal Futsal League (IFL)?</summary>
-        <p>Liga futsal internal kami sendiri, digelar tiap 4–5 bulan sekali dengan format liga penuh dan babak gugur antar tim.</p>
+        <summary data-en="What is the Internal Futsal League (IFL)?">Apa itu Internal Futsal League (IFL)?</summary>
+        <p data-en="Our very own internal futsal league, held every 4–5 months with a full league format and knockout rounds between teams.">Liga futsal internal kami sendiri, digelar tiap 4–5 bulan sekali dengan format liga penuh dan babak gugur antar tim.</p>
       </details>
       <details class="faq-item">
-        <summary>Bagaimana cara pesan merchandise IB Bali Store?</summary>
-        <p>Semua koleksi dan cara pemesanannya diumumkan lewat Instagram resmi IB Bali Store, @ibbali.store / @indobarca_bali.</p>
+        <summary data-en="How do I order IB Bali Store merchandise?">Bagaimana cara pesan merchandise IB Bali Store?</summary>
+        <p data-en="All collections and how to order are announced on the official IB Bali Store Instagram, @ibbali.store / @indobarca_bali.">Semua koleksi dan cara pemesanannya diumumkan lewat Instagram resmi IB Bali Store, @ibbali.store / @indobarca_bali.</p>
       </details>
       <details class="faq-item">
-        <summary>Ada biaya keanggotaan atau iuran?</summary>
-        <p>Gratis! Bergabung dengan IB Bali tidak dipungut biaya sama sekali. Iuran atau HTM tentu ada untuk kegiatan tertentu seperti olahraga, nobar, dan acara tertentu.</p>
+        <summary data-en="Is there a membership fee?">Ada biaya keanggotaan atau iuran?</summary>
+        <p data-en="It's free! Joining IB Bali costs nothing at all. Fees or tickets do apply to certain activities such as sports, watch parties, and special events.">Gratis! Bergabung dengan IB Bali tidak dipungut biaya sama sekali. Iuran atau HTM tentu ada untuk kegiatan tertentu seperti olahraga, nobar, dan acara tertentu.</p>
       </details>
     </div>
   </div>
@@ -1255,9 +1292,9 @@ if ('serviceWorker' in navigator) {
   <div class="container">
     <div class="ajak-photo">
       <div class="ajak-inner">
-        <h2>Siap Gabung Bersama Indobarca Bali?</h2>
-        <p>Komunitas yang bikin anggota tetap terhubung, aktif, dan selalu punya alasan buat kumpul.</p>
-        <a class="btn btn-kuning" href="https://wa.me/6289683532476">Gabung Jadi Anggota</a>
+        <h2 data-en="Ready to Join Indobarca Bali?">Siap Gabung Bersama Indobarca Bali?</h2>
+        <p data-en="A community that keeps members connected, active, and always with a reason to get together.">Komunitas yang bikin anggota tetap terhubung, aktif, dan selalu punya alasan buat kumpul.</p>
+        <a class="btn btn-kuning" href="https://wa.me/6289683532476" data-en="Become a Member">Gabung Jadi Anggota</a>
       </div>
     </div>
   </div>
@@ -1272,7 +1309,7 @@ if ('serviceWorker' in navigator) {
           <span class="foot-logo ib-logo"></span>
           Indobarca Bali
         </div>
-        <p class="foot-lede">Lebih dari komunitas — kami keluarga Culers yang hidup lewat nobar, tawa, dan pertandingan persahabatan.</p>
+        <p class="foot-lede" data-en="More than a community — we're a family of Culers living through watch parties, laughter, and friendly matches.">Lebih dari komunitas — kami keluarga Culers yang hidup lewat nobar, tawa, dan pertandingan persahabatan.</p>
         <div class="foot-social">
           <a href="https://www.instagram.com/indobarca_bali" target="_blank" rel="noopener" aria-label="Instagram Indobarca Bali">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
@@ -1283,24 +1320,24 @@ if ('serviceWorker' in navigator) {
         </div>
       </div>
       <div>
-        <div class="foot-h">Navigasi</div>
+        <div class="foot-h" data-en="Navigation">Navigasi</div>
         <div class="foot-links">
-          <a href="#tentang">Tentang</a>
-          <a href="#kegiatan">Kegiatan</a>
+          <a href="#tentang" data-en="About">Tentang</a>
+          <a href="#kegiatan" data-en="Activities">Kegiatan</a>
           <a href="#store">Store</a>
           <a href="#agenda">Agenda</a>
         </div>
       </div>
       <div>
-        <div class="foot-h">Dukungan</div>
+        <div class="foot-h" data-en="Support">Dukungan</div>
         <div class="foot-links">
           <a href="#faq">FAQ</a>
           <a href="https://indobarcabali.id/privacy.html">Privacy Policy</a>
         </div>
       </div>
       <div>
-        <div class="foot-h">Ingin Bergabung?</div>
-        <p class="foot-lede" style="margin-bottom:16px">Hubungi Divisi Membership lewat WhatsApp — kami bantu dari awal sampai jadi anggota resmi.</p>
+        <div class="foot-h" data-en="Want to Join?">Ingin Bergabung?</div>
+        <p class="foot-lede" style="margin-bottom:16px" data-en="Reach our Membership team on WhatsApp — we'll guide you all the way to official membership.">Hubungi Divisi Membership lewat WhatsApp — kami bantu dari awal sampai jadi anggota resmi.</p>
         <a class="btn btn-primary" href="https://wa.me/6289683532476">
           <!-- 15px, bukan 13px seperti ikon bergaris (Login): lambang WhatsApp
                ini glyph isi-penuh yang mengisi ~83% kotak 24-unitnya,
@@ -1413,6 +1450,9 @@ if ('serviceWorker' in navigator) {
       });
     };
     var WITA = { timeZone: 'Asia/Makassar' };
+    var en = function () { return document.documentElement.lang === 'en'; };
+    var lokal = function () { return en() ? 'en-GB' : 'id-ID'; };
+    var jamDetak;
     var gabung = function (a, b) {
       var o = {}; for (var k in a) o[k] = a[k]; for (var j in b) o[j] = b[j]; return o;
     };
@@ -1449,7 +1489,7 @@ if ('serviceWorker' in navigator) {
         };
 
         var jamWita = function (t) {
-          return t.toLocaleTimeString('id-ID', gabung(WITA, { hour: '2-digit', minute: '2-digit' }));
+          return t.toLocaleTimeString(lokal(), gabung(WITA, { hour: '2-digit', minute: '2-digit' }));
         };
         // Berkas lama belum memuat home/away; selama Actions belum sempat
         // menulis ulang, bentuk lamanya tetap bisa digambar.
@@ -1493,7 +1533,7 @@ if ('serviceWorker' in navigator) {
             '<span>' + aman(utama.kompetisi) +
               (babakU ? ' — ' + aman(babakU) : '') + '</span>' +
           '</div>' +
-          '<div class="jh-tanggal">' + aman(tu.toLocaleDateString('id-ID',
+          '<div class="jh-tanggal">' + aman(tu.toLocaleDateString(lokal(),
             gabung(WITA, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))) + '</div>' +
           '<div class="jh-laga">' + kartuSisi(sisiU[0]) +
             '<span class="jh-tengah">' +
@@ -1501,7 +1541,7 @@ if ('serviceWorker' in navigator) {
               '<span class="jh-jam">' + aman(jamWita(tu)) + ' WITA</span>' +
             '</span>' + kartuSisi(sisiU[1]) + '</div>' +
           '<div class="jh-tempat">' + IKON[arahU] +
-            '<b>' + arahU.toUpperCase() + '</b>' +
+            '<b>' + (en() ? (utama.kandang ? 'HOME' : 'AWAY') : arahU.toUpperCase()) + '</b>' +
             (utama.venue ? '<span class="venue">· ' + aman(utama.venue) + '</span>' : '') +
           '</div>' +
         '</article>';
@@ -1529,13 +1569,13 @@ if ('serviceWorker' in navigator) {
                 ? lambangLiga(p, 'jb-liga')
                 : '<span class="jb-liga-teks">' + aman(p.kompetisi) + '</span>') +
               '<span class="jb-tgl">' +
-                aman(t.toLocaleDateString('id-ID', gabung(WITA, { weekday: 'long' })).toUpperCase()) +
-                '<span>' + aman(t.toLocaleDateString('id-ID', gabung(WITA, { day: 'numeric' }))) + ' ' +
-                  aman(t.toLocaleDateString('id-ID', gabung(WITA, { month: 'short' })).toUpperCase()) +
+                aman(t.toLocaleDateString(lokal(), gabung(WITA, { weekday: en() ? 'short' : 'long' })).toUpperCase()) +
+                '<span>' + aman(t.toLocaleDateString(lokal(), gabung(WITA, { day: 'numeric' }))) + ' ' +
+                  aman(t.toLocaleDateString(lokal(), gabung(WITA, { month: 'short' })).toUpperCase()) +
                 '</span></span>' +
               '<span class="jb-pisah jb-arah" role="img" aria-label="' +
-                (p.kandang ? 'Main di kandang' : 'Main tandang') + '" title="' +
-                (p.kandang ? 'Kandang' : 'Tandang') + '">' + IKON[arah] + '</span>' +
+                (en() ? (p.kandang ? 'Home match' : 'Away match') : (p.kandang ? 'Main di kandang' : 'Main tandang')) + '" title="' +
+                (en() ? (p.kandang ? 'Home' : 'Away') : (p.kandang ? 'Kandang' : 'Tandang')) + '">' + IKON[arah] + '</span>' +
               '<span class="jb-pisah jb-duel">' + pihak(sisi[0], false) +
                 '<span class="vs">vs</span>' + pihak(sisi[1], true) + '</span>' +
               '<span class="jb-kanan"><b>' + aman(jamWita(t)) + '</b>' +
@@ -1560,10 +1600,14 @@ if ('serviceWorker' in navigator) {
 
           var teks;
           if (langsung) {
-            teks = 'SEDANG BERLANGSUNG';
+            teks = en() ? 'LIVE NOW' : 'SEDANG BERLANGSUNG';
           } else {
             var menit = Math.floor(sisa / 60000), jam = Math.floor(menit / 60), hari = Math.floor(jam / 24);
-            teks = hari >= 1 ? hari + ' hari ' + (jam % 24) + ' jam lagi'
+            teks = en()
+                 ? (hari >= 1 ? hari + 'd ' + (jam % 24) + 'h to go'
+                   : jam >= 1 ? jam + 'h ' + (menit % 60) + 'm to go'
+                   : Math.max(1, menit) + ' min to go')
+                 : hari >= 1 ? hari + ' hari ' + (jam % 24) + ' jam lagi'
                  : jam >= 1  ? jam + ' jam ' + (menit % 60) + ' menit lagi'
                  : Math.max(1, menit) + ' menit lagi';
           }
@@ -1576,7 +1620,8 @@ if ('serviceWorker' in navigator) {
           setTimeout(function () { pil.textContent = teks; pil.style.opacity = 1; }, 150);
         };
         detak();
-        setInterval(detak, 30000);
+        clearInterval(jamDetak);
+        jamDetak = setInterval(detak, 30000);
 
         bagian.hidden = false;
 
@@ -1640,6 +1685,7 @@ if ('serviceWorker' in navigator) {
     document.addEventListener('visibilitychange', function () {
       if (!document.hidden) muat();
     });
+    document.addEventListener('ibbahasa', muat);
   })();
 
   // ============ Perpindahan halus ke aplikasi ============
@@ -1736,55 +1782,114 @@ if ('serviceWorker' in navigator) {
 (function () {
   var wadah = document.getElementById('agenda-list');
   if (!wadah) return;
-  var HARI = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
-  var BULAN = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+  var KATA = {
+    id: { hari: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+          bulan: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+          segera: 'Segera', dibuka: 'Segera dibuka', penuh: 'Penuh · waiting list',
+          sisa: function (n) { return 'Sisa ' + n + ' slot'; },
+          terdaftar: function (n) { return n + ' terdaftar'; }, diperbarui: 'Diperbarui',
+          kosong: 'Belum ada agenda terjadwal. Pengumuman kegiatan berikutnya selalu masuk grup WhatsApp dan Instagram ' },
+    en: { hari: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+          bulan: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          segera: 'Soon', dibuka: 'Opening soon', penuh: 'Full · waiting list',
+          sisa: function (n) { return n + (n === 1 ? ' spot' : ' spots') + ' left'; },
+          terdaftar: function (n) { return n + ' registered'; }, diperbarui: 'Updated',
+          kosong: 'No events scheduled yet. Upcoming activities are always announced in our WhatsApp group and on Instagram ' }
+  };
   var aman = function (s) {
     return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
     });
   };
   var pesan = function (teks) { wadah.innerHTML = '<p class="agenda-kosong">' + teks + '</p>'; };
-  var KOSONG = 'Belum ada agenda terjadwal. Pengumuman kegiatan berikutnya selalu masuk grup WhatsApp ' +
-    'dan Instagram <a href="https://www.instagram.com/indobarca_bali" target="_blank" rel="noopener">@indobarca_bali</a>.';
+  var IG = '<a href="https://www.instagram.com/indobarca_bali" target="_blank" rel="noopener">@indobarca_bali</a>.';
 
-  fetch('/agenda.json', { cache: 'no-cache' })
-    .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
-    .then(function (d) {
-      var hariIni = new Date(); hariIni.setHours(0, 0, 0, 0);
-      // Disaring lagi di sini: berkasnya bisa berumur beberapa jam.
-      var daftar = (d.agenda || []).filter(function (a) {
-        if (!a.tanggal) return true;
-        var p = a.tanggal.split('-');
-        return new Date(+p[0], p[1] - 1, +p[2]) >= hariIni;
-      });
-      if (!daftar.length) { pesan(KOSONG); return; }
-      wadah.innerHTML = daftar.map(function (a) {
-        var tgl = '<b>?</b><span>Segera</span>', hari = '';
-        if (a.tanggal) {
-          var p = a.tanggal.split('-'), t = new Date(+p[0], p[1] - 1, +p[2]);
-          tgl = '<b>' + t.getDate() + '</b><span>' + BULAN[t.getMonth()] + '</span>';
-          hari = HARI[t.getDay()];
+  // Diambil ulang saat ganti bahasa, bukan disimpan: berkasnya kecil dan
+  // jawaban kedua hampir selalu 304 dari cache.
+  var muat = function () {
+    var K = KATA[document.documentElement.lang === 'en' ? 'en' : 'id'];
+    var HARI = K.hari, BULAN = K.bulan, KOSONG = K.kosong + IG;
+    fetch('/agenda.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(function (d) {
+        var hariIni = new Date(); hariIni.setHours(0, 0, 0, 0);
+        // Disaring lagi di sini: berkasnya bisa berumur beberapa jam.
+        var daftar = (d.agenda || []).filter(function (a) {
+          if (!a.tanggal) return true;
+          var p = a.tanggal.split('-');
+          return new Date(+p[0], p[1] - 1, +p[2]) >= hariIni;
+        });
+        if (!daftar.length) { pesan(KOSONG); return; }
+        wadah.innerHTML = daftar.map(function (a) {
+          var tgl = '<b>?</b><span>' + K.segera + '</span>', hari = '';
+          if (a.tanggal) {
+            var p = a.tanggal.split('-'), t = new Date(+p[0], p[1] - 1, +p[2]);
+            tgl = '<b>' + t.getDate() + '</b><span>' + BULAN[t.getMonth()] + '</span>';
+            hari = HARI[t.getDay()];
+          }
+          var jam = a.jamMulai ? a.jamMulai + (a.jamSelesai ? '–' + a.jamSelesai : '') + ' WITA' : '';
+          var meta = [a.kategori, [hari, jam].filter(Boolean).join(' · '), a.lokasi,
+            a.biaya > 0 ? 'Rp ' + Number(a.biaya).toLocaleString('id-ID') : '']
+            .filter(Boolean).map(aman).join(' · ');
+          var slot = '';
+          if (a.status === 'Coming Soon') slot = '<span class="agenda-slot penuh">' + K.dibuka + '</span>';
+          else if (a.sisaKuota === 0) slot = '<span class="agenda-slot penuh">' + K.penuh + '</span>';
+          else if (a.sisaKuota > 0) slot = '<span class="agenda-slot">' + K.sisa(a.sisaKuota) + '</span>';
+          else if (a.terdaftar > 0) slot = '<span class="agenda-slot penuh">' + K.terdaftar(a.terdaftar) + '</span>';
+          return '<div class="agenda-item"><div class="agenda-tgl">' + tgl + '</div>' +
+            '<div class="agenda-isi"><div class="agenda-judul">' + aman(a.judul) + '</div>' +
+            '<div class="agenda-meta">' + meta + '</div></div>' + slot + '</div>';
+        }).join('');
+        if (d.diperbarui) {
+          var w = d.diperbarui.split('T'), tg = w[0].split('-');
+          document.getElementById('agenda-waktu').textContent =
+            ' ' + K.diperbarui + ' ' + (+tg[2]) + ' ' + BULAN[tg[1] - 1] + ', ' + (w[1] || '').slice(0, 5) + ' WITA.';
         }
-        var jam = a.jamMulai ? a.jamMulai + (a.jamSelesai ? '–' + a.jamSelesai : '') + ' WITA' : '';
-        var meta = [a.kategori, [hari, jam].filter(Boolean).join(' · '), a.lokasi,
-          a.biaya > 0 ? 'Rp ' + Number(a.biaya).toLocaleString('id-ID') : '']
-          .filter(Boolean).map(aman).join(' · ');
-        var slot = '';
-        if (a.status === 'Coming Soon') slot = '<span class="agenda-slot penuh">Segera dibuka</span>';
-        else if (a.sisaKuota === 0) slot = '<span class="agenda-slot penuh">Penuh · waiting list</span>';
-        else if (a.sisaKuota > 0) slot = '<span class="agenda-slot">Sisa ' + a.sisaKuota + ' slot</span>';
-        else if (a.terdaftar > 0) slot = '<span class="agenda-slot penuh">' + a.terdaftar + ' terdaftar</span>';
-        return '<div class="agenda-item"><div class="agenda-tgl">' + tgl + '</div>' +
-          '<div class="agenda-isi"><div class="agenda-judul">' + aman(a.judul) + '</div>' +
-          '<div class="agenda-meta">' + meta + '</div></div>' + slot + '</div>';
-      }).join('');
-      if (d.diperbarui) {
-        var w = d.diperbarui.split('T'), tg = w[0].split('-');
-        document.getElementById('agenda-waktu').textContent =
-          ' Diperbarui ' + (+tg[2]) + ' ' + BULAN[tg[1] - 1] + ', ' + (w[1] || '').slice(0, 5) + ' WITA.';
-      }
-    })
-    .catch(function () { pesan(KOSONG); });
+      })
+      .catch(function () { pesan(KOSONG); });
+  };
+  muat();
+  document.addEventListener('ibbahasa', muat);
+})();
+
+/* ================= DUA BAHASA =================
+   Teks Inggris ditulis di atribut data-en (dan data-en-label untuk
+   aria-label) tepat di elemen aslinya, supaya kalau teks Indonesia diubah
+   padanannya terlihat di sebelahnya. Teks Indonesia disimpan di data-asli
+   saat pertama ditukar. Bagian yang digambar skrip (jadwal, agenda)
+   menggambar ulang sendiri lewat peristiwa 'ibbahasa'. */
+(function () {
+  var akar = document.documentElement;
+  var JUDUL = { id: document.title, en: 'Indobarca Bali — Official FC Barcelona Supporters\' Community in Bali' };
+  var tombol = document.querySelectorAll('[data-bahasa]');
+  var terap = function () {
+    var en = akar.lang === 'en';
+    document.querySelectorAll('[data-en]').forEach(function (el) {
+      if (el.dataset.asli == null) el.dataset.asli = el.innerHTML;
+      el.innerHTML = en ? el.dataset.en : el.dataset.asli;
+    });
+    document.querySelectorAll('[data-en-label]').forEach(function (el) {
+      if (el.dataset.asliLabel == null) el.dataset.asliLabel = el.getAttribute('aria-label');
+      el.setAttribute('aria-label', en ? el.dataset.enLabel : el.dataset.asliLabel);
+    });
+    document.title = JUDUL[en ? 'en' : 'id'];
+    // Label tombol ditulis dalam bahasa TUJUAN, supaya terbaca oleh orang
+    // yang memang membutuhkannya.
+    tombol.forEach(function (b) {
+      b.hidden = false;
+      b.querySelector('span').textContent = en ? 'EN' : 'ID';
+      b.setAttribute('aria-label', en ? 'Ganti ke Bahasa Indonesia' : 'Switch to English');
+    });
+  };
+  tombol.forEach(function (b) {
+    b.addEventListener('click', function () {
+      akar.lang = akar.lang === 'en' ? 'id' : 'en';
+      try { localStorage.setItem('ib-bahasa', akar.lang); } catch (e) {}
+      terap();
+      document.dispatchEvent(new Event('ibbahasa'));
+    });
+  });
+  terap();
 })();
 </script>
 </body>
