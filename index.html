@@ -319,20 +319,6 @@ if ('serviceWorker' in navigator) {
   .brand-name{font-family:'Familjen Grotesk',sans-serif; font-size:19px; font-weight:600; letter-spacing:.04em; line-height:1.15; text-transform:uppercase; color:#fff;}
   .brand-tag{font-family:'Familjen Grotesk',sans-serif; font-size:12.5px; font-weight:400; letter-spacing:.005em; line-height:1.2; color:rgba(255,255,255,.62); margin-top:1px;}
   .nav-aksi{display:flex; align-items:center; gap:10px;}
-  /* Tombol muat ulang HANYA muncul saat halaman dijalankan dari layar utama.
-     Di situ Safari menghilangkan bilah alamat berikut tombol muat ulangnya,
-     sehingga tidak ada cara menyegarkan isi sama sekali. Di peramban biasa
-     tombol itu sudah ada, jadi menampilkannya lagi cuma menduplikasi. */
-  .segarkan{
-    display:none; width:38px; height:38px; border-radius:50%; padding:0; flex:none;
-    border:1.5px solid rgba(255,255,255,.35); background:transparent; color:#fff;
-    place-items:center; cursor:pointer;
-    transition:background .15s ease, transform .3s ease;
-  }
-  .segarkan:hover{background:rgba(255,255,255,.14);}
-  .segarkan.muter{transform:rotate(360deg);}
-  .minibar .segarkan{border-color:rgba(255,255,255,.3);}
-  @media (display-mode: standalone){ .segarkan{display:grid;} }
   /* Tombol bahasa: bola dunia + kode bahasa yang sedang tampil. Lahir
      hidden dan baru dibuka skrip — tanpa JS ia tidak bisa berbuat apa-apa.
      [hidden] harus ditulis ulang karena display di bawah mengalahkannya. */
@@ -345,13 +331,6 @@ if ('serviceWorker' in navigator) {
   .bahasa[hidden]{display:none;}
   .bahasa:hover{background:rgba(255,255,255,.14);}
   .minibar .bahasa{border-color:rgba(255,255,255,.3);}
-  /* Di HP cukup bola dunianya, selebar tombol muat ulang: bersama tombol
-     itu (mode layar utama) kode EN/ID mendorong Login keluar layar di
-     390px. Bahasa yang aktif toh sudah terbaca dari isi halaman. */
-  @media (max-width:520px){
-    .bahasa{width:38px; height:38px; padding:0; justify-content:center;}
-    .bahasa span{display:none;}
-  }
   .navlinks{display:flex; gap:30px; font-size:13.5px; font-weight:700; color:rgba(255,255,255,.75);}
   .navlinks a{color:inherit; text-decoration:none;}
   .navlinks a:hover{color:#fff;}
@@ -966,9 +945,6 @@ if ('serviceWorker' in navigator) {
       <div class="brand-name">Indobarca Bali</div>
     </div>
     <div class="nav-aksi">
-      <button type="button" class="segarkan" data-segarkan aria-label="Muat ulang halaman" data-en-label="Reload page">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
-        </button>
       <button type="button" class="bahasa" data-bahasa hidden><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>ID</span></button>
       <a class="btn btn-primary" href="https://indobarcabali.id/app">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 19 7a4 4 0 0 1-3 3.87"/></svg>
@@ -997,9 +973,6 @@ if ('serviceWorker' in navigator) {
           <a href="#agenda">Agenda</a>
         </div>
         <div class="nav-aksi">
-        <button type="button" class="segarkan" data-segarkan aria-label="Muat ulang halaman" data-en-label="Reload page">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
-        </button>
         <button type="button" class="bahasa" data-bahasa hidden><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>ID</span></button>
       <a class="btn btn-primary" href="https://indobarcabali.id/app">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 19 7a4 4 0 0 1-3 3.87"/></svg>
@@ -1423,17 +1396,6 @@ if ('serviceWorker' in navigator) {
     });
   });
 
-  // ============ Muat ulang dari layar utama ============
-  // Dibuka dari layar utama, Safari menghilangkan bilah alamat berikut
-  // tombol muat ulangnya — tanpa ini isi halaman tidak bisa disegarkan sama
-  // sekali. Tombolnya sendiri disembunyikan CSS di peramban biasa.
-  document.querySelectorAll('[data-segarkan]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      b.classList.add('muter');           // isyarat bahwa ketukannya diterima
-      window.location.reload();
-    });
-  });
-
   // ============ Jadwal pertandingan Barcelona ============
   // Datanya berkas statis di server yang sama, ditulis GitHub Actions sekali
   // sehari — bukan panggilan ke API luar dari peramban pengunjung. Karena itu
@@ -1710,6 +1672,52 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('pageshow', function () { tirai.classList.remove('on'); });
   }
 
+  // ============ Pantulan di ujung atas & bawah ============
+  // Safari iOS sudah memantul sendiri — dibiarkan. Chrome Android tidak:
+  // di sana tarikan melewati ujung halaman cuma memunculkan pendar. Untuk
+  // perangkat sentuh selain iOS, isi halaman digeser mengikuti jari dengan
+  // redaman ala iOS lalu dilepas balik. -webkit-touch-callout hanya dikenal
+  // WebKit iOS, jadi itu pembeda yang tidak bergantung pada user agent.
+  // Ponsel itu sendiri yang dilayani: overscroll-behavior:none ikut
+  // mematikan tarik-untuk-muat-ulang Chrome di tab biasa — muat ulang masih
+  // ada di menu Chrome.
+  (function () {
+    var ios = window.CSS && CSS.supports && CSS.supports('-webkit-touch-callout', 'none');
+    if (ios || !('ontouchstart' in window) || kurangGerak.matches) return;
+    akar.style.overscrollBehaviorY = 'none';
+    var isi = document.querySelectorAll('.hero, .permukaan, footer');
+    var y0 = null, jarak = 0;
+    var geser = function (px, lepas) {
+      jarak = px;
+      isi.forEach(function (el) {
+        el.style.transition = lepas ? 'transform .5s cubic-bezier(.2,.9,.3,1)' : 'none';
+        el.style.transform = px ? 'translateY(' + px + 'px)' : '';
+      });
+    };
+    window.addEventListener('touchstart', function (e) {
+      y0 = e.touches.length === 1 ? e.touches[0].clientY : null;
+    }, { passive: true });
+    window.addEventListener('touchmove', function (e) {
+      if (y0 == null || e.touches.length !== 1) return;
+      var y = e.touches[0].clientY, dy = y - y0;
+      var atas = window.scrollY <= 0;
+      var bawah = window.scrollY + window.innerHeight >= akar.scrollHeight - 1;
+      if ((atas && dy > 0) || (bawah && dy < 0)) {
+        // Rumus redaman karet iOS: makin jauh ditarik, makin berat.
+        var h = window.innerHeight, a = Math.abs(dy);
+        geser((dy > 0 ? 1 : -1) * (1 - 1 / (a * 0.55 / h + 1)) * h);
+      } else {
+        // Belum di ujung: titik awal tarikan ikut jari, supaya pantulan
+        // dimulai tepat saat ujung halaman tercapai, bukan saat jari mendarat.
+        y0 = y;
+        if (jarak) geser(0);
+      }
+    }, { passive: true });
+    var lepas = function () { y0 = null; if (jarak) geser(0, true); };
+    window.addEventListener('touchend', lepas, { passive: true });
+    window.addEventListener('touchcancel', lepas, { passive: true });
+  })();
+
   // Bar tipis muncul begitu hero tergulung habis. IntersectionObserver
   // dipakai supaya browser yang menghitung, bukan listener scroll yang
   // menyala di tiap piksel.
@@ -1850,6 +1858,11 @@ if ('serviceWorker' in navigator) {
   };
   muat();
   document.addEventListener('ibbahasa', muat);
+  // Sama seperti jadwal: dari layar utama halaman ini jarang dimuat ulang,
+  // jadi agenda diambil lagi setiap kali kembali terlihat.
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) muat();
+  });
 })();
 
 /* ================= DUA BAHASA =================
