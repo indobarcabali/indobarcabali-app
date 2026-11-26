@@ -448,12 +448,12 @@ if ('serviceWorker' in navigator) {
   .sponsor-grup + .sponsor-grup{padding-left:56px; border-left:1px solid rgba(255,255,255,.12);}
   /* Tipis dan huruf biasa seperti label sponsor situs Barça. Font sistem
      (SF/Roboto) tebal 400 — Inter di halaman ini hanya dimuat tebal 700. */
-  .sponsor-label{font-size:11.5px; font-weight:400; letter-spacing:.01em; color:rgba(255,255,255,.55);}
+  .sponsor-label{font-size:10.5px; font-weight:400; letter-spacing:.01em; color:rgba(255,255,255,.65);}
   .sponsor-logo{display:flex; justify-content:center; align-items:center; gap:22px 44px;}
-  /* Abu-abu redup seperti deretan sponsor di situs Barça: putih .55 di
-     atas --latar jadi ±#91939C — terbaca, tapi tidak bersaing dengan foto
+  /* Abu-abu redup seperti deretan sponsor di situs Barça: putih .65 di
+     atas --latar jadi ±#A6A8AF — terbaca, tapi tidak bersaing dengan foto
      dan judul. Tinggi ikut lebar layar, 44px di desktop lebar sampai 34px. */
-  .sponsor-logo img{display:block; height:clamp(34px,3.4vw,44px); width:auto; opacity:.55; transition:opacity .2s ease;}
+  .sponsor-logo img{display:block; height:clamp(34px,3.4vw,44px); width:auto; opacity:.65; transition:opacity .2s ease;}
   /* Tiap logo menuju Instagram sponsornya. Menyala saat disorot atau
      difokus papan ketik, jadi terasa bisa diketuk tanpa mengubah tata letak. */
   .sponsor-logo a{display:block; border-radius:4px;}
@@ -469,9 +469,27 @@ if ('serviceWorker' in navigator) {
     .sponsor-grup:last-child{flex-direction:row; justify-content:center; gap:16px;}
     .sponsor-grup:last-child .sponsor-label{max-width:6.5em; line-height:1.15;}
   }
+  /* HP: dua baris — PRIMA, J&T, KHARMA / GROW | Teamwear Apparel EMJE
+     (pilihan pemilik). GROW dan EMJE ada di kelompok berbeda, jadi pembungkus
+     kelompok dibuka (display:contents) dan semua jadi anak satu baris lentur
+     yang diurutkan ulang. ::before = pemutus baris, ::after = garis pemisah.
+     Urutan di markup tetap milik desktop (tipis–tebal–tebal–tipis). */
   @media (max-width:700px){
-    .sponsor-logo{display:grid; grid-template-columns:repeat(2,auto); justify-items:center; gap:24px 30px;}
-    .sponsor-logo img{height:min(32px,9vw);}
+    /* row-gap 0: baris pemutus (::before) sendiri yang jadi jarak antarbaris —
+       dengan row-gap, baris kosong itu menggandakan jaraknya. Jarak kolom
+       menyusut di layar sempit supaya tiga logo tetap sebaris di 320px. */
+    .sponsor-baris{flex-direction:row; flex-wrap:wrap; justify-content:center; align-items:center; gap:0 min(18px,3.5vw);}
+    .sponsor-grup,.sponsor-logo{display:contents;}
+    .sponsor-grup:first-child .sponsor-label{order:0; flex-basis:100%; text-align:center; margin-bottom:14px;}
+    .sponsor-logo a:nth-child(1){order:1;}   /* PRIMA */
+    .sponsor-logo a:nth-child(2){order:2;}   /* J&T */
+    .sponsor-logo a:nth-child(4){order:3;}   /* KHARMA */
+    .sponsor-baris::before{content:''; order:4; flex-basis:100%; height:18px;}
+    .sponsor-logo a:nth-child(3){order:5;}   /* GROW */
+    .sponsor-baris::after{content:''; order:6; width:1px; align-self:stretch; background:rgba(255,255,255,.15);}
+    .sponsor-grup:last-child .sponsor-label{order:7; margin-right:-8px; max-width:6.5em; line-height:1.15;}
+    .sponsor-grup:last-child a{order:8;}
+    .sponsor-logo img{height:min(28px,7.8vw);}
   }
   .about .eyebrow{font-size:12.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
   .about h2{font-size:clamp(24px,3.4vw,32px); color:var(--navy-900); margin-top:10px;}
