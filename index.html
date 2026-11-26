@@ -463,7 +463,7 @@ if ('serviceWorker' in navigator) {
     .sponsor-grup:last-child .sponsor-label{max-width:7.5em; line-height:1.55;}
   }
   @media (max-width:700px){
-    .sponsor-logo{display:grid; grid-template-columns:repeat(2,auto); gap:24px 30px;}
+    .sponsor-logo{display:grid; grid-template-columns:repeat(2,auto); justify-items:center; gap:24px 30px;}
     .sponsor-logo img{height:min(32px,9vw);}
   }
   .about .eyebrow{font-size:12.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
@@ -1082,12 +1082,15 @@ if ('serviceWorker' in navigator) {
 <section class="sponsor" aria-label="Sponsor Indobarca Bali" data-en-label="Indobarca Bali sponsors">
   <div class="container sponsor-baris">
     <div class="sponsor-grup">
+      <!-- Urutan sengaja tipis–tebal–tebal–tipis: sebaris jadi simetris dari
+           tengah, dan di 2×2 HP dua logo tebal (J&T, GROW) bersilang diagonal
+           alih-alih menumpuk di kolom kanan. Logo baru: jaga pola ini. -->
       <div class="sponsor-label">Main Partner</div>
       <div class="sponsor-logo">
         <img src="aset/sponsor/prima.png" width="394" height="124" alt="Prima — Architecture, Interior, Lighting" loading="lazy">
         <img src="aset/sponsor/jnt.png" width="364" height="126" alt="J&amp;T Cargo Kuta Bali" loading="lazy">
-        <img src="aset/sponsor/kharma.png" width="399" height="133" alt="Kharma Coffee Bali" loading="lazy">
         <img src="aset/sponsor/grow.png" width="396" height="119" alt="Grow Physiotherapy" loading="lazy">
+        <img src="aset/sponsor/kharma.png" width="399" height="133" alt="Kharma Coffee Bali" loading="lazy">
       </div>
     </div>
     <div class="sponsor-grup">
