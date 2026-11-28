@@ -631,7 +631,21 @@ if ('serviceWorker' in navigator) {
      lama, dan hasilnya setiap inisial tim terpotong di peramban tanpa
      container query — tidak terlihat sama sekali dari pengujian biasa.
      Kalau salah satu angka cqw diubah, ubah juga px di depannya. */
-  .jadwal-baris{display:grid; gap:8px; container-type:inline-size;}
+  .jadwal-baris{display:grid; gap:6px; container-type:inline-size;}
+  /* Kolom SAMA untuk semua baris (subgrid), supaya lambang, tanggal, garis
+     pemisah, tim, dan jam lurus dari atas ke bawah. Dulu tiap baris grid
+     sendiri yang ditengahkan masing-masing: lambang LaLiga 3:2 vs UCL persegi
+     dan "MINGGU" vs "RABU" menggeser seluruh isi baris — terlihat tak simetris.
+     Dua kolom 1fr di tepi menjaga isinya tetap di tengah dengan sela tetap. */
+  @supports (grid-template-columns:subgrid){
+    .jadwal-baris{grid-template-columns:1fr repeat(5,auto) 1fr; column-gap:0;}
+    .jadwal-baris .jb{grid-column:1/-1; grid-template-columns:subgrid;}
+    .jadwal-baris .jb > :first-child{grid-column:2;}
+    /* Singkatan tiga huruf tak pernah perlu dipotong. Tanpa ini pembulatan
+       subpiksel lebar kolom bersama (0,3px kurang) memotong "MAL" jadi "M…".
+       Nama panjang tanpa singkatan (TheSportsDB) tetap boleh menyusut. */
+    .jadwal-baris .jb-duel b.tla{flex-shrink:0;}
+  }
   /* Sela tumbuh LEBIH CEPAT dari lebar kartu (5cqw dikurangi 5,5px), bukan
      lurus mengikutinya. Sisa lebar baris tidak sebanding dengan layar: pada
      390px baris tersempit menyisakan hampir 12px, tapi pada 320px cuma 1px.
@@ -643,7 +657,9 @@ if ('serviceWorker' in navigator) {
     align-items:center;
     gap:7px; gap:clamp(4px,calc(4.4cqw - 4.2px),24px);
     background:var(--paper); border:1px solid var(--line); border-radius:12px;
-    padding:15px 5px; padding:clamp(14px,4.4cqw,22px) clamp(5px,2.1cqw,20px);
+    /* Atas-bawah dirampingkan (dulu 14-22px) — empat pil ini sebelumnya
+       memakan tinggi lebih dari yang dibutuhkan isinya. */
+    padding:11px 5px; padding:clamp(10px,3cqw,16px) clamp(5px,2.1cqw,20px);
   }
   /* Lebih besar dari proporsi acuannya (3,9% jadi 6% lebar kartu): tanda
      LaLiga itu dua goresan tipis, dan pada 12px di layar ponsel ia menghilang
@@ -737,6 +753,23 @@ if ('serviceWorker' in navigator) {
      tabel tetangganya yang dibuka. */
   .kl-duo{display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:start; margin-top:22px;}
   @media (max-width:900px){ .kl-duo{grid-template-columns:1fr; gap:10px;} }
+  .kl-tab{display:none;}
+  .kl-pil{
+    flex:1 1 0; min-width:0; display:flex; align-items:center; gap:9px; text-align:left;
+    padding:12px; border:1px solid var(--line); border-radius:14px; background:var(--paper);
+    color:var(--navy-900); font:inherit; font-weight:800; font-size:13.5px; line-height:1.25; cursor:pointer;
+  }
+  .kl-pil[hidden]{display:none;}
+  .kl-pil .kl-liga{width:28px; height:19px;}
+  .kl-pil::after{content:'+'; margin-left:auto; font-size:19px; font-weight:400; color:var(--muted); flex:none; transition:transform .2s ease;}
+  .kl-pil.aktif{border-color:var(--navy-900); box-shadow:inset 0 0 0 1px var(--navy-900);}
+  .kl-pil.aktif::after{transform:rotate(45deg);}
+  @media (max-width:900px){
+    .kl-tab{display:flex; gap:10px; margin-top:22px;}
+    .kl-tab + .kl-duo{margin-top:10px;}
+    .kl-duo .kl summary{display:none;}
+    .kl-duo .kl:not([open]){display:none;}
+  }
   .kl{min-width:0; border:1px solid var(--line); border-radius:14px; background:var(--paper); overflow:hidden;}
   .kl summary{
     cursor:pointer; list-style:none; display:flex; align-items:center;
@@ -1150,6 +1183,12 @@ if ('serviceWorker' in navigator) {
       <h2 data-en="Barça's Next Matches">Pertandingan Barça Berikutnya</h2>
     </div>
     <div id="jadwal-list"></div>
+    <!-- HP: dua tombol berdampingan; tabel yang dipilih terbuka selebar layar
+         di bawahnya (dua tabel 20 & 36 baris tak muat berdampingan di 390px). -->
+    <div class="kl-tab">
+      <button type="button" class="kl-pil" data-kl="klasemen" aria-expanded="false" hidden><span class="lambang-liga kl-liga" data-liga="PD"><img src="crest/liga-PD.png" alt="" loading="lazy"></span><span>LaLiga</span></button>
+      <button type="button" class="kl-pil" data-kl="klasemen-ucl" aria-expanded="false" hidden><span class="lambang-liga kl-liga" data-liga="CL"><img src="crest/liga-CL.png" alt="" loading="lazy"></span><span data-en="Champions League">Liga Champions</span></button>
+    </div>
     <div class="kl-duo">
     <details class="kl" id="klasemen" hidden>
       <summary><span class="kl-judul">
@@ -1670,7 +1709,7 @@ if ('serviceWorker' in navigator) {
             // tengah dan barisnya terbaca sebagai daftar, bukan sebagai laga.
             var pihak = function (t, balik) {
               var im = gambar(t.crest);
-              var nm = '<b>' + aman(t.tla || t.nama || '') + '</b>';
+              var nm = '<b' + (t.tla ? ' class="tla"' : '') + '>' + aman(t.tla || t.nama || '') + '</b>';
               return balik ? nm + im : im + nm;
             };
             return '<div class="jb">' +
@@ -1772,6 +1811,8 @@ if ('serviceWorker' in navigator) {
             '</tr>';
           }).join('');
           tabel.hidden = false;
+          var pil = document.querySelector('.kl-pil[data-kl="' + id + '"]');
+          if (pil) pil.hidden = false;
         };
         // Jatah Eropa tidak ikut dikirim API, jadi batasnya dipatok di sini:
         // 1-5 ke Liga Champions, 6-7 ke Liga Europa. Degradasi dihitung dari
@@ -1787,6 +1828,24 @@ if ('serviceWorker' in navigator) {
       })
       .catch(function () { /* diam: lebih baik tidak tampil daripada salah */ });
     };
+
+    // Tombol klasemen di HP: membuka tabel pilihannya, menutup yang lain.
+    // Keadaan tombol mengikuti peristiwa toggle, jadi ikut benar juga saat
+    // tabel dibuka/ditutup lewat ringkasannya di desktop.
+    document.querySelectorAll('.kl-pil').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var d = document.getElementById(b.getAttribute('data-kl'));
+        var buka = !d.open;
+        document.querySelectorAll('.kl-duo .kl').forEach(function (x) { x.open = false; });
+        d.open = buka;
+      });
+    });
+    document.querySelectorAll('.kl-duo .kl').forEach(function (d) {
+      d.addEventListener('toggle', function () {
+        var b = document.querySelector('.kl-pil[data-kl="' + d.id + '"]');
+        if (b) { b.classList.toggle('aktif', d.open); b.setAttribute('aria-expanded', String(d.open)); }
+      });
+    });
 
     muat();
     // Dibuka dari layar utama, aplikasi jarang benar-benar ditutup — ia
