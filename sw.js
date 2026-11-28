@@ -63,9 +63,9 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET' || url.origin !== self.location.origin) return;
   if (url.pathname === '/app' || url.pathname.startsWith('/app/')) return;
 
-  /* Jadwal pertandingan harus sesegar mungkin; isi tersimpan cuma jaring
-     pengaman saat jaringan mati. */
-  if (url.pathname === '/jadwal.json') {
+  /* Jadwal pertandingan dan katalog store (harga, stok habis) harus sesegar
+     mungkin; isi tersimpan cuma jaring pengaman saat jaringan mati. */
+  if (url.pathname === '/jadwal.json' || url.pathname === '/katalog.json') {
     e.respondWith(
       fetch(req)
         .then((r) => {

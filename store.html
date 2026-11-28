@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="id" style="background:#0A0E22">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IB Bali Store — Merchandise Resmi Indobarça Bali</title>
+<meta name="description" content="Merchandise resmi Indobarça Bali — jersey, syal, jaket, dan kaus komunitas suporter FC Barcelona di Bali. Pesan langsung lewat WhatsApp.">
+<meta name="theme-color" content="#0A0E22">
+<link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png">
+<script>
+/* Sama dengan landing: pilihan tombol bola dunia > bahasa ponsel; perayap selalu ID. */
+(function () {
+  var b;
+  try { b = localStorage.getItem('ib-bahasa'); } catch (e) {}
+  if (b !== 'id' && b !== 'en') {
+    var l = ((navigator.languages && navigator.languages[0]) || navigator.language || '').toLowerCase();
+    b = /^(id|in)\b/.test(l) || /bot|crawl|spider/i.test(navigator.userAgent) ? 'id' : 'en';
+  }
+  document.documentElement.lang = b;
+})();
+</script>
+<style>
+  @font-face{font-family:'Familjen Grotesk'; font-style:normal; font-weight:400 700; font-display:swap; src:url(aset/fg.woff2) format('woff2');}
+  @font-face{font-family:'Inter'; font-style:normal; font-weight:700; font-display:swap; src:url(aset/inter.woff2) format('woff2');}
+  @font-face{font-family:'Inter'; font-style:normal; font-weight:400; font-display:swap; src:url(aset/inter-400.woff2) format('woff2');}
+  :root{
+    --latar:#0A0E22; --navy-900:#071744; --navy:#0A1F62; --red:#E8253C; --yellow:#F7C331;
+    --bg:#F4F5F8; --paper:#FFFFFF; --ink:#0E1330; --muted:#5B6172; --line:#E7E9F2;
+  }
+  *{box-sizing:border-box;}
+  html{color-scheme:light; background:var(--latar);}
+  body{margin:0; background:var(--latar); color:var(--ink); -webkit-font-smoothing:antialiased;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}
+  .container{max-width:1180px; margin:0 auto; padding-left:32px; padding-right:32px;}
+  h1,h2,h3{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; font-weight:700; letter-spacing:-.015em; margin:0; text-wrap:balance;}
+  p{margin:0; line-height:1.65; letter-spacing:-.02em;}
+  a:focus-visible,button:focus-visible{outline:2.5px solid var(--red); outline-offset:3px; border-radius:4px;}
+
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:6px; font-weight:800; font-size:12px;
+    padding:9px 18px; border-radius:99px; text-decoration:none; white-space:nowrap; border:1.5px solid transparent;
+    font-family:inherit; cursor:pointer; transition:filter .15s ease, transform .15s ease;}
+  .btn svg{flex:none;}
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--red); color:#fff;}
+  .btn-primary:hover{filter:brightness(1.08);}
+  .btn-kuning{background:var(--yellow); color:var(--navy-900);}
+  .btn-mati{background:var(--line); color:var(--muted); cursor:default;}
+
+  /* ===== Pita pengumuman + header putih — pola tata letak toko klub besar,
+     isi & aset milik IB sendiri ===== */
+  .pengumuman[hidden]{display:none;}
+  .pengumuman{background:var(--latar); color:#fff; padding-top:env(safe-area-inset-top,0px);}
+  .pengumuman .row{display:flex; align-items:center; gap:8px; height:40px;}
+  .pengumuman button{flex:none; width:36px; height:36px; border:0; background:none; color:#fff; display:grid; place-items:center; cursor:pointer; border-radius:50%;}
+  .pengumuman button:hover{background:rgba(255,255,255,.1);}
+  .pengumuman p{flex:1; min-width:0; text-align:center; font-size:13px; font-weight:600; letter-spacing:0; line-height:1.3;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+
+  .kepala-toko{position:sticky; top:0; z-index:50; background:#fff; box-shadow:0 1px 0 rgba(14,19,48,.06);}
+  .kepala-toko::after{content:''; display:block; height:4px; background:linear-gradient(90deg,#1A47C2 50%,var(--red) 50%);}
+  .kepala-toko .row{display:flex; align-items:center; justify-content:space-between; gap:12px; height:66px;}
+  .ikon-btn{width:40px; height:40px; display:grid; place-items:center; color:var(--navy-900); border-radius:50%; text-decoration:none;}
+  .ikon-btn:hover{background:var(--bg);}
+  .brand{display:flex; align-items:center; gap:12px; min-width:0; text-decoration:none; color:var(--navy-900);}
+  .brand-logo{width:42px; height:42px; border-radius:50%; flex:none; background:url(aset/logo.png) center/cover no-repeat;}
+  .brand-teks{font-family:'Familjen Grotesk',sans-serif; line-height:1.05;}
+  /* Ukuran & susunan sama dengan merek di nav landing (19px / 12.5px). */
+  .brand-teks b{display:block; font-size:19px; font-weight:600; letter-spacing:.04em; line-height:1.15; text-transform:uppercase; white-space:nowrap;}
+  .brand-teks span{display:block; font-size:12.5px; font-weight:400; letter-spacing:.005em; line-height:1.2; color:var(--muted); margin-top:1px;}
+  .nav-aksi{display:flex; align-items:center; gap:2px; flex:none;}
+  .bahasa{display:inline-flex; align-items:center; gap:5px; height:34px; padding:0 10px; flex:none; margin-right:4px;
+    border-radius:99px; border:1.5px solid var(--line); background:#fff; color:var(--navy-900);
+    font-family:inherit; font-size:12px; font-weight:800; letter-spacing:.04em; cursor:pointer;}
+  .bahasa[hidden]{display:none;}
+  .bahasa:hover{border-color:var(--navy-900);}
+  @media (max-width:420px){
+    .kepala-toko .row{gap:6px;}
+    .brand{gap:9px;} .brand-logo{width:36px; height:36px;}
+    .brand-teks b{font-size:16px;}
+    .bahasa{padding:0 8px; margin-right:0;} .bahasa svg{display:none;}
+  }
+  @media (max-width:360px){
+    .brand{gap:7px;} .brand-logo{width:32px; height:32px;} .brand-teks b{font-size:13px; letter-spacing:.02em;}
+    .ikon-btn{width:30px;} .bahasa{padding:0 6px;}
+  }
+
+  /* ===== Hero: banner landscape satu per layar — berputar sendiri, bisa digeser =====
+     5:2 di desktop, 4:3 di HP (banner yang sama dipotong tengah lewat object-fit). */
+  .hero{position:relative; overflow:hidden; background:var(--latar); color:#fff;}
+  .h-bingkai{position:relative;}
+  /* Rasio dipasang di WADAH, bukan di gambar: ruangnya sudah tersedia sebelum
+     katalog.json tiba, jadi halaman tidak melompat saat banner dipasang. */
+  .hero .geser{height:auto; aspect-ratio:5/2; max-height:600px;}
+  .hero .geser > img{flex:0 0 100%; min-width:0; width:100%; height:100%; cursor:grab;}
+  .hero:hover .panah{display:grid;}
+  @media (hover:none){ .hero:hover .panah{display:none;} }
+  .tersembunyi{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+  .hero .titik{bottom:18px; z-index:2;}
+  @media (max-width:699px){
+    .hero .geser{aspect-ratio:4/3;}
+    .hero .titik{bottom:12px;}
+    .saring{gap:16px;}
+  }
+
+  /* ===== Katalog ===== */
+  .permukaan{background:var(--bg); padding:24px 0 56px; scroll-margin-top:68px;}
+  /* Tab bergaris bawah. Bisa digeser kalau tak muat di layar sempit. */
+  .saring{display:flex; gap:24px; overflow-x:auto; margin-bottom:22px; border-bottom:1px solid var(--line); scrollbar-width:none;}
+  .saring::-webkit-scrollbar{display:none;}
+  .chip{flex:none; background:none; border:0; border-bottom:2.5px solid transparent; margin-bottom:-1px; padding:10px 0 10px; cursor:pointer;
+    font-family:'Familjen Grotesk',sans-serif; font-size:14.5px; font-weight:400; letter-spacing:.05em; text-transform:uppercase; color:var(--muted);}
+  .chip:hover{color:var(--navy-900);}
+  .chip[aria-pressed="true"]{color:var(--navy-900); border-bottom-color:var(--navy-900); font-weight:500;}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:20px;}
+  @media (max-width:560px){ .grid{grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px;} }
+  .produk{background:var(--paper); border-radius:0; overflow:hidden; display:flex; flex-direction:column;
+    box-shadow:0 1px 2px rgba(14,19,48,.06);}
+  .produk[hidden]{display:none;}
+  .saring[hidden]{display:none;}
+  .pesan-kosong{grid-column:1/-1; text-align:center; color:var(--muted); font-size:14px; padding:48px 0;}
+  .p-tanpa{position:absolute; inset:0; background:url(aset/logo.png) center/34% no-repeat; opacity:.22;}
+  .p-foto{position:relative; aspect-ratio:4/5; background:var(--navy-900);}
+  /* Banyak foto per produk: geser bawaan browser (scroll-snap), tanpa pustaka. */
+  .geser{display:flex; height:100%; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; overscroll-behavior-x:contain;}
+  .geser::-webkit-scrollbar{display:none;}
+  .geser > img{flex:0 0 100%; width:100%; height:100%; object-fit:cover; display:block; scroll-snap-align:start; cursor:zoom-in;}
+  .titik{position:absolute; left:0; right:0; bottom:9px; display:flex; justify-content:center; gap:5px; pointer-events:none;}
+  .titik i{width:6px; height:6px; border-radius:3px; background:rgba(255,255,255,.55); box-shadow:0 0 3px rgba(0,0,0,.35); transition:width .2s ease;}
+  .titik i.on{width:16px; background:#fff;}
+  .panah{position:absolute; top:50%; z-index:2; width:32px; height:32px; margin-top:-16px; border-radius:50%; border:0;
+    background:rgba(255,255,255,.92); color:var(--ink); display:none; place-items:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.25);}
+  .panah.kiri{left:8px;} .panah.kanan{right:8px;}
+  @media (hover:hover){ .p-foto:hover .panah{display:grid;} }
+
+  /* ===== Mode zoom (lightbox): foto di kotak tengah, halaman tetap terlihat
+     samar di balik lapisan gelap 78%; ketuk area gelap untuk menutup. ===== */
+  html.kunci-gulir{overflow:hidden;}
+  .zoom{border:0; padding:0; margin:0; width:100vw; height:100vh; height:100dvh; max-width:none; max-height:none;
+    background:transparent; color:#fff; overflow:hidden;}
+  .zoom[open]{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;}
+  .zoom::backdrop{background:rgba(5,7,15,.78);}
+  /* Lebar kotak: 92% layar, maks 560px, dan tak lebih tinggi dari layar
+     dikurangi bilah judul + petunjuk (±150px). Rasio 4:5 = foto produk. */
+  .z-lebar{width:min(92vw, 560px, calc((100vh - 150px) * .8)); width:min(92vw, 560px, calc((100dvh - 150px) * .8));}
+  .z-kotak{position:relative; aspect-ratio:4/5; background:#05070F; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.5);}
+  .zoom .geser{height:100%;}
+  .zoom .slide{flex:0 0 100%; height:100%; scroll-snap-align:start; overflow:hidden;}
+  .zoom .slide img{width:100%; height:100%; object-fit:contain; display:block; cursor:zoom-in;}
+  .zoom .slide.besar{overflow:auto; scrollbar-width:none;}
+  .zoom .slide.besar::-webkit-scrollbar{display:none;}
+  .zoom .slide.besar img{max-width:none; height:auto; cursor:zoom-out;}
+  .zoom:has(.besar) .z-petunjuk{visibility:hidden;}
+  #z-geser:focus{outline:none;}
+  .zoom .geser.kunci{overflow-x:hidden;}
+  .z-atas{display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  .z-judul{font-size:14px; font-weight:700; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .z-judul span{color:rgba(255,255,255,.6); font-weight:600; margin-left:8px;}
+  .z-tutup{width:38px; height:38px; flex:none; border-radius:50%; border:1.5px solid rgba(255,255,255,.35); background:rgba(5,7,15,.5); color:#fff; display:grid; place-items:center; cursor:pointer;}
+  .zoom .panah{display:grid; width:36px; height:36px; margin-top:-18px;}
+  .zoom .panah.kiri{left:10px;} .zoom .panah.kanan{right:10px;}
+  @media (hover:none){ .zoom .panah{display:none;} }
+  .z-petunjuk{font-size:12px; color:rgba(255,255,255,.6); text-align:center; pointer-events:none; padding:0 16px;}
+  .lencana{position:absolute; top:10px; left:10px; font-size:11px; font-weight:800; letter-spacing:.03em;
+    padding:4px 9px; border-radius:99px; background:var(--yellow); color:var(--navy-900);}
+  .lencana.habis{background:var(--ink); color:#fff;}
+  .lencana.po{background:#1A47C2; color:#fff;}
+  .produk.kosong .geser > img{filter:grayscale(.85); opacity:.7;}
+  .p-isi{padding:14px 14px 16px; display:flex; flex-direction:column; gap:6px; flex:1;}
+  .p-kat{font-size:11.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
+  .p-isi h3{font-size:16px; line-height:1.3;}
+  .p-harga{font-size:15px; font-weight:800; color:var(--red);}
+  .ukuran{display:flex; flex-wrap:wrap; gap:5px; margin:4px 0 6px;}
+  .ukuran button{font-family:inherit; font-size:11px; font-weight:600; min-width:30px; height:26px; padding:0 6px;
+    border-radius:0; border:1px solid var(--line); background:var(--paper); color:var(--ink); cursor:pointer;}
+  .ukuran button[aria-pressed="true"]{border-color:var(--navy-900); background:var(--navy-900); color:#fff;}
+  .ukuran button:disabled{color:#B5B9C6; text-decoration:line-through; cursor:default;}
+  .p-pesan{margin-top:auto; width:100%;}
+  @media (max-width:560px){
+    .p-isi{padding:11px 10px 12px;}
+    .p-isi h3{font-size:14px;}
+    .p-harga{font-size:14px;}
+    .ukuran button{min-width:27px; height:25px; padding:0 5px; font-size:10.5px;}
+    .p-pesan{padding:9px 8px;}
+  }
+
+  /* ===== Cara pesan ===== */
+  .cara{margin-top:48px;}
+  .cara h2{font-size:clamp(20px,2.6vw,26px); color:var(--navy-900);}
+  .langkah{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:18px; padding:0; list-style:none; counter-reset:l;}
+  .langkah li{background:var(--paper); border-radius:14px; padding:18px; counter-increment:l; font-size:14px; color:var(--muted); line-height:1.6;}
+  .langkah li::before{content:counter(l); display:grid; place-items:center; width:30px; height:30px; border-radius:50%;
+    background:var(--red); color:#fff; font-weight:800; font-size:14px; margin-bottom:10px;}
+  .langkah b{display:block; color:var(--ink); font-size:15px; margin-bottom:2px;}
+  @media (max-width:720px){ .langkah{grid-template-columns:1fr;} }
+
+  footer{background:var(--latar); padding:28px 0 calc(28px + env(safe-area-inset-bottom,0px)); color:rgba(255,255,255,.45); font-size:12px;}
+  footer .row{display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  footer a{color:rgba(255,255,255,.65); text-decoration:none;}
+  footer a:hover{color:#fff;}
+</style>
+</head>
+<body>
+
+<div class="pengumuman" hidden>
+  <div class="container row">
+    <button type="button" data-umum="-1" aria-label="Sebelumnya" data-en-label="Previous"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+    <p id="umum" aria-live="polite"></p>
+    <button type="button" data-umum="1" aria-label="Berikutnya" data-en-label="Next"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+  </div>
+</div>
+
+<div class="kepala-toko">
+  <div class="container row">
+    <a class="brand" href="store.html">
+      <span class="brand-logo"></span>
+      <span class="brand-teks"><b>Indobarça Bali</b><span>Official Store</span></span>
+    </a>
+    <div class="nav-aksi">
+      <button type="button" class="bahasa" data-bahasa hidden><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>ID</span></button>
+      <a class="ikon-btn" id="wa-toko" target="_blank" rel="noopener" aria-label="Chat admin store" data-en-label="Chat with store admin"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23a8.2 8.2 0 0 1 8.24 8.24c0 4.54-3.7 8.23-8.24 8.23Z"/></svg></a>
+      <a class="ikon-btn" href="/" aria-label="Beranda Indobarça Bali" data-en-label="Indobarça Bali home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg></a>
+    </div>
+  </div>
+</div>
+
+<header class="hero" id="hero">
+  <h1 class="tersembunyi">Indobarça Bali Official Store</h1>
+  <div class="h-bingkai" id="hero-bingkai">
+    <div class="geser" id="hero-geser"></div>
+    <div class="titik" id="hero-titik"></div>
+  </div>
+</header>
+
+<main class="permukaan" id="katalog">
+  <div class="container">
+    <div class="saring" id="saring" role="group" aria-label="Kategori" data-en-label="Category"></div>
+    <div class="grid" id="grid"></div>
+
+    <section class="cara">
+      <h2 data-en="How to order">Cara pesan</h2>
+      <ol class="langkah">
+        <li data-en="<b>Choose a product</b>Tap the size you want on the product card.">
+          <b>Pilih produk</b>Ketuk ukuran yang kamu mau di kartu produk.</li>
+        <li data-en="<b>Order on WhatsApp</b>The message is filled in for you — just hit send.">
+          <b>Pesan lewat WhatsApp</b>Pesannya sudah terisi otomatis, tinggal kirim.</li>
+        <li data-en="<b>Confirm &amp; pay</b>Our admin checks stock, then shares payment and pickup or delivery details.">
+          <b>Konfirmasi &amp; bayar</b>Admin cek stok, lalu kirim info pembayaran dan cara ambil atau kirim.</li>
+      </ol>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="container row">
+    <span>© 2026 Indobarça Bali · Mes Que Un Comunitat</span>
+    <a href="https://www.instagram.com/indobarca_bali" target="_blank" rel="noopener">Instagram @indobarca_bali</a>
+  </div>
+</footer>
+
+<dialog class="zoom" id="zoom" aria-label="Foto produk" data-en-label="Product photos">
+  <div class="z-atas z-lebar">
+    <div class="z-judul" id="z-judul"></div>
+    <button type="button" class="z-tutup" id="z-tutup" aria-label="Tutup" data-en-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="z-kotak z-lebar" id="z-kotak">
+    <div class="geser" id="z-geser" tabindex="-1" autofocus></div>
+  </div>
+  <div class="z-petunjuk" data-en="Tap the photo to zoom · tap outside to close">Ketuk foto untuk memperbesar · ketuk di luar untuk menutup</div>
+</dialog>
+
+<script>
+/* ===== DATA — diisi dari katalog.json, yang DITERBITKAN aplikasi
+   (menu Katalog Store, 22_Katalog.js di repo aplikasi). Jangan sunting
+   katalog.json dengan tangan: terbitan berikutnya akan menimpanya.
+   status: '' (tersedia) | 'baru' | 'po' (pre-order) | 'habis' */
+var WA_STORE = '6289683532476';   // cadangan bila katalog belum menyebut nomor
+var PENGUMUMAN = [];
+/* Banner cadangan sampai banner asli diunggah lewat Setelan Store. */
+var HERO = ['foto/hero.jpg', 'aset/banner-store.webp', 'foto/cta.jpg'];
+var PRODUK = [];
+
+(function () {
+  var akar = document.documentElement;
+  var EN = { 'Semua': 'All', 'Jaket': 'Jacket', 'Syal': 'Scarf', 'Topi': 'Cap', 'Aksesoris': 'Accessories', 'Lainnya': 'Others' };
+  var keadaan = 'memuat';   // memuat | siap | gagal
+  var t = function (s) { return akar.lang === 'en' && EN[s] ? EN[s] : s; };
+  var en = function () { return akar.lang === 'en'; };
+  var rupiah = function (n) { return 'Rp ' + n.toLocaleString('id-ID'); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var aktif = 'Semua';
+  var pilihan = {};   // indeks produk → ukuran terpilih
+
+  var tautanWA = function (i) {
+    var p = PRODUK[i], u = pilihan[i];
+    var teks = en()
+      ? 'Hi IB Bali Store, I\'d like to ' + (p.status === 'po' ? 'pre-order' : 'order') + ' ' + p.nama + (u ? ' (size ' + u + ')' : '') + '. Is it available?'
+      : 'Halo IB Bali Store, saya mau ' + (p.status === 'po' ? 'pre-order' : 'pesan') + ' ' + p.nama + (u ? ' (ukuran ' + u + ')' : '') + '. Apakah tersedia?';
+    return 'https://wa.me/' + WA_STORE + '?text=' + encodeURIComponent(teks);
+  };
+
+  var LENCANA = {
+    baru:  function () { return '<span class="lencana">' + (en() ? 'New' : 'Baru') + '</span>'; },
+    po:    function () { return '<span class="lencana po">Pre-order</span>'; },
+    habis: function () { return '<span class="lencana habis">' + (en() ? 'Sold out' : 'Habis') + '</span>'; }
+  };
+  var IKON_WA = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23a8.2 8.2 0 0 1 8.24 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.78.97-.15.16-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.23.25-.85.84-.85 2.04s.87 2.37 1 2.53c.12.17 1.72 2.62 4.16 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29Z"/></svg>';
+
+  var PANAH = function () {
+    return '<button type="button" class="panah kiri" aria-label="' + (en() ? 'Previous photo' : 'Foto sebelumnya') + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>' +
+      '<button type="button" class="panah kanan" aria-label="' + (en() ? 'Next photo' : 'Foto berikutnya') + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>';
+  };
+  var fotoDari = function (p) { return [].concat(p.foto); };
+
+  var fotoHtml = function (p, i) {
+    var f = fotoDari(p).filter(Boolean);
+    if (!f.length) return '<div class="p-foto"><span class="p-tanpa"></span>' + (LENCANA[p.status] ? LENCANA[p.status]() : '') + '</div>';
+    return '<div class="p-foto"><div class="geser">' + f.map(function (s, k) {
+        return '<img src="' + esc(s) + '" alt="' + esc(p.nama) + (f.length > 1 ? ' (' + (k + 1) + '/' + f.length + ')' : '') + '" data-i="' + i + '" data-k="' + k + '"' + (k ? ' loading="lazy"' : '') + ' width="520" height="650">';
+      }).join('') + '</div>' +
+      (f.length > 1 ? PANAH() + '<div class="titik">' + f.map(function (s, k) { return '<i' + (k ? '' : ' class="on"') + '></i>'; }).join('') + '</div>' : '') +
+      (LENCANA[p.status] ? LENCANA[p.status]() : '') + '</div>';
+  };
+
+  var gambar = function () {
+    var kat = ['Semua'];
+    PRODUK.forEach(function (p) { if (kat.indexOf(p.kat) === -1) kat.push(p.kat); });
+    document.getElementById('saring').hidden = !PRODUK.length;
+    if (!PRODUK.length) {
+      document.getElementById('grid').innerHTML = '<p class="pesan-kosong">' + (keadaan === 'memuat'
+        ? (en() ? 'Loading catalogue…' : 'Memuat katalog…')
+        : (en() ? 'The catalogue isn\'t available yet. Message our admin on WhatsApp.' : 'Katalog belum tersedia. Tanyakan ke admin lewat WhatsApp.')) + '</p>';
+      return;
+    }
+    document.getElementById('saring').innerHTML = kat.map(function (k) {
+      return '<button type="button" class="chip" data-kat="' + esc(k) + '" aria-pressed="' + (k === aktif) + '">' + esc(t(k)) + '</button>';
+    }).join('');
+
+    document.getElementById('grid').innerHTML = PRODUK.map(function (p, i) {
+      var habis = p.status === 'habis';
+      var uk = p.ukuran.length ? '<div class="ukuran" role="group" aria-label="' + (en() ? 'Size' : 'Ukuran') + '">' + p.ukuran.map(function (u) {
+        var kosong = habis || (p.habisUkuran || []).indexOf(u) > -1;
+        return '<button type="button" data-i="' + i + '" data-u="' + u + '" aria-pressed="' + (pilihan[i] === u) + '"' + (kosong ? ' disabled' : '') + '>' + u + '</button>';
+      }).join('') + '</div>' : '<div class="ukuran"></div>';
+      var tombol = habis
+        ? '<span class="btn btn-mati p-pesan">' + (en() ? 'Sold out' : 'Stok habis') + '</span>'
+        : '<a class="btn ' + (p.status === 'po' ? 'btn-kuning' : 'btn-primary') + ' p-pesan" data-wa="' + i + '" target="_blank" rel="noopener" href="' + tautanWA(i) + '">' + IKON_WA + (p.status === 'po' ? 'Pre-order' : (en() ? 'Order' : 'Pesan')) + '</a>';
+      return '<article class="produk' + (habis ? ' kosong' : '') + '"' + (aktif !== 'Semua' && p.kat !== aktif ? ' hidden' : '') + '>' +
+        fotoHtml(p, i) +
+        '<div class="p-isi"><div class="p-kat">' + esc(t(p.kat)) + '</div><h3>' + esc(p.nama) + '</h3>' +
+        '<div class="p-harga">' + rupiah(p.harga) + '</div>' + uk + tombol + '</div></article>';
+    }).join('');
+  };
+
+  /* ----- Geser & zoom ----- */
+  var zoom = document.getElementById('zoom'), zGeser = document.getElementById('z-geser'), zJudul = document.getElementById('z-judul');
+  var zFoto = [], zNama = '';
+  var lebar = function (g) { return (g.firstElementChild && g.firstElementChild.getBoundingClientRect().width) || g.clientWidth || 1; };
+  var keFoto = function (g, arah) { g.scrollBy({ left: arah * lebar(g), behavior: 'smooth' }); };
+  var posisi = function (g) { return Math.round(g.scrollLeft / lebar(g)); };
+  var tulisJudul = function () { zJudul.innerHTML = esc(zNama) + (zFoto.length > 1 ? '<span>' + (posisi(zGeser) + 1) + ' / ' + zFoto.length + '</span>' : ''); };
+  var kecilkan = function () {
+    zGeser.classList.remove('kunci');
+    zGeser.querySelectorAll('.slide.besar').forEach(function (s) { s.classList.remove('besar'); s.querySelector('img').style.width = ''; });
+  };
+  var bukaZoom = function (i, k) {
+    if (!zoom.showModal) return;   // iOS < 15.4 belum mengenal <dialog>
+    var p = PRODUK[i];
+    zFoto = fotoDari(p); zNama = p.nama;
+    zGeser.innerHTML = zFoto.map(function (s, n) {
+      return '<div class="slide"><img src="' + esc(s) + '" alt="' + esc(p.nama) + ' (' + (n + 1) + '/' + zFoto.length + ')"></div>';
+    }).join('');
+    var kotak = document.getElementById('z-kotak');
+    kotak.querySelectorAll('.panah').forEach(function (b) { b.remove(); });
+    if (zFoto.length > 1) kotak.insertAdjacentHTML('beforeend', PANAH());
+    akar.classList.add('kunci-gulir');
+    zoom.showModal();
+    zGeser.scrollLeft = k * zGeser.clientWidth;
+    tulisJudul();
+  };
+  // Pembersihan dipanggil langsung, tidak hanya lewat event 'close': event itu
+  // dikirim belakangan (dan terbukti bisa tidak datang), sementara kunci gulir
+  // yang tertinggal membuat halaman tak bisa digulir sama sekali. Aman diulang.
+  var lepasZoom = function () { kecilkan(); akar.classList.remove('kunci-gulir'); };
+  zoom.addEventListener('close', lepasZoom);
+  zoom.addEventListener('cancel', lepasZoom);   // tombol Esc
+  var tutupZoom = function () { zoom.close(); lepasZoom(); };
+  document.getElementById('z-tutup').addEventListener('click', tutupZoom);
+  // Ketuk di luar foto & bilah judul (area gelap) = tutup.
+  zoom.addEventListener('click', function (e) { if (!e.target.closest('.z-kotak, .z-atas')) tutupZoom(); });
+  zoom.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { kecilkan(); keFoto(zGeser, e.key === 'ArrowLeft' ? -1 : 1); }
+  });
+  // Ketuk foto di mode zoom: perbesar 2,2× tepat di titik yang diketuk, lalu geser
+  // dengan jari (HP) atau ikuti kursor (desktop). Ketuk lagi untuk kembali.
+  // Cubit-zoom bawaan HP tetap jalan karena viewport tidak mengunci skala.
+  zGeser.addEventListener('click', function (e) {
+    var img = e.target.closest('.slide img');
+    if (!img) return;
+    var slide = img.parentNode;
+    if (slide.classList.contains('besar')) { kecilkan(); return; }
+    var r = img.getBoundingClientRect();
+    var fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
+    slide.classList.add('besar');
+    zGeser.classList.add('kunci');
+    img.style.width = Math.round(r.width * 2.2) + 'px';
+    slide.scrollLeft = fx * img.offsetWidth - slide.clientWidth / 2;
+    slide.scrollTop = fy * img.offsetHeight - slide.clientHeight / 2;
+  });
+  if (matchMedia('(hover:hover)').matches) zGeser.addEventListener('mousemove', function (e) {
+    var s = e.target.closest('.slide.besar');
+    if (!s) return;
+    var r = s.getBoundingClientRect();
+    s.scrollLeft = (e.clientX - r.left) / r.width * (s.scrollWidth - s.clientWidth);
+    s.scrollTop = (e.clientY - r.top) / r.height * (s.scrollHeight - s.clientHeight);
+  });
+  // scroll tidak menggelembung — dengarkan di fase capture untuk semua .geser.
+  document.addEventListener('scroll', function (e) {
+    var g = e.target;
+    if (!g.classList || !g.classList.contains('geser')) return;
+    if (g === zGeser) return tulisJudul();
+    var n = posisi(g);
+    g.parentNode.querySelectorAll('.titik i').forEach(function (t, k) { t.classList.toggle('on', k === n); });
+  }, true);
+
+  document.addEventListener('click', function (e) {
+    var pn = e.target.closest('.panah');
+    if (pn) { var g = pn.closest('.zoom') ? zGeser : pn.parentNode.querySelector('.geser'); kecilkan(); keFoto(g, pn.classList.contains('kiri') ? -1 : 1); return; }
+    var im = e.target.closest('.p-foto .geser > img');
+    if (im) { bukaZoom(+im.dataset.i, +im.dataset.k); return; }
+    var c = e.target.closest('.chip');
+    if (c) { aktif = c.dataset.kat; gambar(); return; }
+    var b = e.target.closest('.ukuran button');
+    if (b && !b.disabled) {
+      var i = +b.dataset.i;
+      pilihan[i] = pilihan[i] === b.dataset.u ? undefined : b.dataset.u;
+      b.parentNode.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', String(pilihan[i] === x.dataset.u)); });
+      var a = document.querySelector('[data-wa="' + i + '"]');
+      if (a) a.href = tautanWA(i);
+    }
+  });
+  /* ----- Pita pengumuman: berganti tiap 5 detik, panah untuk pindah manual ----- */
+  var nUmum = 0, jamUmum;
+  var tulisUmum = function () {
+    document.querySelector('.pengumuman').hidden = !PENGUMUMAN.length;
+    if (PENGUMUMAN.length) document.getElementById('umum').textContent = PENGUMUMAN[nUmum % PENGUMUMAN.length][en() ? 'en' : 'id'];
+  };
+  var putarUmum = function () { clearInterval(jamUmum); if (PENGUMUMAN.length < 2) return; jamUmum = setInterval(function () { nUmum = (nUmum + 1) % PENGUMUMAN.length; tulisUmum(); }, 5000); };
+  document.querySelectorAll('[data-umum]').forEach(function (b) {
+    b.addEventListener('click', function () { nUmum = (nUmum + +b.dataset.umum + PENGUMUMAN.length) % PENGUMUMAN.length; tulisUmum(); putarUmum(); });
+  });
+  var tulisWA = function () {
+    document.getElementById('wa-toko').href = 'https://wa.me/' + WA_STORE + '?text=' + encodeURIComponent(en() ? 'Hi IB Bali Store, I have a question.' : 'Halo IB Bali Store, saya mau tanya.');
+  };
+
+  // Panah hero ditulis ulang supaya label pembaca layarnya ikut bahasa.
+  var pasangPanahHero = function () {
+    var b = document.getElementById('hero-bingkai');
+    b.querySelectorAll('.panah').forEach(function (x) { x.remove(); });
+    b.insertAdjacentHTML('beforeend', PANAH());
+  };
+  document.addEventListener('ibbahasa', function () { gambar(); tulisUmum(); tulisWA(); pasangPanahHero(); });
+  /* ----- Hero: berputar tiap 4,5 detik; berhenti saat disentuh/di-hover,
+     lanjut lagi setelahnya. Tidak berputar sendiri bila pengguna minta
+     gerak dikurangi. ----- */
+  var hero = document.getElementById('hero'), hGeser = document.getElementById('hero-geser'), hTitik = document.getElementById('hero-titik');
+  // Tanpa loading="lazy": di wadah geser, banner malas baru diunduh saat
+  // sudah tampil — yang terlihat sekejap justru kotak kosong.
+  var pasangHero = function () {
+    hGeser.innerHTML = HERO.map(function (s) { return '<img src="' + esc(s) + '" alt="" width="2400" height="960" draggable="false">'; }).join('');
+    pasangPanahHero();
+  };
+  var nPosisi = function () { return Math.max(1, HERO.length - Math.round(hGeser.clientWidth / lebar(hGeser)) + 1); };
+  var tulisTitik = function () {
+    var n = nPosisi(), k = Math.min(posisi(hGeser), n - 1), s = '';
+    for (var j = 0; j < n; j++) s += '<i' + (j === k ? ' class="on"' : '') + '></i>';
+    hTitik.innerHTML = n > 1 ? s : '';
+  };
+  var jamHero, gerakKurang = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var putarHero = function () {
+    clearInterval(jamHero);
+    if (gerakKurang) return;
+    jamHero = setInterval(function () {
+      var k = posisi(hGeser) + 1;
+      hGeser.scrollTo({ left: (k >= nPosisi() ? 0 : k) * lebar(hGeser), behavior: 'smooth' });
+    }, 4500);
+  };
+  hero.addEventListener('mouseenter', function () { clearInterval(jamHero); });
+  hero.addEventListener('mouseleave', putarHero);
+  hGeser.addEventListener('touchstart', function () { clearInterval(jamHero); }, { passive: true });
+  hGeser.addEventListener('touchend', putarHero);
+  window.addEventListener('resize', tulisTitik);
+
+  gambar(); tulisUmum(); tulisWA();
+  // no-cache = tetap memakai salinan peramban, tapi SELALU bertanya dulu ke
+  // server apakah sudah berubah. Tanpa ini GitHub Pages (max-age 600) bisa
+  // menyajikan harga/stok basi sampai 10 menit setelah pengurus menyimpan.
+  fetch('katalog.json', { cache: 'no-cache' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (k) {
+      PRODUK = Array.isArray(k.produk) ? k.produk : [];
+      PENGUMUMAN = Array.isArray(k.pengumuman) ? k.pengumuman : [];
+      if (/^62\d{8,13}$/.test(k.wa || '')) WA_STORE = k.wa;
+      if (Array.isArray(k.banner) && k.banner.length) HERO = k.banner;
+      keadaan = 'siap';
+    })
+    .catch(function () { keadaan = 'gagal'; })
+    .then(function () { pasangHero(); gambar(); tulisUmum(); tulisWA(); tulisTitik(); putarHero(); putarUmum(); });
+})();
+
+/* ===== DUA BAHASA — salinan skrip landing ===== */
+(function () {
+  var akar = document.documentElement;
+  var JUDUL = { id: document.title, en: 'IB Bali Store — Official Indobarça Bali Merchandise' };
+  var tombol = document.querySelectorAll('[data-bahasa]');
+  var terap = function () {
+    var en = akar.lang === 'en';
+    document.querySelectorAll('[data-en]').forEach(function (el) {
+      if (el.dataset.asli == null) el.dataset.asli = el.innerHTML;
+      el.innerHTML = en ? el.dataset.en : el.dataset.asli;
+    });
+    document.querySelectorAll('[data-en-label]').forEach(function (el) {
+      if (el.dataset.asliLabel == null) el.dataset.asliLabel = el.getAttribute('aria-label');
+      el.setAttribute('aria-label', en ? el.dataset.enLabel : el.dataset.asliLabel);
+    });
+    document.title = JUDUL[en ? 'en' : 'id'];
+    tombol.forEach(function (b) {
+      b.hidden = false;
+      b.querySelector('span').textContent = en ? 'EN' : 'ID';
+      b.setAttribute('aria-label', en ? 'Ganti ke Bahasa Indonesia' : 'Switch to English');
+    });
+  };
+  tombol.forEach(function (b) {
+    b.addEventListener('click', function () {
+      akar.lang = akar.lang === 'en' ? 'id' : 'en';
+      try { localStorage.setItem('ib-bahasa', akar.lang); } catch (e) {}
+      terap();
+      document.dispatchEvent(new Event('ibbahasa'));
+    });
+  });
+  terap();
+})();
+</script>
+</body>
+</html>
