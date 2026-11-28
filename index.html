@@ -732,6 +732,7 @@ if ('serviceWorker' in navigator) {
   /* Klasemen sengaja terlipat: 20 baris tabel akan menenggelamkan lima
      kartu jadwal di atasnya, padahal jadwal yang lebih sering dicari.
      Memakai <details> bawaan browser — sama seperti FAQ, tanpa JS. */
+  .kl + .kl{margin-top:10px;}
   .kl{margin-top:22px; border:1px solid var(--line); border-radius:14px; background:var(--paper); overflow:hidden;}
   .kl summary{
     cursor:pointer; list-style:none; display:flex; align-items:center;
@@ -1146,7 +1147,7 @@ if ('serviceWorker' in navigator) {
     <details class="kl" id="klasemen" hidden>
       <summary><span class="kl-judul">
         <span class="lambang-liga kl-liga" data-liga="PD"><img src="crest/liga-PD.png" alt="" loading="lazy"></span>
-        <span><span data-en="LaLiga Standings">Klasemen LaLiga</span> <span id="kl-musim"></span></span>
+        <span><span data-en="LaLiga Standings">Klasemen LaLiga</span> <span class="kl-musim"></span></span>
       </span></summary>
       <div style="overflow-x:auto"><table class="kl-tabel">
         <thead><tr>
@@ -1164,6 +1165,29 @@ if ('serviceWorker' in navigator) {
         <span data-en="<b class='z-ucl'></b>Champions League"><b class="z-ucl"></b>Liga Champions</span>
         <span data-en="<b class='z-uel'></b>Europa League"><b class="z-uel"></b>Liga Europa</span>
         <span data-en="<b class='z-degradasi'></b>Relegation"><b class="z-degradasi"></b>Degradasi</span>
+      </p>
+    </details>
+    <details class="kl" id="klasemen-ucl" hidden>
+      <summary><span class="kl-judul">
+        <span class="lambang-liga kl-liga" data-liga="CL"><img src="crest/liga-CL.png" alt="" loading="lazy"></span>
+        <span><span data-en="Champions League Standings">Klasemen Liga Champions</span> <span class="kl-musim"></span></span>
+      </span></summary>
+      <div style="overflow-x:auto"><table class="kl-tabel">
+        <thead><tr>
+          <th>#</th><th data-en="Team">Tim</th>
+          <th class="kl-ang" data-en="P">G</th>
+          <th class="kl-ang" data-en="W">M</th>
+          <th class="kl-ang" data-en="D">S</th>
+          <th class="kl-ang" data-en="L">K</th>
+          <th class="kl-ang kl-sempit" data-en="GD">SG</th>
+          <th class="kl-ang" data-en="Pts">Poin</th>
+        </tr></thead>
+        <tbody id="klasemen-ucl-isi"></tbody>
+      </table></div>
+      <p class="kl-ket">
+        <span data-en="<b class='z-ucl'></b>Round of 16"><b class="z-ucl"></b>Lolos ke 16 Besar</span>
+        <span data-en="<b class='z-uel'></b>Knockout play-off"><b class="z-uel"></b>Playoff gugur</span>
+        <span data-en="<b class='z-degradasi'></b>Eliminated"><b class="z-degradasi"></b>Tersingkir</span>
       </p>
     </details>
     <p class="jadwal-nb" data-en="Bali time (WITA). Fixtures are subject to change — watch-party announcements are still shared in the WhatsApp group.">Waktu Bali (WITA). Jadwal dapat berubah sewaktu-waktu — pengumuman nobar tetap lewat grup WhatsApp.</p>
@@ -1704,41 +1728,32 @@ if ('serviceWorker' in navigator) {
 
         // Klasemen menyusul terpisah: ia boleh kosong (kompetisi sedang jeda,
         // atau paket API tidak mencakupnya) tanpa menjatuhkan jadwal di atas.
-        var kl = d.klasemen || [];
-        var tabel = document.getElementById('klasemen');
-        var isi = document.getElementById('klasemen-isi');
-        if (kl.length && tabel && isi) {
-          // Musim diturunkan dari laga terdekat, bukan ditulis tangan: musim
-          // Eropa mulai Juli, jadi Januari 2027 masih musim 26/27. Sama
-          // persis dengan cara skrip pengambilnya memilih musim klasemen,
-          // jadi judulnya tidak mungkin beda dari isi tabelnya.
-          var mus = document.getElementById('kl-musim');
-          var t0 = ((d.pertandingan || [])[0] || {}).utc || '';
-          var th0 = +t0.slice(0, 4);
-          if (mus && th0) {
-            var aw = +t0.slice(5, 7) >= 7 ? th0 : th0 - 1;
-            var dua = function (n) { return ('0' + n % 100).slice(-2); };
-            mus.textContent = dua(aw) + '/' + dua(aw + 1);
-          }
-
-          // Berkas jadwal.json yang ditulis SEBELUM menang/seri/kalah ada
-          // tetap tayang: kolomnya jadi strip, bukan "undefined".
-          var ang = function (v) { return v == null ? '–' : aman(v); };
-          // Jatah Eropa tidak ikut dikirim API, jadi batasnya dipatok di
-          // sini: 1-5 ke Liga Champions, 6-7 ke Liga Europa. Kalau jatah
-          // Spanyol berubah, dua angka ini saja yang disunting.
-          // Degradasi dihitung dari BAWAH: 3 tim terakhir, berapa pun
-          // jumlah pesertanya.
-          var ZONA = { ucl: 5, uel: 7, degradasi: 3 };
-          var dasar = kl.length - ZONA.degradasi;
+        // Musim diturunkan dari laga terdekat, bukan ditulis tangan: musim
+        // Eropa mulai Juli, jadi Januari 2027 masih musim 26/27. Sama persis
+        // dengan cara skrip pengambilnya memilih musim klasemen, jadi judulnya
+        // tidak mungkin beda dari isi tabelnya.
+        var t0 = ((d.pertandingan || [])[0] || {}).utc || '';
+        var th0 = +t0.slice(0, 4), musim = '';
+        if (th0) {
+          var aw = +t0.slice(5, 7) >= 7 ? th0 : th0 - 1;
+          var dua = function (n) { return ('0' + n % 100).slice(-2); };
+          musim = dua(aw) + '/' + dua(aw + 1);
+        }
+        // Berkas jadwal.json yang ditulis SEBELUM menang/seri/kalah ada
+        // tetap tayang: kolomnya jadi strip, bukan "undefined".
+        var ang = function (v) { return v == null ? '–' : aman(v); };
+        var isiKlasemen = function (id, kl, zonaDari) {
+          var tabel = document.getElementById(id);
+          var isi = document.getElementById(id + '-isi');
+          if (!kl || !kl.length || !tabel || !isi) return;
+          var mus = tabel.querySelector('.kl-musim');
+          if (mus) mus.textContent = musim;
           isi.innerHTML = kl.map(function (t) {
             var lb = t.crest ? '<img src="' + aman(t.crest) + '" alt="" loading="lazy">' : '';
             var sg = (typeof t.sg === 'number' && t.sg > 0 ? '+' : '') + aman(t.sg);
-            var zona = t.pos <= ZONA.ucl ? ' kl-ucl'
-              : t.pos <= ZONA.uel ? ' kl-uel'
-              : t.pos > dasar ? ' kl-degradasi' : '';
+            var zona = zonaDari(t.pos, kl.length);
             return '<tr' + (t.kami ? ' class="kl-kami"' : '') + '>' +
-              '<td class="kl-pos' + zona + '">' + aman(t.pos) + '</td>' +
+              '<td class="kl-pos' + (zona ? ' kl-' + zona : '') + '">' + aman(t.pos) + '</td>' +
               '<td><span class="kl-nm">' + lb + aman(t.tim) + '</span></td>' +
               '<td class="kl-ang">' + ang(t.main) + '</td>' +
               '<td class="kl-ang">' + ang(t.menang) + '</td>' +
@@ -1749,7 +1764,18 @@ if ('serviceWorker' in navigator) {
             '</tr>';
           }).join('');
           tabel.hidden = false;
-        }
+        };
+        // Jatah Eropa tidak ikut dikirim API, jadi batasnya dipatok di sini:
+        // 1-5 ke Liga Champions, 6-7 ke Liga Europa. Degradasi dihitung dari
+        // BAWAH: 3 tim terakhir, berapa pun jumlah pesertanya.
+        isiKlasemen('klasemen', d.klasemen, function (pos, n) {
+          return pos <= 5 ? 'ucl' : pos <= 7 ? 'uel' : pos > n - 3 ? 'degradasi' : '';
+        });
+        // Fase liga UCL (format sejak 2024/25): 1-8 langsung 16 Besar,
+        // 9-24 playoff gugur, 25-36 tersingkir. Warnanya meminjam strip LaLiga.
+        isiKlasemen('klasemen-ucl', d.klasemen_ucl, function (pos) {
+          return pos <= 8 ? 'ucl' : pos <= 24 ? 'uel' : 'degradasi';
+        });
       })
       .catch(function () { /* diam: lebih baik tidak tampil daripada salah */ });
     };

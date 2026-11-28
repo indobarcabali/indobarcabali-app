@@ -264,7 +264,9 @@ def musim_dari(tanggal_iso: str) -> int:
     return t.year if t.month >= 7 else t.year - 1
 
 
-def ambil_klasemen(kunci: str, musim: int) -> list:
+def ambil_klasemen(kunci: str, musim: int, liga: str = LIGA) -> list:
+    # Liga Champions (CL) format baru = satu tabel fase liga 36 tim, bentuk
+    # responsnya sama dengan LaLiga, jadi pengurai yang sama dipakai ulang.
     # Musimnya DIMINTA secara tegas, tidak dibiarkan menjadi default. Tanpa
     # parameter ini, menjelang musim baru endpoint tetap mengembalikan tabel
     # AKHIR musim lalu — lengkap 38 pertandingan dan juaranya — sehingga
@@ -273,10 +275,10 @@ def ambil_klasemen(kunci: str, musim: int) -> list:
     # isi lapangan itu ternyata tidak seperti dugaan. Meminta musim yang sama
     # dengan jadwalnya tidak bergantung pada tafsiran apa pun.
     data = minta('https://api.football-data.org/v4/competitions/%s/standings'
-                 '?season=%d' % (LIGA, musim), kunci)
+                 '?season=%d' % (liga, musim), kunci)
     m = data.get('season') or {}
-    print('Klasemen: musim diminta %d, dilaporkan %s..%s, matchday %s'
-          % (musim, m.get('startDate'), m.get('endDate'), m.get('currentMatchday')))
+    print('Klasemen %s: musim diminta %d, dilaporkan %s..%s, matchday %s'
+          % (liga, musim, m.get('startDate'), m.get('endDate'), m.get('currentMatchday')))
 
     blok = None
     for s in data.get('standings', []):
@@ -375,15 +377,16 @@ def main() -> None:
 
     # Klasemen boleh gagal sendiri tanpa menjatuhkan jadwal: kompetisi bisa
     # sedang jeda, atau paketnya tidak mencakup liga ini.
-    try:
-        klasemen = ambil_klasemen(kunci, musim_dari(pertandingan[0]['utc']))
-    except Exception as e:
-        print('::warning::Klasemen gagal diambil (%s). Jadwal tetap diperbarui.' % e)
-        klasemen = []
-
+    musim = musim_dari(pertandingan[0]['utc'])
     isi = {'pertandingan': pertandingan}
-    if klasemen:
-        isi['klasemen'] = klasemen
+    for kode, kunci_json in ((LIGA, 'klasemen'), ('CL', 'klasemen_ucl')):
+        try:
+            tabel = ambil_klasemen(kunci, musim, kode)
+        except Exception as e:
+            print('::warning::Klasemen %s gagal diambil (%s). Jadwal tetap diperbarui.' % (kode, e))
+            tabel = []
+        if tabel:
+            isi[kunci_json] = tabel
 
     baru = json.dumps(isi, ensure_ascii=False, indent=2) + '\n'
     lama = TUJUAN.read_text() if TUJUAN.exists() else ''
@@ -392,7 +395,8 @@ def main() -> None:
         return
 
     TUJUAN.write_text(baru)
-    print('Diperbarui: %d pertandingan, %d baris klasemen.' % (len(pertandingan), len(klasemen)))
+    print('Diperbarui: %d pertandingan, klasemen LaLiga %d baris, UCL %d baris.'
+          % (len(pertandingan), len(isi.get('klasemen', [])), len(isi.get('klasemen_ucl', []))))
 
 
 if __name__ == '__main__':
