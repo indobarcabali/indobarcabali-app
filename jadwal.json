@@ -164,6 +164,18 @@
     },
     {
       "pos": 6,
+      "tim": "Santander",
+      "crest": "crest/5335.png",
+      "main": 14,
+      "menang": 6,
+      "seri": 2,
+      "kalah": 6,
+      "sg": -10,
+      "poin": 20,
+      "kami": false
+    },
+    {
+      "pos": 7,
       "tim": "Sevilla FC",
       "crest": "crest/559.png",
       "main": 13,
@@ -172,18 +184,6 @@
       "kalah": 4,
       "sg": -2,
       "poin": 19,
-      "kami": false
-    },
-    {
-      "pos": 7,
-      "tim": "Santander",
-      "crest": "crest/5335.png",
-      "main": 13,
-      "menang": 5,
-      "seri": 2,
-      "kalah": 6,
-      "sg": -12,
-      "poin": 17,
       "kami": false
     },
     {
@@ -274,11 +274,11 @@
       "pos": 15,
       "tim": "Levante",
       "crest": "crest/88.png",
-      "main": 13,
+      "main": 14,
       "menang": 2,
       "seri": 6,
-      "kalah": 5,
-      "sg": -5,
+      "kalah": 6,
+      "sg": -7,
       "poin": 12,
       "kami": false
     },
