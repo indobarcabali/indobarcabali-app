@@ -947,8 +947,10 @@ if ('serviceWorker' in navigator) {
 
   /* ================= TESTIMONI ================= */
   .kata{text-align:center;}
-  .kata-mark{font-size:70px; font-weight:900; color:var(--red); line-height:.4; display:block; margin-bottom:18px;}
-  .kata-quote{font-size:clamp(19px,2.6vw,25px); font-weight:700; color:var(--navy-900); line-height:1.5; max-width:760px; margin:0 auto;}
+  .kata-mark{font-size:clamp(56px,6vw,70px); font-weight:900; color:var(--red); line-height:.4; display:block; margin-bottom:18px;}
+  /* 17px tebal-sedang di HP, bukan 19px tebal: kutipan sepuluh baris dengan
+     huruf tebal terbaca sebagai tembok, bukan kalimat. */
+  .kata-quote{font-size:clamp(17px,2.4vw,24px); font-weight:600; color:var(--navy-900); line-height:1.6; max-width:760px; margin:0 auto;}
   .kata-who{margin-top:24px; font-size:13.5px; color:var(--muted); font-weight:600;}
   .kata-who b{color:var(--ink);}
 
@@ -991,7 +993,7 @@ if ('serviceWorker' in navigator) {
     display:flex; align-items:center; justify-content:center; text-align:center;
   }
   .ajak-inner{position:relative; z-index:2; padding:0 24px;}
-  .ajak-inner h2{color:#fff; font-size:clamp(26px,4vw,40px);}
+  .ajak-inner h2{color:#fff; font-size:clamp(24px,4vw,40px);}   /* HP 24px = judul section lain; desktop tetap menonjol */
   .ajak-inner p{color:rgba(255,255,255,.85); font-size:15px; max-width:46ch; margin:14px auto 0;}
   .ajak-inner .btn{margin-top:24px;}
 
