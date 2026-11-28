@@ -232,7 +232,7 @@
     <!-- Penanda versi halaman pembungkus. Naikkan angkanya setiap kali berkas
          ini diubah: menjawab "yang tampil ini versi baru atau cache lama?".
          Diberi label dan diletakkan di bawah supaya anggota tidak bingung. -->
-    <div class="versi">versi halaman R15</div>
+    <div class="versi">versi halaman R16</div>
   </div>
 </div>
 
@@ -431,6 +431,29 @@
   });
   document.addEventListener('visibilitychange', mintaKunci);
   /* akhir jaga layar */
+
+  /* ---------------------------------------------------------------
+     R16: selama obrolan SEMECUL AI terbuka, isi menyusut di atas papan ketik.
+
+     Obrolannya layar penuh dengan kotak ketik di dasar layar. Secara bawaan
+     papan ketik Android MENIMPA halaman, sehingga kotak itu tertimbun.
+     interactive-widget=resizes-content membuat peramban menyusutkan halaman —
+     dan iframe aplikasi di dalamnya — sehingga kotak ketik naik tepat di atas
+     papan ketik, seperti ChatGPT. Hanya dipasang selama obrolan terbuka:
+     di halaman lain bilah navigasi bawah tidak ikut naik saat mengetik.
+     Aplikasi mengirim {ibb:'papan-ketik', susut} (papanKetikSusut di
+     ui_shell.html). iOS mengabaikan atribut ini dan menggeser layar sendiri.
+     --------------------------------------------------------------- */
+  var metaVp = document.querySelector('meta[name="viewport"]');
+  var vpAsli = metaVp ? metaVp.content : '';
+  window.addEventListener('message', function (e) {
+    if (!metaVp || !e.data) return;
+    if (e.data.ibb === 'papan-ketik') {
+      metaVp.content = vpAsli + (e.data.susut ? ', interactive-widget=resizes-content' : '');
+    } else if (e.data.ibb === 'siap') {
+      metaVp.content = vpAsli;   // aplikasi dimuat ulang: obrolan pasti tertutup
+    }
+  });
 </script>
 
 </body>
