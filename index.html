@@ -732,8 +732,12 @@ if ('serviceWorker' in navigator) {
   /* Klasemen sengaja terlipat: 20 baris tabel akan menenggelamkan lima
      kartu jadwal di atasnya, padahal jadwal yang lebih sering dicari.
      Memakai <details> bawaan browser — sama seperti FAQ, tanpa JS. */
-  .kl + .kl{margin-top:10px;}
-  .kl{margin-top:22px; border:1px solid var(--line); border-radius:14px; background:var(--paper); overflow:hidden;}
+  /* Dua klasemen berdampingan di layar lebar, bertumpuk di HP. align-items
+     start: tanpa itu, tabel yang masih terlipat ikut memanjang setinggi
+     tabel tetangganya yang dibuka. */
+  .kl-duo{display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:start; margin-top:22px;}
+  @media (max-width:900px){ .kl-duo{grid-template-columns:1fr; gap:10px;} }
+  .kl{min-width:0; border:1px solid var(--line); border-radius:14px; background:var(--paper); overflow:hidden;}
   .kl summary{
     cursor:pointer; list-style:none; display:flex; align-items:center;
     justify-content:space-between; gap:16px; padding:15px 18px;
@@ -1144,6 +1148,7 @@ if ('serviceWorker' in navigator) {
       <h2 data-en="Barça's Next Matches">Pertandingan Barça Berikutnya</h2>
     </div>
     <div id="jadwal-list"></div>
+    <div class="kl-duo">
     <details class="kl" id="klasemen" hidden>
       <summary><span class="kl-judul">
         <span class="lambang-liga kl-liga" data-liga="PD"><img src="crest/liga-PD.png" alt="" loading="lazy"></span>
@@ -1190,6 +1195,7 @@ if ('serviceWorker' in navigator) {
         <span data-en="<b class='z-degradasi'></b>Eliminated"><b class="z-degradasi"></b>Tersingkir</span>
       </p>
     </details>
+    </div>
     <p class="jadwal-nb" data-en="Bali time (WITA). Fixtures are subject to change — watch-party announcements are still shared in the WhatsApp group.">Waktu Bali (WITA). Jadwal dapat berubah sewaktu-waktu — pengumuman nobar tetap lewat grup WhatsApp.</p>
   </div>
 </section>
